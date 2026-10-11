@@ -6,13 +6,13 @@
 
 ## 1. Purpose
 
-Define how VideoJoin detects, reports, and recovers from errors during the text menu, the `join` verb, and FFmpeg processing without destroying the user’s source media.
+Define how AgentCli detects, reports, and recovers from errors during the text menu, the `join` verb, and FFmpeg processing without destroying the user’s source media.
 
 Console sentences in this file stay required. Durable status, once the logger exists, is `requirement-python-cli-logging`. ChronicleLogger is required. It is not optional.
 
 ### 1.1 Human-facing
 
-**In one sentence:** When a join cannot finish, VideoJoin tells you why on the screen and leaves both source videos where they are.
+**In one sentence:** When a join cannot finish, AgentCli tells you why on the screen and leaves both source videos where they are.
 
 | Box | Meaning | Example |
 |-----|---------|---------|
@@ -29,14 +29,14 @@ Console sentences in this file stay required. Durable status, once the logger ex
 | Surface | What you open | What for |
 |---------|---------------|----------|
 | Join questions | Menu region above the box | The reason, without leaving the front board when the board is already open |
-| `video-join join` with one video | Message, non-zero exit | Nothing is concatenated |
+| `agent-cli join` with one video | Message, non-zero exit | Nothing is concatenated |
 | Console before the logger exists | Missing ChronicleLogger | The pip next step |
 
 | You do… | What it means | What you type |
 |---------|---------------|---------------|
 | Pick a number that is not in the list | The question stays. FFmpeg does not run. | A bad index, then a real one |
-| Join with fewer than two videos | You see why, and the sources stay. | `video-join join` |
-| Run without the logger library | The console names the pip next step and the program returns non-zero. | `video-join` |
+| Join with fewer than two videos | You see why, and the sources stay. | `agent-cli join` |
+| Run without the logger library | The console names the pip next step and the program returns non-zero. | `agent-cli` |
 
 ## 2. Core Rules (Mandatory)
 
@@ -97,7 +97,7 @@ Console sentences in this file stay required. Durable status, once the logger ex
 
 ## Under command line for normal user only
 
-On Termux, Git Bash, Windows cmd, or the same class, failure sentences are for the normal user who started `video-join`. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to report an error or to clean a temp. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
+On Termux, Git Bash, Windows cmd, or the same class, failure sentences are for the normal user who started `agent-cli`. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to report an error or to clean a temp. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
 
 ## 3. Design Principles (CIAO / CIAO-Lite)
 
@@ -161,7 +161,7 @@ On Termux, Git Bash, Windows cmd, or the same class, failure sentences are for t
 
 | Date | Status | Note |
 |------|--------|------|
-| 2026-08-09 | Active 1.0.0 | Initial error-handling law for VideoJoin |
+| 2026-08-09 | Active 1.0.0 | Initial error-handling law for AgentCli |
 | 2026-08-09 | Active 1.1.0 | Fail-closed fallback and unique temp cleanup notes |
 | 2026-10-04 | Active 1.2.0 | ChronicleLogger is required for durable status. Console sentences stay. Missing library is a console line. Empty argv off a terminal is help, return 0 |
 

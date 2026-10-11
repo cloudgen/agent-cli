@@ -1,26 +1,27 @@
 # Requirements
 
-Authoritative specialized product law for **VideoJoin** lives here.
+Authoritative specialized product law for **AgentCli** lives here.
 
-**Current state (2026-10-04):** Specialized **software-development** product. Left genesis. Registry is populated — see `index.md`. Fifteen Active requirements. Product version is **1.0.5**.
+**Current state (2026-10-11):** Specialized **software-development** product. Left genesis. Registry is populated — see `index.md`. Product version is **1.0.0**. Exactly one Active domain file: `requirement-domain-agent-cli`.
 
 ## Product identity (summary)
 
 | Field | Value |
 |-------|--------|
-| Product / package | `VideoJoin` |
-| Version SSOT | **`1.0.5`** (`pyproject.toml` + `src/VideoJoin/__init__.py`) |
-| Product README SSOT | Root `README.md` (app-name, short description, target version **1.0.5**). Sections and pictures: `requirement-python-readme` |
-| Ship surface | Python package; console script **`video-join`**; module `python -m VideoJoin` |
-| Install mode | **pip / local package** (`pip install VideoJoin`; this tree **1.0.5**; checkout `pip install -e .`) — not shell Type O |
-| Domain surface | `requirement-domain-videojoin` — four pillars (`join`, `list-videos`, help, about) |
-| Text menu | `requirement-python-tui` — front rows join, system-log, language, self-management, Exit. Default path word is `Path` |
-| Menu language | `requirement-python-cli-language` — row 4, thirteen codes, leaf `~/.local/VideoJoin/language`. `language` is not an argv verb |
-| Status logger | `requirement-python-cli-logging` — `ChronicleLogger(...)` inside `def main`. Required |
-| Class map | `requirement-python-oop` — allowed end state. Running tree is still three modules |
-| Encode ops | `requirement-video-ffmpeg-pipeline` — stream-copy then re-encode; unique temps; **`shutil.move`** publish |
-| Coding style | `requirement-python-coding-style` — temps + `shutil.move`; gate **`CL-PYTHON-SHUTIL-MOVE-PUBLISH`** |
-| Runtime tools | **FFmpeg** on PATH for a join. **ChronicleLogger>=1.3.1** required. Live `pyproject.toml` declares that floor |
+| Product / package | `AgentCli` |
+| Version SSOT | **`1.0.0`** (`pyproject.toml` + `src/AgentCli/__init__.py`) |
+| Product README SSOT | Root `README.md`. Sections and pictures: `requirement-python-readme` |
+| Ship surface | Python package; console script **`agent-cli`**; module `python -m AgentCli` |
+| Install mode | **pip / local package** (`pip install AgentCli`; this tree **1.0.0**; checkout `pip install -e .`). Empty argv off a terminal prints help and returns 0 |
+| Domain surface | `requirement-domain-agent-cli` — install and run peer `grok`, and back up `~/.grok` auth files |
+| Text menu | `requirement-python-tui` — multi-user front rows 1 grok-auth, 3 system-log, 5 language, 7 sudoers, 8 self-management, 9 Exit. This-login-only shows 2 run and hides 7 |
+| Menu language | `requirement-python-cli-language` — row 5, codes 51–63, leaf `~/.local/agent-cli/language`. `language` is not an argv verb |
+| Status logger | `requirement-python-cli-logging` — `ChronicleLogger(...)` inside `def main`. Required (`ChronicleLogger>=1.3.1`) |
+| Cache | `requirement-shell-cli-storage` — Linux preferred `/dev/shm/cache`, then `/tmp/cache`, then `${HOME}/.cache`. Silent tier miss |
+| Class map | `requirement-python-oop` — one class in each module under `src/AgentCli/` |
+| Encode ops | `requirement-video-ffmpeg-pipeline` — **Retired**. This product does not join media |
+| Privilege | `requirement-three-layer-privilege-model` — Type 1 is `agent-cli backup` only |
+| Runtime tools | **curl** when `setup` downloads peer `grok`. **ChronicleLogger>=1.3.1** required |
 
 ## Class requirement gate
 

@@ -1,16 +1,16 @@
-# Tests — VideoJoin
+# Tests — AgentCli
 
 Executable proof for product law. **Design map:** `docs/reviews/test-plan.md`.  
 **RTM:** `docs/reviews/requirement-test-matrix.md`.
 
-## Status (2026-10-04, product 1.0.5)
+## Status (2026-10-11, product 1.0.0)
 
 | Item | State |
 |------|--------|
 | Design TP map | **present** under `docs/reviews/test-plan.md` |
 | Automated suites | `tests/test_about.py` covers **TP-ABOUT-01** through **TP-ABOUT-14** and **TP-ABOUT-16** (have). There is no **TP-ABOUT-15**. `tests/test_tui.py` covers **TP-TUI-09** and **TP-TUI-10** (have). `tests/test_language.py` covers **TP-LANG-01** (have). `tests/test_docs.py` covers **TP-DOC-01** (have). **TP-DOC-03** stays `todo`. **TP-LOG-*** and **TP-OOP-*** stay `todo` |
 | Runner | `tests/run.sh` (`python3 -m unittest discover`) |
-| Last run | 2026-10-04 `./tests/run.sh` — 23 tests, OK |
+| Last run | 2026-10-11 `python3 -m unittest discover -s tests` |
 
 ## Planned layout
 
@@ -24,8 +24,9 @@ Executable proof for product law. **Design map:** `docs/reviews/test-plan.md`.
 | `test_packaging.py` | TP-PKG |
 | `test_prerequisites.py` | TP-PRE |
 | `test_cli.py` | TP-CLI |
-| `test_domain_join.py` | TP-VIDEOJOIN |
-| `test_ffmpeg_pipeline.py` | TP-FFMPEG |
+| `test_domain.py` | grok domain: session, backup, setup, sudoer JSON |
+| `test_hello.py` | typed hello; join and list-videos stay unknown |
+| `test_storage.py` | cache tiers and persistence |
 | `test_errors.py` | TP-ERR |
 | `test_fs_publish.py` | TP-FS |
 

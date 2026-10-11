@@ -28,13 +28,13 @@ This file owns the product user document at the repository root: which sections 
 |---------|---------------|----------|
 | `README.md` | Root user document | Install, usage, pictures |
 | `screenshots/` | Picture folder beside that document | The links in the Screenshots section |
-| `video-join` | The program on a terminal | What those pictures show |
+| `agent-cli` | The program on a terminal | What those pictures show |
 
 | You do… | What it means | What you type |
 |---------|---------------|---------------|
-| Read the install | The public path is pip. The document does not ask for root. | `pip install VideoJoin` |
-| Check the pictures | Row 4 is the language list. The pictured job joins two files in the current directory. About stays in English. | `video-join`, then `4`, or `1` |
-| Check the version line | The badge matches the package string. | `video-join version` |
+| Read the install | The public path is pip. The document does not ask for root. | `pip install AgentCli` |
+| Check the pictures | Row 4 is the language list. The pictured job joins two files in the current directory. About stays in English. | `agent-cli`, then `4`, or `1` |
+| Check the version line | The badge matches the package string. | `agent-cli version` |
 
 ## 2. Core Rules / Requirements (Mandatory)
 
@@ -61,7 +61,7 @@ Each behavioral sentence **MUST** match its owner and **MUST NOT** restate that 
 | Product verbs and pip lifecycle commands | `requirement-python-cli-interface` |
 | Empty argv on a terminal opens the menu. Empty argv with no terminal prints help and returns 0. Direct `join` with no terminal exits non-zero | `requirement-python-cli-interface` |
 | Package name, console script, pip install | `requirement-python-packaging` |
-| Package string on the badge | `__version__` in `src/VideoJoin/__init__.py`, copied by `pyproject.toml` |
+| Package string on the badge | `__version__` in `src/AgentCli/__init__.py`, copied by `pyproject.toml` |
 | `ChronicleLogger>=1.3.1` | `requirement-python-packaging` and `requirement-runtime-prerequisites` |
 | FFmpeg on `PATH`, no root auto-install | `requirement-runtime-prerequisites` |
 
@@ -72,8 +72,8 @@ The first-row sentence in the user document **MUST** name the current directory 
 ### 2.3 Pictures
 
 1. A menu picture **MUST** be a capture of the running text menu. **MUST NOT** satisfy a menu row with a drawing that invents row text. Every PNG in `screenshots/` **MUST** be linked from the user document. A PNG that is not a menu capture **MUST** be labeled as that file and **MUST NOT** be described as a text-menu capture.
-2. The Screenshots section **MUST** show the language list, then one main menu for each supported language in list order, then one worked join, then self-management, then about, then every other PNG in `screenshots/`.
-3. The worked join **MUST** use the two files, the two indexes, and the default output name in §2.5. The domain file owns the name pattern `{stem1} + {stem2}.mp4`. This file owns that one pictured job. A success still **MUST** be a real join result. **MUST NOT** invent a success line.
+2. The Screenshots section **MUST** show the language list, then one main menu for each supported language in list order, then system-log, self-management, grok-auth, sudoers, and about, then every other PNG in `screenshots/`.
+3. This product **MUST NOT** picture a media join. There is no `video.png` and no `join-*.png`.
 4. The about picture **MUST** stay in English. Leaf shorts in every menu picture **MUST** stay the English verb. That split is `requirement-python-cli-language`.
 5. A live-menu capture satisfies this file when it shows the menu the program paints, including a double-width label that stays whole and a clock that stays on the path row.
 6. The heading of each picture **MUST** be that file’s basename. The paragraph and the image alt **MUST** be the catalog cells for that file. Those words come from the basename and from what the picture shows: the words on the screen, the characters in the input box, or the scene. A language name alone, or a sentence that only says the file is a picture, fails this file. The paragraph **MUST NOT** freeze a session login or a `/home/<login>/` path. The path row is “the current directory.”
@@ -84,7 +84,7 @@ The first-row sentence in the user document **MUST** name the current directory 
 2. **MUST NOT** name a checkout setup script that is not on disk. This tree has no `setup.sh`. The document **MUST NOT** name `setup.sh`.
 3. The document does not show a wheel or sdist example. **MUST NOT** add one unless the basename is the file the build writes and the version token matches the package version.
 4. The prerequisite sentences **MUST** stay aligned with `requirement-runtime-prerequisites`. This file **MUST NOT** copy that table as a second owner.
-5. **MUST NOT** add `./build.sh` verbs to the user document. Those verbs are not `video-join` verbs.
+5. **MUST NOT** add `./build.sh` verbs to the user document. Those verbs are not `agent-cli` verbs.
 
 ### 2.5 Implementation Notes (this project)
 
@@ -92,62 +92,61 @@ The first-row sentence in the user document **MUST** name the current directory 
 |-------|--------|
 | **Document** | `README.md` |
 | **Pictures** | `screenshots/` |
-| **Package** | `VideoJoin` |
-| **Console script** | `video-join` |
-| **Version** | `1.0.5` from `src/VideoJoin/__init__.py` (`__version__`). `pyproject.toml` copies that string |
+| **Package** | `AgentCli` |
+| **Console script** | `agent-cli` |
+| **Version** | `1.0.0` from `src/AgentCli/__init__.py` (`__version__`). `pyproject.toml` copies that string |
 | **Python** | `>=2.7`, excluding 3.0 through 3.4. The badge says 2.7+ (3.x recommended) |
 | **License file** | `LICENSE.md` (MIT). The file is present. The document link stays relative |
-| **Homes** | `https://github.com/Wilgat/VideoJoin` and `https://pypi.org/project/VideoJoin/` |
-| **Pictured job** | First file `clip-a.mp4` (index **1**), second file `clip-b.mp4` (index **1** on the remaining list), Enter on the default output name |
-| **Pictured output** | `clip-a + clip-b.mp4`. The captured result is stream copy. The stage line on that picture is `Staging dir → .` |
-| **Every PNG** | `README.md` links each PNG under `screenshots/`. `video.png` is linked and is not a menu capture |
-| **Image URL** | `https://raw.githubusercontent.com/Wilgat/VideoJoin/main/screenshots/<basename>`. The package index can fetch that file only after it is on that public branch |
+| **Homes** | `https://github.com/cloudgen/agent-cli` and `https://pypi.org/project/AgentCli/` |
+| **Pictured job** | No media join. Pictures are the text menu: language, thirteen main menus, system-log, self-management, grok-auth, sudoers, and about |
+| **Pictured output** | None. This product does not write a joined media file |
+| **Every PNG** | `README.md` links each PNG under `screenshots/` |
+| **Image URL** | `https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/<basename>` |
 
-**Title:** `VideoJoin - Join two local videos with FFmpeg (stream-copy first)`.
+**Title:** `AgentCli - Install and run xAI grok, and back up its auth files`.
 
-**Badges:** a Version badge whose token is the package string; License MIT; CIAO linked to `https://github.com/cloudgen/ciao`; stars for `Wilgat/VideoJoin`; Python 2.7+ (3.x recommended); PyPI `VideoJoin` linked to `https://pypi.org/project/VideoJoin/`.
+**Badges:** a Version badge whose token is the package string; License MIT; CIAO linked to `https://github.com/cloudgen/ciao`; stars for `cloudgen/agent-cli`; Python 2.7+ (3.x recommended); PyPI `AgentCli` linked to `https://pypi.org/project/AgentCli/`.
 
-**Opening:** concatenate two videos in the current directory. Prefer stream copy. Re-encode when copy fails. Publish with `shutil.move`. On a terminal with no arguments, the text menu opens. The menu does not start the join by itself and does not call pip.
+**Opening:** install and run the peer binary `grok`, and back up `~/.grok` auth files. On a terminal with no arguments, the text menu opens. With no terminal and no verb, the program prints help and returns 0. Empty argv does not run pip.
 
 **Sections, in order.** Advantages is inserted after Features. Screenshots is inserted after Usage. The other headings keep the existing kit order.
 
 | Heading | What this document must keep | Owner of the behavior |
 |---------|------------------------------|------------------------|
-| Features | Text menu: join, system-log, language, self-management, Exit. Path and a local clock on the first row. system-log is **3**. language is **4**. self-management is **8**. Two files in the current directory. Stream copy, then re-encode. `shutil.move`. FFmpeg on `PATH`. Verbs `help`, `version`, `about`, `hello`, `join`, `list-videos`, `self-install`, `version-check`, `self-update`, `self-uninstall` | Peers in §2.2. The path-row sentence is the clock rule in §2.2 |
+| Features | Text menu: grok-auth, system-log, language, sudoers, self-management, Exit. Path and a local clock on the first row. system-log is **3**. language is **5**. sudoers is **7** on a multi-user host. self-management is **8**. Typed verbs include `help`, `version`, `about`, `hello`, `setup`, `backup`, and the pip lifecycle verbs. `join` and `list-videos` are unknown | Peers in §2.2. The path-row sentence is the clock rule in §2.2 |
 | Advantages | The four parts and the comparison table below | This file for the contrast. Peers in §2.2 for the behavior |
-| Quick Installation | FFmpeg on `PATH`. `ChronicleLogger>=1.3.1`. `pip install VideoJoin`. Checkout uses a venv and `pip install -e .`. The fenced text menu (front, system-log, language, self-management) stays in this section | `requirement-runtime-prerequisites`, `requirement-python-packaging`, `requirement-python-tui` |
+| Quick Installation | FFmpeg on `PATH`. `ChronicleLogger>=1.3.1`. `pip install AgentCli`. Checkout uses a venv and `pip install -e .`. The fenced text menu (front, system-log, language, self-management) stays in this section | `requirement-runtime-prerequisites`, `requirement-python-packaging`, `requirement-python-tui` |
 | Usage | Menu versus typed verbs. Join asks for two indexes and an output name. No folder prompt. Esc returns. No terminal: empty argv prints help and returns 0. Direct `join` with no terminal exits non-zero. `self-uninstall` needs `--force`. No sudo | `requirement-python-cli-interface`, `requirement-domain-videojoin`, `requirement-python-tui` |
 | Screenshots | Lead: each heading is the file name, and the paragraph is what that picture shows. Package **1.0.5**. The paragraph and the image alt are the catalog below. Pictures that still show **1.0.4** say so | This file |
-| Examples | `cd` to a folder of clips, then `video-join`, then `video-join version`, then `video-join join` | `requirement-domain-videojoin` |
+| Examples | `cd` to a folder of clips, then `agent-cli`, then `agent-cli version`, then `agent-cli join` | `requirement-domain-videojoin` |
 | Platform Compatibility | Linux primary. macOS and Windows when Python and FFmpeg are present. The text menu needs a terminal | `requirement-runtime-prerequisites` |
 | Related Projects | The eight lines below, in that order, each with one sentence | This file |
 | Contributing | Keep product law in sync. Do not strip `shutil.move`. Version strings stay together | `requirement-python-coding-style`, `requirement-python-packaging` |
 | License | MIT, link `LICENSE.md`, and that file exists | `requirement-python-packaging` |
-| Last Update | Names package **1.0.5** and the picture catalog. A version bump is not required for pictures that did not change | This file for the line. `__version__` for the string |
+| Last Update | Names package **1.0.0** and the picture catalog | This file for the line. `__version__` for the string |
 
 **Related projects, in this order.** The first two are this program. Each line is one sentence. Do not add an install recipe.
 
 | Order | Link | Sentence |
 |------:|------|----------|
-| 1 | `https://github.com/Wilgat/VideoJoin` | This program’s source |
-| 2 | `https://pypi.org/project/VideoJoin/` | This program on PyPI |
-| 3 | `https://github.com/Wilgat/AnimeDlp` | Command-line downloader for anime video sites |
+| 1 | `https://github.com/cloudgen/agent-cli` | This program’s source |
+| 2 | `https://pypi.org/project/AgentCli/` | This program on PyPI |
+| 3 | `https://github.com/cloudgen/grok-cli` | Shell sibling this Python package specializes beside |
 | 4 | `https://github.com/Wilgat/ChronicleLogger` | Status logger this program depends on (`ChronicleLogger>=1.3.1`) |
-| 5 | `https://github.com/Wilgat/VideoSpeed` | Cuts, changes speed, and boomerangs a clip. That program is not this one |
-| 6 | `https://github.com/cloudgen/ciao` | Caution, Intentional, Anti-fragile, Over-engineered |
-| 7 | `https://github.com/cloudgen/ciao-lite` | Short agent contract |
-| 8 | `https://github.com/cloudgen/safe-rm` | Guarded `rm` |
+| 5 | `https://github.com/cloudgen/ciao` | Caution, Intentional, Anti-fragile, Over-engineered |
+| 6 | `https://github.com/cloudgen/ciao-lite` | Short agent contract |
+| 7 | `https://github.com/cloudgen/safe-rm` | Guarded `rm` |
 
 **Advantages, after Features and before Quick Installation.** Four parts, then the comparison. The path row in this section names the local clock.
 
-1. **Dual-mode interface.** The menu asks for two indexes and an output name. A typed `join` asks the same questions. The person does not write an FFmpeg concat graph. The program tries stream copy, then re-encodes if copy fails. There is no length percent, no boomerang, and no `--json`. With no arguments on a terminal, the text menu opens. With no terminal and no verb, the program prints help and returns 0. Direct `join` with no terminal exits non-zero.
-2. **Built-in languages.** Row **4** lists thirteen languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. The choice is saved for the next run.
+1. **Dual-mode interface.** Typed verbs do the same work as the menu tokens. `hello` prints a welcome line and does not draw the menu. Exit is menu-only. With no arguments on a terminal, the text menu opens. With no terminal and no verb, the program prints help and returns 0. Empty argv does not run pip.
+2. **Built-in languages.** Row **5** lists thirteen languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. The choice is saved for the next run.
 3. **USB-safe staging.** Intermediate files are written beside the output when that folder can be written, including on a removable drive. The finished file is published with `shutil.move`. When that folder cannot be written, the stage uses the system temporary directory. The section **MUST NOT** say the stage never uses that directory.
 4. **Lifecycle and diagnostics.** `version-check`, `self-update`, `self-install`, and `self-uninstall` are menu rows **84**–**87** and typed verbs. `self-uninstall` on the command line needs `--force`. They call pip and do not use root. **system-log** (**3**) views a log, clears a log, and shows the log folder. **about** (**83**) stays in English.
 
-**Comparison table.** Columns: Feature, Raw FFmpeg CLI, Typical Python wrappers (moviepy), VideoJoin.
+**Comparison table.** Columns: Feature, Raw FFmpeg CLI, Typical Python wrappers (moviepy), AgentCli.
 
-| Feature | Raw FFmpeg CLI | Typical Python wrappers (moviepy) | VideoJoin |
+| Feature | Raw FFmpeg CLI | Typical Python wrappers (moviepy) | AgentCli |
 |---------|----------------|-----------------------------------|-----------|
 | Learning curve | A concat graph the person writes | A Python script | Text menu, or two file numbers and an output name |
 | Non-interactive | Native command line | A custom script | Typed verbs. No terminal and no verb: help, return 0. Direct `join` with no terminal: non-zero. No `--json` |
@@ -160,7 +159,7 @@ The first-row sentence in the user document **MUST** name the current directory 
 
 | Order | File | Paragraph | Alt |
 |------:|------|-----------|-----|
-| 1 | `language-menu.png` | Row **4** has opened the language list. **41 English** is highlighted, with the note "use English for this menu." The other rows are **42 简体中文**, **43 繁體中文**, **44 Español**, **45 العربية**, **46 Français**, **47 Português**, **48 Русский**, **49 Deutsch**, **50 日本語**, **51 한국어**, **52 Nederlands**, and **53 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The clock is on the right of that row. The status line says `language`. VideoJoin 1.0.4. | Language list, 41 English highlighted |
+| 1 | `language-menu.png` | Row **4** has opened the language list. **41 English** is highlighted, with the note "use English for this menu." The other rows are **42 简体中文**, **43 繁體中文**, **44 Español**, **45 العربية**, **46 Français**, **47 Português**, **48 Русский**, **49 Deutsch**, **50 日本語**, **51 한국어**, **52 Nederlands**, and **53 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The clock is on the right of that row. The status line says `language`. AgentCli 1.0.4. | Language list, 41 English highlighted |
 | 2 | `main-menu-en.png` | English main menu. There is no saved-language line above the box. The path label is `Path`. The clock is on the right of that row. **1 join** is highlighted: "pick two videos in this folder and concatenate." Then **3 system-log** "view, clear, and the log folder," **4 language** "display language for this menu," **8 self-management** "version, about, and pip lifecycle," and **9 Exit** "leave." The status line says `main menu`. | English main menu |
 | 3 | `main-menu-zh-hans.png` | Simplified Chinese main menu. The line above the box says `菜单语言是简体中文`. The path label is `路径`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `系统日志`, **4** is `语言`, **8** is `自我管理`, and **9** is `离开`. The status line says `主菜单`. | Simplified Chinese main menu |
 | 4 | `main-menu-zh-hant.png` | Traditional Chinese main menu. The line above the box says `選單語言是繁體中文`. The path label is `路徑`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `系統日誌`, **4** is `語言`, **8** is `自我管理`, and **9** is `離開`. The status line says `主選單`. | Traditional Chinese main menu |
@@ -174,23 +173,23 @@ The first-row sentence in the user document **MUST** name the current directory 
 | 12 | `main-menu-ko.png` | Korean main menu. The line above the box says `메뉴 언어는 한국어`. The path label is `경로`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `시스템 로그`, **4** is `언어`, **8** is `자기관리`, and **9** is `종료`. The status line says `주 메뉴`. | Korean main menu |
 | 13 | `main-menu-nl.png` | Dutch main menu. The line above the box says `De menutaal is Nederlands`. The path label is `Pad`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `systeemlog`, **4** is `taal`, **8** is `zelfbeheer`, and **9** is `Afsluiten`. The status line says `hoofdmenu`. | Dutch main menu |
 | 14 | `main-menu-el.png` | Greek main menu. The line above the box says `Η γλώσσα του μενού είναι ελληνικά`. The path label is `Διαδρομή`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `αρχείο καταγραφής`, **4** is `γλώσσα`, **8** is `αυτοδιαχείριση`, and **9** is `Έξοδος`. The status line says `κύριο μενού`. | Greek main menu |
-| 15 | `join-first.png` | Join, first question. The title is `VideoJoin (1.0.4) — join`. The page says "Join two videos in this folder." and "Esc returns to the menu." The list is `1. clip-a.mp4` and `2. clip-b.mp4`. The prompt is "Choose FIRST video →". The input box contains `1` and the block caret. The status line says `join`. There is no clock on this page. | Choose the first video, 1 typed |
-| 16 | `join-second.png` | Join, second question. The title is `VideoJoin (1.0.4) — join`. The remaining list is `1. clip-b.mp4`. The prompt is "Choose SECOND video →". The input box contains `1` and the block caret. The status line says `join`. | Choose the second video, 1 typed for clip-b.mp4 |
+| 15 | `join-first.png` | Join, first question. The title is `AgentCli (1.0.4) — join`. The page says "Join two videos in this folder." and "Esc returns to the menu." The list is `1. clip-a.mp4` and `2. clip-b.mp4`. The prompt is "Choose FIRST video →". The input box contains `1` and the block caret. The status line says `join`. There is no clock on this page. | Choose the first video, 1 typed |
+| 16 | `join-second.png` | Join, second question. The title is `AgentCli (1.0.4) — join`. The remaining list is `1. clip-b.mp4`. The prompt is "Choose SECOND video →". The input box contains `1` and the block caret. The status line says `join`. | Choose the second video, 1 typed for clip-b.mp4 |
 | 17 | `join-output.png` | Join, output name. The page says "Joining:", then `clip-a.mp4`, then `+ clip-b.mp4`, then "Output filename [clip-a + clip-b.mp4]:". The input box is empty except for the block caret, so the bracketed default stands. The status line says `join`. | Output name, default clip-a + clip-b.mp4, box empty |
 | 18 | `join-done.png` | The join has finished by stream copy. The page says "Joining with perfect audio sync:", lists `clip-a.mp4` and `clip-b.mp4`, then "→ clip-a + clip-b.mp4", then "Staging dir → .", then "Running ffmpeg (stream copy – no quality loss)…", then "SUCCESS! Perfectly joined with original sound → clip-a + clip-b.mp4". The footer says "Press a key to return to the main menu." The input box is empty. The status line says `join`. | Stream-copy join of clip-a.mp4 and clip-b.mp4 succeeded |
-| 19 | `self-management.png` | Row **8** has opened self-management. **82 version** is highlighted: "show the installed version." Then **83 about** "version, FFmpeg, and this computer", **84 version-check** "compare this install with pip", **85 self-update** "upgrade this package with pip", **86 self-uninstall** "remove this package with pip", **87 self-install** "install this package with pip", and **0 Back** "return to the main menu." The path label is `Path`. The path is `/tmp/clips`. The clock is `14:05:09` on the right of that row. The status line says `VideoJoin 1.0.5` and `self-management`. | Self-management, 82 version highlighted |
-| 20 | `tui-about.png` | **about** (83) on the result page. The title is `VideoJoin (1.0.5) — result`. The page prints `VideoJoin 1.0.5`, `Domain: Concatenate two local videos with FFmpeg (copy, then fallback)`, `Runtime tools: FFmpeg (copy, then re-encode)`, and `Entry points: video-join, python -m VideoJoin`. The host check is stamped `2026-10-04 21:14:59.669782` and headed `[CHECK SYSTEM]:`. Visible lines include Python 3.12.11, C Library GCC 13.3.0, Ubuntu 24.04.5 LTS, amd64, the current user, the shell, the Python executable, python2 location, python3 location, conda location, pyenv location, `Inside docker container: False`, and `Cython String: cpython-312-x86_64-linux-gnu`. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About host check, English |
+| 19 | `self-management.png` | Row **8** has opened self-management. **82 version** is highlighted: "show the installed version." Then **83 about** "version, FFmpeg, and this computer", **84 version-check** "compare this install with pip", **85 self-update** "upgrade this package with pip", **86 self-uninstall** "remove this package with pip", **87 self-install** "install this package with pip", and **0 Back** "return to the main menu." The path label is `Path`. The path is `/tmp/clips`. The clock is `14:05:09` on the right of that row. The status line says `AgentCli 1.0.5` and `self-management`. | Self-management, 82 version highlighted |
+| 20 | `tui-about.png` | **about** (83) on the result page. The title is `AgentCli (1.0.5) — result`. The page prints `AgentCli 1.0.5`, `Domain: Concatenate two local videos with FFmpeg (copy, then fallback)`, `Runtime tools: FFmpeg (copy, then re-encode)`, and `Entry points: agent-cli, python -m AgentCli`. The host check is stamped `2026-10-04 21:14:59.669782` and headed `[CHECK SYSTEM]:`. Visible lines include Python 3.12.11, C Library GCC 13.3.0, Ubuntu 24.04.5 LTS, amd64, the current user, the shell, the Python executable, python2 location, python3 location, conda location, pyenv location, `Inside docker container: False`, and `Cython String: cpython-312-x86_64-linux-gnu`. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About host check, English |
 | 21 | `system-log.png` | Row **3** has opened system-log. **31 view-log** is highlighted: "list a log file and show it." Then **32 clear-log** "empty one log file", **33 log-folder** "show the log folder", and **0 Back** "return to the main menu." The path label is `Path`. The clock is on the right of that row. The status line says `system-log`. | System log, 31 view-log highlighted |
 | 22 | `video.png` | A still picture, not a text-menu capture. A woman with long brown hair, in a grey shirt with a small blue mark, sits at a round wooden table and holds a white cup. An open book with a worn cover and a metal clasp lies on the table. Behind her are a beige sofa, a wide window onto trees, a potted plant, and a wooden floor in daylight. | Woman at a table with an open book and a cup |
 
-`TP-DOC-01` asserts the Version badge token, that every PNG is linked with the absolute `https` URL above, that no markdown image uses a relative `screenshots/` destination, that the section headings are present, that the document does not name `setup.sh`, that the eight related-project URLs are in order, that the path row names the local clock, and that `video.png` is not described as a text-menu capture. `TP-DOC-03` asserts that each screenshot paragraph and alt equals the catalog cell, and it does not claim a pixel-by-pixel proof. `TP-DOC-03` stays **todo**. Map: `docs/reviews/test-plan.md`.
+`TP-DOC-01` asserts the Version badge token, that every PNG is linked with the absolute `https` URL above, that no markdown image uses a relative `screenshots/` destination, that the section headings are present, that the document does not name `setup.sh` or `curl | sh` or `sudo pip`, that the related-project URLs are in order, and that the path row names the local clock (`HH:MM:SS`). There is no `video.png`. `TP-DOC-03` stays **todo**. Map: `docs/reviews/test-plan.md`.
 
 ### 2.6 Why This Requirement Exists (Direct CIAO Alignment)
 
 - **CIAO Principle 2 – Intentional** (https://github.com/cloudgen/ciao): The sections and every PNG in `screenshots/` are a named catalog. A later edit cannot drop the language list, leave a PNG unlinked, or swap in a drawing for a menu row.
 - **CIAO Principle 5 – SSOT** (https://github.com/cloudgen/ciao): This file owns the document. Behavior stays on the peer that already owns it.
 - **CIAO Principle 16 – Interactive** (https://github.com/cloudgen/ciao): The pictures show the text menu a person actually drives, including row **4**, the two-file join, self-management, about, and system-log.
-- **CIAO Principle 21 – Dual policies** (https://github.com/cloudgen/ciao): The portable rule is “the document matches its owner.” The VideoJoin headings and file names live in §2.5.
+- **CIAO Principle 21 – Dual policies** (https://github.com/cloudgen/ciao): The portable rule is “the document matches its owner.” The AgentCli headings and file names live in §2.5.
 - **CIAO Principle 4 – Over-protect** (https://github.com/cloudgen/ciao): Do not publish a setup script that is not on disk, or a success line the program did not print.
 
 ## Under command line for normal user only
@@ -200,7 +199,7 @@ The documented install is for this login. **This requirement:** the user documen
 ## 3. Design Principles (CIAO / CIAO-Lite)
 
 - **Caution:** An install sentence that names a missing script is a defect.
-- **Intentional:** An Advantages section, twenty-two pictures, one pictured join, one section order. Each picture paragraph is the catalog cell for that file.
+- **Intentional:** An Advantages section, the menu pictures in §2.3, one section order. Each picture paragraph is the catalog cell for that file.
 - **Anti-fragile:** A new PNG in `screenshots/` becomes a required link in the same change. A non-menu file stays labeled as itself.
 - **Over-protect (Principle 20):** Do not let the user document become a second menu, a second verb list, or a second encode procedure.
 
@@ -222,7 +221,7 @@ The documented install is for this login. **This requirement:** the user documen
 - Add `--json`, a length percent, a boomerang, or a folder prompt.
 - Freeze a session login or a `/home/<login>/` path in this file.
 - Mark `TP-DOC-03` have before the suite asserts that each catalog paragraph and alt equals the cell in §2.5.
-- Treat `./build.sh` verbs as `video-join` verbs.
+- Treat `./build.sh` verbs as `agent-cli` verbs.
 
 ## 5. Definition of done
 

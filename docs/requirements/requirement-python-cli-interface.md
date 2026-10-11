@@ -6,19 +6,19 @@
 
 ## 1. Purpose
 
-Define the official command-line entry points, empty-argv behavior, and typed verbs for the VideoJoin Python package.
+Define the official command-line entry points, empty-argv behavior, and typed verbs for the AgentCli Python package.
 
 The text-menu picture is `requirement-python-tui`. Join steps and formats are `requirement-domain-videojoin`. The about page is `requirement-python-about`. The domain sentence stays on the domain file. The logger construct is `requirement-python-cli-logging`. Class homes are `requirement-python-oop`. Concat order is `requirement-video-ffmpeg-pipeline`.
 
-`def main` writes `ChronicleLogger(...)` and then constructs `Cli`. The argument parser runs after that construct and after the debug block. The running `src/VideoJoin/cli.py` still starts the prompt session. The allowed end state is this file. This pass does not change `src/`.
+`def main` writes `ChronicleLogger(...)` and then constructs `Cli`. The argument parser runs after that construct and after the debug block. The running `src/AgentCli/cli.py` still starts the prompt session. The allowed end state is this file. This pass does not change `src/`.
 
 ### 1.1 Human-facing
 
-**In one sentence:** `video-join` with no words opens the numbered menu on a terminal, and with no terminal it prints help and stops.
+**In one sentence:** `agent-cli` with no words opens the numbered menu on a terminal, and with no terminal it prints help and stops.
 
 | Box | Meaning | Example |
 |-----|---------|---------|
-| You / this login | Person at the keyboard or in a script | `video-join` or `video-join join` |
+| You / this login | Person at the keyboard or in a script | `agent-cli` or `agent-cli join` |
 | The other role | The menu picture and the join facts | `requirement-python-tui`, `requirement-domain-videojoin` |
 | Not this file | How the frame is drawn, and how FFmpeg concatenates | TUI and pipeline requirements |
 
@@ -30,51 +30,51 @@ The text-menu picture is `requirement-python-tui`. Join steps and formats are `r
 
 | Surface | What you open | What for |
 |---------|---------------|----------|
-| `video-join` on a terminal | Front board | Menu. Does not start the join questions |
-| `video-join` with no terminal | Help text | Exit 0 |
-| `video-join join` on a terminal | Join questions | First index, second index, output name |
-| `video-join help` | Help text | Verb list. Does not draw the menu |
+| `agent-cli` on a terminal | Front board | Menu. Does not start the join questions |
+| `agent-cli` with no terminal | Help text | Exit 0 |
+| `agent-cli join` on a terminal | Join questions | First index, second index, output name |
+| `agent-cli help` | Help text | Verb list. Does not draw the menu |
 
 | You do… | What it means | What you type |
 |---------|---------------|---------------|
-| Start on a terminal | The front board opens. Pip does not run. | `video-join` |
-| Start in a script | Help text, exit 0. | `video-join` |
-| Join two videos | On a terminal, the questions use the bottom box. With no terminal, the program stops and tells you to use a terminal. | `video-join join` |
-| List files | Names in this folder. Nothing is joined. | `video-join list-videos` |
-| Check or change the install | Pip runs only when you ask. Empty argv does not. | `video-join version-check` |
+| Start on a terminal | The front board opens. Pip does not run. | `agent-cli` |
+| Start in a script | Help text, exit 0. | `agent-cli` |
+| Join two videos | On a terminal, the questions use the bottom box. With no terminal, the program stops and tells you to use a terminal. | `agent-cli join` |
+| List files | Names in this folder. Nothing is joined. | `agent-cli list-videos` |
+| Check or change the install | Pip runs only when you ask. Empty argv does not. | `agent-cli version-check` |
 
 ## 2. Core Rules (Mandatory)
 
 ### 2.1 Entry points
 
-1. **MUST** expose a console script entry named `video-join` pointing at `VideoJoin.cli:main` (declared in packaging SSOT).
-2. **MUST** support module execution: `python -m VideoJoin`.
-3. **MUST** keep `def main` in `src/VideoJoin/cli.py` as the single runtime entry. `main` writes `ChronicleLogger(...)` before it constructs `Cli` (`requirement-python-cli-logging`, `requirement-python-oop`).
+1. **MUST** expose a console script entry named `agent-cli` pointing at `AgentCli.cli:main` (declared in packaging SSOT).
+2. **MUST** support module execution: `python -m AgentCli`.
+3. **MUST** keep `def main` in `src/AgentCli/cli.py` as the single runtime entry. `main` writes `ChronicleLogger(...)` before it constructs `Cli` (`requirement-python-cli-logging`, `requirement-python-oop`).
 4. **MUST NOT** require root or sudo to run the CLI.
 
 ### 2.2 Empty argv
 
-5. On a terminal, bare invocation (`video-join` with no args, or `python -m VideoJoin` with no args) **MUST** open the front board in `requirement-python-tui`. It **MUST NOT** start the join questions. It **MUST NOT** run pip.
+5. On a terminal, bare invocation (`agent-cli` with no args, or `python -m AgentCli` with no args) **MUST** open the front board in `requirement-python-tui`. It **MUST NOT** start the join questions. It **MUST NOT** run pip.
 6. When stdout is not a terminal, bare invocation **MUST** print help and return 0. It **MUST NOT** draw the text screen and **MUST NOT** wait.
 7. **MUST NOT** default empty argv to a shell-channel install or to self-update.
 
 ### 2.3 Typed verbs
 
 8. `ArgumentParser.parse_args` **MUST** run after `ChronicleLogger(...)` and after the debug block.
-9. The typed verbs are `help`, `version`, `about`, `hello`, `join`, `list-videos`, `self-install`, `version-check`, `self-update`, and `self-uninstall`. Each one is operational. **MUST NOT** add a verb whose only purpose is a test. `language` is not a typed verb. Menu row 4 owns it (`requirement-python-cli-language`). **MUST NOT** add `language` to `PRODUCT_VERBS`.
-10. **MUST NOT** invent file-operand flags for `join`. Direct `join` with no terminal exits non-zero and tells the operator to use a terminal.
-11. On a terminal, `join` **MUST** start the join questions on the text screen (rules 16–23). `list-videos` **MUST** list eligible videos and **MUST NOT** join. `about` **MUST** open the about page.
-12. With no terminal, `list-videos` **MUST** print the eligible names and return 0. `about` **MUST** print the about page and return 0. Neither draws the text screen.
-13. `help` and `hello` **MUST NOT** draw the text screen. `help` returns 0. `hello` prints `Hello from VideoJoin <version>.` using `__version__`, then the next step `video-join help`, and returns 0.
+9. The typed verbs are `help`, `version`, `about`, `hello`, `self-install`, `version-check`, `self-update`, and `self-uninstall`. Each one is operational. **MUST NOT** add a verb whose only purpose is a test. **MUST NOT** add `join` or `list-videos`. `language` is not a typed verb. Front row 5 owns it (`requirement-python-cli-language`). **MUST NOT** add `language` to `PRODUCT_VERBS`.
+10. **MUST NOT** invent file-operand flags. **MUST NOT** scan the working directory for media files.
+11. On a terminal, `hello` **MUST NOT** draw the text screen. `about` **MUST** open the about page.
+12. With no terminal, `about` **MUST** print the about page and return 0. It does not draw the text screen. `hello` **MUST** print the welcome line and return 0.
+13. `help` and `hello` **MUST NOT** draw the text screen. `help` returns 0. `hello` prints `Welcome to AgentCli <version>.` using `__version__` and returns 0. It does not print a next-step line. Menu row 1 shows that same line.
 14. `version` **MUST** print `__version__` and **MUST NOT** call pip and **MUST NOT** draw the text screen.
 15. `version-check`, `self-update`, `self-install`, and `self-uninstall` **MUST NOT** open the text screen. The commands are:
 
 | Verb | Command |
 |------|---------|
-| `version-check` | `python -m pip index versions VideoJoin` |
-| `self-update` | `python -m pip install --upgrade VideoJoin` |
-| `self-install` | `python -m pip install VideoJoin` |
-| `self-uninstall` | `python -m pip uninstall -y VideoJoin` only when `--force` is also present |
+| `version-check` | `python -m pip index versions AgentCli` |
+| `self-update` | `python -m pip install --upgrade AgentCli` |
+| `self-install` | `python -m pip install AgentCli` |
+| `self-uninstall` | `python -m pip uninstall -y AgentCli` only when `--force` is also present |
 
 `self-uninstall` without `--force` **MUST** print the next step and return non-zero. The package stays installed. These commands **MUST NOT** use `sudo` and **MUST NOT** use `curl`. Empty argv **MUST NOT** run `self-install` or `self-update`.
 
@@ -92,18 +92,18 @@ Every typed verb is named again by its topic owner. Help text is not that second
 Complete invocation samples:
 
 ```text
-video-join
-video-join help
-video-join hello
-video-join version
-video-join about
-video-join join
-video-join list-videos
-video-join self-install
-video-join version-check
-video-join self-update
-video-join self-uninstall --force
-python -m VideoJoin
+agent-cli
+agent-cli help
+agent-cli hello
+agent-cli version
+agent-cli about
+agent-cli join
+agent-cli list-videos
+agent-cli self-install
+agent-cli version-check
+agent-cli self-update
+agent-cli self-uninstall --force
+python -m AgentCli
 ```
 
 ### 2.4 Join questions
@@ -112,7 +112,7 @@ These rules are the `join` verb. The text screen draws them (`requirement-python
 
 16. **MUST** scan the current working directory for eligible video files (domain format set).
 17. **MUST** list discoverable videos with 1-based indices, sorted case-insensitively by name.
-18. When fewer than two eligible videos are found, **MUST** fail closed with a clear message and **MUST NOT** run FFmpeg. A direct `video-join join` exits non-zero. An already open front board stays open.
+18. When fewer than two eligible videos are found, **MUST** fail closed with a clear message and **MUST NOT** run FFmpeg. A direct `agent-cli join` exits non-zero. An already open front board stays open.
 19. **MUST** ask for the first video index, then the second index from the remaining set (first choice excluded).
 20. **MUST** ask again on a non-numeric or out-of-range selection. **MUST NOT** proceed with an invalid index.
 21. **MUST** ask for the output filename. Empty means the documented default.
@@ -144,16 +144,16 @@ There is no folder question. Esc on the text screen returns to the front board a
 
 | Item | Value |
 |------|--------|
-| **Console script** | `video-join = VideoJoin.cli:main` |
-| **Module entry** | `src/VideoJoin/__main__.py` → `main()` |
-| **CLI module** | `src/VideoJoin/cli.py` defines `Cli` and `def main` in the allowed end state |
+| **Console script** | `agent-cli = AgentCli.cli:main` |
+| **Module entry** | `src/AgentCli/__main__.py` → `main()` |
+| **CLI module** | `src/AgentCli/cli.py` defines `Cli` and `def main` in the allowed end state |
 | **Empty argv, terminal** | Front board. No join questions. No pip |
 | **Empty argv, no terminal** | Help text. Return 0 |
 | **Parser** | After ChronicleLogger and the debug block |
 | **Quiet / JSON** | Text screen sets `is_quiet=True` on the logger construct. No `--json` |
 | **Privilege** | user-level only |
 | **Running tree** | `cli.py` still calls `ensure_ffmpeg()` and then the prompt session. That is not the allowed end state |
-| **Product version** | `1.0.5` |
+| **Product version** | `1.0.0` |
 | **User docs** | Root `README.md` Usage must match this contract when the behavior ships. This pass does not edit that README |
 
 ### 2.9 Why This Requirement Exists (CIAO)
@@ -165,7 +165,7 @@ There is no folder question. Esc on the text screen returns to the front board a
 
 ## Under command line for normal user only
 
-On Termux, Git Bash, Windows cmd, or the same class, the person runs `video-join` as the normal user. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to start the program or to run the pip verbs. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
+On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli` as the normal user. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to start the program or to run the pip verbs. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
 
 ## 3. Design Principles (CIAO / CIAO-Lite)
 
@@ -194,8 +194,8 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `video-join
 
 | ID | Criterion |
 |----|-----------|
-| AC-1 | `video-join` entry declared in packaging |
-| AC-2 | `python -m VideoJoin` reaches `main` |
+| AC-1 | `agent-cli` entry declared in packaging |
+| AC-2 | `python -m AgentCli` reaches `main` |
 | AC-3 | Empty argv on a terminal opens the front board and does not join and does not run pip |
 | AC-4 | Empty argv with no terminal prints help and returns 0 |
 | AC-5 | Direct `join` with no terminal exits non-zero |
@@ -207,7 +207,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `video-join
 | Key | Relationship |
 |-----|----------------|
 | `requirement-python-tui` | Menu picture and numbered rows |
-| `requirement-python-cli-language` | `language` is not an argv verb. Menu row 4 |
+| `requirement-python-cli-language` | `language` is not an argv verb. Front row 5 |
 | `requirement-domain-videojoin` | Join steps, `list-videos`, and the about domain sentence |
 | `requirement-python-about` | The about page |
 | `requirement-python-cli-logging` | Construct before the parser |
@@ -235,7 +235,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `video-join
 
 | Date | Status | Note |
 |------|--------|------|
-| 2026-08-09 | Active 1.0.0 | Initial Python CLI interface law for VideoJoin |
+| 2026-08-09 | Active 1.0.0 | Initial Python CLI interface law for AgentCli |
 | 2026-10-04 | Active 1.1.0 | Empty argv opens the text menu on a terminal and prints help off a terminal. Typed verbs. Join questions are the `join` verb |
 | 2026-10-04 | Active 1.1.1 | `language` is not an argv verb. Menu row 4 owns it |
 | 2026-10-04 | Active 1.1.2 | Verb `about` is `requirement-python-about`. Rule 33 no longer claims a live ffmpeg probe. Product version **1.0.5** |

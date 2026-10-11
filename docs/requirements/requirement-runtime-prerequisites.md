@@ -6,21 +6,21 @@
 
 ## 1. Purpose
 
-Declare the host and Python runtime prerequisites required to run VideoJoin. This product does not implement a privileged installer. This file is the documentation and validation SSOT for what must already be present, together with the ChronicleLogger floor also owned by `requirement-python-packaging`.
+Declare the host and Python runtime prerequisites required to run AgentCli. This product does not implement a privileged installer. This file is the documentation and validation SSOT for what must already be present, together with the ChronicleLogger floor also owned by `requirement-python-packaging`.
 
 ### 1.1 Human-facing
 
-**In one sentence:** You need Python, the ChronicleLogger package, and FFmpeg on your PATH before a join can finish.
+**In one sentence:** You need Python and the ChronicleLogger package. No encoder is required.
 
 | Box | Meaning | Example |
 |-----|---------|---------|
 | You / this login | Person about to join two videos | FFmpeg is already installed by you, not by pip |
-| The other role | pip | Installs VideoJoin and ChronicleLogger. It does not install FFmpeg |
+| The other role | pip | Installs AgentCli and ChronicleLogger. It does not install FFmpeg |
 | Not this file | The menu picture and the concat command | TUI and pipeline requirements |
 
 | Includes | Excludes |
 |----------|----------|
-| FFmpeg on PATH, required for `join` | A claim that `pip install VideoJoin` installs FFmpeg |
+| FFmpeg on PATH, required for `join` | A claim that `pip install AgentCli` installs FFmpeg |
 | ChronicleLogger `>=1.3.1`, required | Calling that library optional |
 | A console next step when either one is missing | Root auto-install of either one |
 
@@ -32,9 +32,9 @@ Declare the host and Python runtime prerequisites required to run VideoJoin. Thi
 
 | You do… | What it means | What you type |
 |---------|---------------|---------------|
-| Install the Python package | You get VideoJoin and the status library. | `python -m pip install VideoJoin` |
+| Install the Python package | You get AgentCli and the status library. | `python -m pip install AgentCli` |
 | Prepare a join | FFmpeg must already be on PATH. The menu may open before that check. | `ffmpeg -version` |
-| Start with the library missing | The console prints the pip next step and returns non-zero. | `video-join` |
+| Start with the library missing | The console prints the pip next step and returns non-zero. | `agent-cli` |
 
 ## 2. Core Rules (Mandatory)
 
@@ -56,7 +56,7 @@ Declare the host and Python runtime prerequisites required to run VideoJoin. Thi
 
 4. **MUST** fail with an actionable message when `join` runs and `ffmpeg` is missing.
 5. The front board **MAY** open when `ffmpeg` is missing. About reports whether it is on PATH. About does not install it.
-6. **MUST** document that FFmpeg is not installed by `pip install VideoJoin`.
+6. **MUST** document that FFmpeg is not installed by `pip install AgentCli`.
 7. **MUST** document the input formats as the domain format set.
 8. If `ChronicleLogger` cannot be imported, `def main` **MUST** print the pip next step and return non-zero (`requirement-python-cli-logging`). That line is console text. The library is required.
 
@@ -69,7 +69,7 @@ Declare the host and Python runtime prerequisites required to run VideoJoin. Thi
 
 | Item | Value |
 |------|--------|
-| **Python package install** | `python -m pip install VideoJoin`, or `python -m pip install -e .` from a checkout |
+| **Python package install** | `python -m pip install AgentCli`, or `python -m pip install -e .` from a checkout |
 | **Declared pip dependency (law)** | `ChronicleLogger>=1.3.1`, required |
 | **Live manifest** | `pyproject.toml` lists `ChronicleLogger>=1.3.1`. Matches the law floor |
 | **System binary** | `ffmpeg` on PATH, required for `join` |
@@ -87,7 +87,7 @@ Declare the host and Python runtime prerequisites required to run VideoJoin. Thi
 
 ## Under command line for normal user only
 
-On Termux, Git Bash, Windows cmd, or the same class, the normal user installs the pip package and supplies FFmpeg. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to install ChronicleLogger or FFmpeg from inside VideoJoin. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
+On Termux, Git Bash, Windows cmd, or the same class, the normal user installs the pip package and supplies FFmpeg. **This requirement:** do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to install ChronicleLogger or FFmpeg from inside AgentCli. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`.
 
 ## 3. Design Principles (CIAO / CIAO-Lite)
 
@@ -100,7 +100,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the normal user installs th
 
 **Future AI assistants, Grok, or maintainers MUST NOT**:
 
-1. Claim FFmpeg is installed by `pip install VideoJoin`.
+1. Claim FFmpeg is installed by `pip install AgentCli`.
 2. Add a root package-manager install from this product.
 3. Drop FFmpeg from the table while `join` still depends on it.
 4. Store secrets in this file.
@@ -145,7 +145,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the normal user installs th
 
 | Date | Status | Note |
 |------|--------|------|
-| 2026-08-09 | Active 1.0.0 | Initial runtime prerequisites law for VideoJoin |
+| 2026-08-09 | Active 1.0.0 | Initial runtime prerequisites law for AgentCli |
 | 2026-10-04 | Active 1.1.0 | ChronicleLogger `>=1.3.1` is required. Live manifest still `>=1.2.3`. FFmpeg stays a system binary. The front board may open without it |
 | 2026-10-04 | Active 1.1.1 | Product version **1.0.4**. Manifest floor is `ChronicleLogger>=1.3.1` |
 | 2026-10-04 | Active 1.1.2 | The about page names FFmpeg and does not probe PATH. Product version **1.0.5** |

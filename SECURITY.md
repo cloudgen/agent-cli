@@ -4,14 +4,14 @@
 
 | Version | Supported |
 |---------|-----------|
-| 1.0.5 (current) | Yes |
+| 1.0.0 (current) | Yes |
 | Older releases | Best-effort; prefer upgrading to current |
 
 ## Reporting a Vulnerability
 
 Please **do not** open a public issue for security-sensitive reports when a private channel is available.
 
-**Maintainer contact (email):** `wilgat.wong@gmail.com`
+**Maintainer contact (email):** `wongcf22@gmail.com`
 
 - Source of contact: product **author-email** SSOT in [`LICENSE.md`](./LICENSE.md) (Copyright line).
 - Prefer email for vulnerability details, reproduction steps, and impact.
@@ -24,10 +24,10 @@ This project follows **[CIAO](https://github.com/cloudgen/ciao)** / **CIAO-Lite*
 
 | Letter | Principle | Security application |
 |--------|-----------|----------------------|
-| **C** | **Caution** | Assume missing tools and hostile/unexpected media inputs. Fail closed when FFmpeg is missing or both join paths fail. Do not claim success on failed encode. |
-| **I** | **Intentional** | FFmpeg is invoked with argument lists (not shell-interpolated free-form filter graphs from untrusted remote input). Publish of intermediates uses `shutil.move`. Source media is never the final output path. |
-| **A** | **Anti-fragile** | Multi-mount publish (USB vs system temp) is designed via staging + `shutil.move`. Unique temps avoid fixed cwd race names. |
-| **O** | **Over-protect** | Protection Zones on staging/publish helpers; least privilege day-to-day (user-level CLI; no root elevation product surface). |
+| **C** | **Caution** | Assume missing tools. Fail closed on an unknown verb, a missing grant, and a pip failure. |
+| **I** | **Intentional** | The only elevated command is `agent-cli backup`. The sudoers argument list is `backup` and nothing else. |
+| **A** | **Anti-fragile** | A missed cache tier is silent and the next tier is used. A signed-in session skips `sync-auth`. |
+| **O** | **Over-protect** | Empty argv does not install this package and does not download peer `grok`. `setup` does not run a vendor shell installer. |
 
 Full principles: [CIAO Defensive Programming](https://github.com/cloudgen/ciao) · agent contract: [CIAO-Lite](https://github.com/cloudgen/ciao-lite).
 
@@ -35,6 +35,7 @@ This section describes **design posture**. It is **not** a claim of third-party 
 
 ## Scope notes
 
-- VideoJoin is a **local** interactive CLI. It does **not** implement online install channels or companion `.sha256` download integrity.
-- Prefer keeping untrusted media and scripts offline unless you trust their origin.
+- AgentCli is a **local** interactive CLI plus a pip package. Peer `grok` auth files stay under `~/.grok`. The deposit is `/var/agent-cli`.
+- `setup` may download the peer binary from the vendor channel, then the public fallback. This package does not publish a shell installer for itself.
+- Do not commit tokens, private keys, or `auth.json` contents.
 - Related product docs: [`README.md`](./README.md), [`LICENSE.md`](./LICENSE.md).

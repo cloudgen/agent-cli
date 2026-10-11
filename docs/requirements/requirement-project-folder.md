@@ -1,0 +1,253 @@
+**file**: docs/requirements/requirement-project-folder.md  
+
+> Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
+**Status**: Active (Version 1.2.1)  
+**Area**: architecture  
+**Key**: `requirement-project-folder`  
+**Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
+
+## 1. Purpose
+
+Define **project folder structure** and path ownership for the agent-cli CLI: source layout, install locations, staging/scratch, the privileged durable grok-auth deposit root, and the **Termux / Android prefix tree** (`PREFIX`, `~/.grok`, `noexec` tmp).
+
+**Critical distinction:** CLI tool own paths vs target folders being archived vs host durable backup deposit vs Termux prefix (not FHS `/usr`).
+
+**Termux writing rules** (detect, `pkg`, exec) are **`requirement-shell-termux-coding`**. This file owns **path classes**.
+
+---
+
+### 1.1 Human-facing
+
+This file says where agent-cli lives: `src/agent-cli`, user/global bins, `/var/agent-cli` for shared auth, and on a Termux phone `$PREFIX` plus `~/.grok` for the peer grok program.
+
+| You | Another role | Not this |
+|-----|--------------|----------|
+| Install to `~/.local/bin` or `/usr/local/bin`; on Termux also honor `$PREFIX` | Root writes `/var/agent-cli` via `agent-cli backup` | Archiving arbitrary project folders; Termux `pkg` procedure |
+
+**Includes:** ship path, bins, store root, Termux PREFIX tree, `~/.grok` place classes. **Excludes:** session parsing; `pkg` / wrapper writing (`requirement-shell-termux-coding` / `requirement-grok-setup`).
+
+| You do… | What it means | What you type |
+|---------|---------------|---------------|
+| Place the program | Copy the ship unit into a bin | `agent-cli install` |
+
+
+## 2. Core Rules (Mandatory)
+
+### 2.1 Workspace source layout (developer tree)
+
+| Path | Role |
+|------|------|
+| `src/agent-cli` | **Ship unit** — single POSIX shell executable source |
+| `tests/` | CLI tests when present |
+| `docs/requirements/` | Product law (this surface) |
+| Product root README / CHANGELOG / LICENSE / SECURITY | Product user docs when specialized |
+
+1. **MUST** keep the installable CLI under **`src/`** (not only repo root).  
+2. **MUST** install the binary under a privilege-correct bin path (see §2.2).  
+3. **MUST NOT** require online channel files (companion digest) for local install.
+
+### 2.2 CLI tool install locations (Type 1a / 1b)
+
+| Mode | Binary path | Default |
+|------|-------------|---------|
+| **Per-user (normal)** | `${USER_BIN}/${APP_NAME}` | `${HOME}/.local/bin/agent-cli` |
+| **Global (root)** | `${GLOBAL_BIN}/${APP_NAME}` | `/usr/local/bin/agent-cli` |
+| **Termux PATH candidate** | `${PREFIX}/bin` when `PREFIX` is set | **Not** a agent-cli install dest — peer `grok` link + `pkg` only |
+
+Rules:
+
+1. Non-root **install** **MUST** target user bin.  
+2. Root **install** **MAY** (and for production elevation **SHOULD**) target global bin.  
+3. **Primary product story** for this project: **user bin** (`~/.local/bin`) for Type 0 day-to-day; **global bin** for multi-user / durable sudoers trust.  
+4. Uninstall **MUST** remove only the managed binary path for the install mode used.  
+5. Managed binary mode **MUST** be **`0755`** after install (shell ship unit: non-owners need **read+execute**; see `requirement-shell-local-self-management` §2.3.1). Global install **MUST** leave a path runnable by normal users and root, not owner-only (`0700`) or execute-without-read (`0711`).  
+6. On Termux, missing `${GLOBAL_BIN}` **MUST NOT** fail a non-root agent-cli `install` to `${USER_BIN}`. **MUST NOT** place agent-cli into `${PREFIX}/bin` as if it were a Termux package (`requirement-shell-termux-coding`).
+
+### 2.3 Scratch / cache (CLI own volatile)
+
+| Purpose | Pattern |
+|---------|---------|
+| Preferred cache | Linux `/dev/shm/cache/cache-${APP_NAME}-${login}-$$`; Git Bash and Mac `/tmp/cache/cache-${APP_NAME}-${login}-$$` (`requirement-shell-cli-storage`) |
+| Fallback cache | Host chain in `requirement-shell-cli-storage` (silent when a higher tier is skipped) |
+| Live root | From `util_resolve_storage` |
+| Archive staging | `${EFFECTIVE_STORAGE_DIR}/stage/` (or `mktemp` under that root) |
+| Persistence storage | `${HOME}/.local/agent-cli` (`requirement-shell-cli-storage`) |
+| Sudoers fragment draft | User-writable path under config: `…/sudoers.fragment-<user>` (legacy un-suffixed still discoverable; never auto-write `/etc/sudoers.d`) |
+
+Rules:
+
+1. Preferred cache **MUST** follow `requirement-shell-cli-storage` — **MUST NOT** `/dev/shm/${APP_NAME}` or `/dev/shm/${APP_NAME}-${USERNAME}` (those look like ram-drive project folders).  
+2. Fallback **MUST** follow that same host chain. A skipped tier **MUST NOT** warn or error.  
+3. Persistence **MUST** be `${HOME}/.local/${APP_NAME}` — **MUST NOT** `${HOME}/.local/bin` (install) and **MUST NOT** `/var/agent-cli` (Type 1 deposit).  
+4. Temps **MUST** clean up (`trap`) after success/failure of a backup run.  
+5. Staging archives are **EPHEMERAL** until successfully deposited; do not leave world-writable archives.
+
+### 2.4 Durable host grok-auth deposit (not CLI config)
+
+| Item | Value |
+|------|--------|
+| **Store root** | `/var/agent-cli` |
+| **Override** | `AGENT_CLI_ROOT` |
+| **Auth glob** | `auth.*` under grok home |
+
+Rules:
+
+1. Writing into `/var/agent-cli` **MUST** use the **narrow elevated path** (`sudo agent-cli backup`) — not unrestricted root shell and not OS-tool sudoers.  
+2. Normal users **MUST NOT** be granted write to all of `/var` — only the approved product command may push.  
+3. Session check and reading `~/.grok/auth.*` **MUST** run as the invoking login; only the **deposit copy + chown/chmod** is elevated.  
+4. Store files **MUST** be world-readable after root deposit so `sync-auth` needs no sudo.
+
+### 2.5 Target folders being backed up
+
+1. Source folder is a **user-supplied path** (domain operand), not an app system-user tree.  
+2. The tool **MUST** validate the source is a readable directory before archiving.  
+3. The tool **MUST NOT** follow uncontrolled recursion into dangerous system roots without explicit user path input and validation.
+
+### 2.6 Termux / Android path classes (mandatory when `PREFIX` is set or `uname` reports Android)
+
+Termux is **not** FHS `/usr`. Path **classes** live here; how code **detects** Android, calls `pkg`, and execs ET_EXEC lives on **`requirement-shell-termux-coding`**. `setup` place/smoke procedure lives on **`requirement-grok-setup`**.
+
+| Class | Path shape | Role |
+|-------|------------|------|
+| Prefix root | `${PREFIX}` when set | Termux userspace (`bin/`, `etc/`). **MUST NOT** hard-code `/data/data/com.termux/files/usr` |
+| Package bin | `${PREFIX}/bin` | `pkg`, `proot`; PATH candidate for peer `grok` |
+| Termux etc | `${PREFIX}/etc` | resolv source when `/etc/resolv.conf` has no `nameserver` |
+| Peer grok home | `${HOME}/.grok` (`GROK_HOME`) | downloads, bin, auth.*, resolv bind file |
+| Exec-capable download | `${GROK_HOME}/downloads` | chmod + smoke `--version` (cache/`/tmp`/`/dev/shm` may be `noexec`) |
+| Peer grok bin | `${GROK_HOME}/bin/grok` | wrapper or relative symlink |
+| agent-cli user bin | `${HOME}/.local/bin` | agent-cli `install` dest for this login |
+| Cache / tmp | `/dev/shm/cache/…`, `/tmp/cache/…` | scratch **only** — **MUST NOT** be the smoke/exec path |
+| Shared deposit | `/var/agent-cli` | often **absent** on unrooted Termux — no substitute here |
+
+Rules:
+
+1. **MUST** document `PREFIX` as an optional live env (Termux sets it).  
+2. **MUST NOT** treat `${PREFIX}/bin` as agent-cli’s managed install path.  
+3. **MUST NOT** use the cache folder, `/tmp`, or `/dev/shm` as the place where a downloaded executable is smoked (`requirement-grok-setup` / `requirement-shell-termux-coding`).  
+4. **MUST NOT** invent a Termux-local `/var/agent-cli` under `${PREFIX}` or `${HOME}` without a new Active requirement.
+
+### 2.7 Implementation Notes (this project)
+
+| Item | Value |
+|------|--------|
+| **APP_NAME** | `agent-cli` |
+| **Ship unit path** | `src/agent-cli` |
+| **USER_BIN default** | `${HOME}/.local/bin` |
+| **GLOBAL_BIN default** | `/usr/local/bin` (often missing on Termux) |
+| **PREFIX** | Termux prefix when set — `${PREFIX}/bin` PATH candidate; not agent-cli install dest |
+| **GROK_HOME** | `${HOME}/.grok` |
+| **AGENT_CLI_ROOT** | `/var/agent-cli` |
+| **BACKUP_NOTATION default** | `agent-cli` |
+| **Persistence storage** | `${HOME}/.local/agent-cli` |
+| **Config dir (optional)** | `${HOME}/.config/agent-cli/` for generated sudoers drafts |
+| **No Type 2 app data tree** | No dedicated system app user for routine ops |
+
+### 2.8 Why This Requirement Exists (CIAO)
+
+- **Principle 1 – Caution**: Separate staging, install, and privileged deposit.  
+- **Principle 10 – Least privilege**: User creates archive; elevation only for deposit.  
+- **Principle 11 – Temps**: Staging is cleanup, not museum.  
+- **Principle 17 – Defensive storage**: No assumed writable paths without resolve.
+
+---
+
+## Under command line for normal user only
+
+When agent-cli runs on Termux, Git Bash, Windows cmd, or the same class (this login only — no root, no dedicated system account):
+
+| MUST | MUST NOT |
+|------|----------|
+| Keep **normal user privilege** only | Enable **admin privilege** (`sudo`, write `/etc`) or a **dedicated system user** |
+| Treat admin-privilege and dedicated-account work as **unused** | Wrap `apt` / `dnf` / `yum`; `useradd`; recommend `sudo curl \| sh` |
+| Termux: `pkg` as this login stays ordinary-user work | Recommend `sudo curl \| sh` as the install path |
+| Git Bash and Windows cmd: same ceiling | Invoke Termux `pkg` because those hosts were detected |
+
+Detect: Termux — `uname` contains Android, or `PREFIX` / `TERMUX_VERSION` is set. Git Bash — `MSYSTEM` or `uname -s` is MINGW*/MSYS*. Windows cmd — `OS=Windows_NT` after excluding Git Bash, Cygwin, and WSL.
+
+**This requirement:** `GLOBAL_BIN` and `/var/agent-cli` stay **unused**. `USER_BIN` and `~/.grok` stay.
+
+---
+
+## 3. Design Principles (CIAO / CIAO-Lite)
+
+- **Caution**: Fail loud if deposit root or staging is not usable under policy.  
+- **Intentional**: Path classes are documented and not mixed.  
+- **Anti-fragile**: Per-user isolation under multi-user hosts.  
+- **Over-protect**: Do not “simplify” by writing archives straight into `/var/agent-cli` as a normal user or by running the whole CLI as root.
+
+---
+
+## 4. Protection Rule (Sacred)
+
+**Future AI assistants, Grok, or maintainers MUST NOT**:
+
+1. Move the ship unit out of `src/` without updating this requirement and install paths.  
+2. Make online channel paths required for install.  
+3. Grant the product unrestricted write under `/var` or `/etc`.  
+4. Collapse staging and durable deposit into one world-writable directory.  
+5. Restore `/dev/shm/${APP_NAME}` or `/dev/shm/${APP_NAME}-${USERNAME}` as the preferred cache.  
+6. Use `${HOME}/.local/bin` or `/var/agent-cli` as Type 0 persistence storage.  
+7. Hard-code `/data/data/com.termux/files/usr` as the product prefix, or treat `${PREFIX}/bin` as agent-cli’s managed install dest.  
+8. Use cache/`/tmp`/`/dev/shm` as the peer-grok smoke directory.  
+9. Invent a Termux-local `/var/agent-cli` under `${PREFIX}` or `${HOME}` without a new requirement.
+
+10. Strip the **Under command line for normal user only** section, or enable admin privilege / a dedicated system user on Termux / Git Bash / Windows cmd.  
+
+**Violating this rule is a critical path/privilege regression.**
+
+---
+
+## 5. Acceptance criteria
+
+| ID | Criterion |
+|----|-----------|
+| AC-1 | Ship unit lives at `src/agent-cli` |
+| AC-2 | Default user install path is `~/.local/bin/agent-cli` |
+| AC-3 | Durable deposit is under `/var/agent-cli` (`AGENT_CLI_ROOT`) |
+| AC-4 | Termux path classes (`PREFIX`, `${GROK_HOME}/downloads`, `${PREFIX}/bin` not agent-cli dest) are documented here |
+| AC-5 | Cache/`/tmp`/`/dev/shm` are not the peer-grok smoke directory |
+
+---
+
+## 6. Related requirements (peer keys only)
+
+| Key | Relationship |
+|-----|--------------|
+| `requirement-shell-local-self-management` | Place/remove binary |
+| `requirement-shell-cli-storage` | Scratch resolve |
+| `requirement-shell-termux-coding` | Termux writing (detect/`pkg`/`noexec`) |
+| `requirement-grok-setup` | `~/.grok` place + smoke procedure |
+| `requirement-domain-agent-cli` | Archive + deposit behavior |
+| `requirement-three-layer-privilege-model` | Elevation boundary |
+| `docs/requirements/index.md` | Registry |
+
+---
+
+## 7. Status history
+
+| Date | Status | Note |
+|------|--------|------|
+| 2026-08-03 | Active | Specialized project folder law for folder-backup |
+| 2026-08-30 | Active 1.1.1 | Preferred cache `/dev/shm/cache/cache-${APP_NAME}` |
+| 2026-08-30 | Active 1.1.2 | Persistence storage `${HOME}/.local/${APP_NAME}` |
+| 2026-09-04 | Active 1.2.0 | Termux/Android path classes (`PREFIX`, `~/.grok/downloads`, noexec tmp); AC-3 deposit is `/var/agent-cli` |
+| 2026-09-27 | Active 1.2.1 | Cache paths point at `requirement-shell-cli-storage` 1.4.0 (per-login per-process leaves) |
+
+---
+
+## Design-time verification
+
+| TP family / ID | Suite | Status |
+|----------------|-------|--------|
+| **TP-LC-01** | `tests/test_local_lifecycle.sh` | have — agent-cli install → `USER_BIN` |
+| **TP-GROK-CLI-07** | `tests/test_domain_grok_cli.sh` | have — deposit under `AGENT_CLI_ROOT` |
+| **TP-VCLI-15** | `tests/test_grok_setup.sh` | have — smoke under `~/.grok/downloads` |
+
+**Matrix:** `reviews/requirement-test-matrix.md`  
+**Map:** `reviews/test-plan.md`.
+
+---
+
+**Last Updated**: 2026-09-06  
+**Owner**: project maintainers  
+**Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

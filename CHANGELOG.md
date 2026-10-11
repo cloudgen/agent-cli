@@ -1,75 +1,25 @@
 # CHANGELOG
 
-All notable changes to **VideoJoin** are documented here.  
-Version SSOT: `pyproject.toml` + `src/VideoJoin/__init__.__version__`.
+All notable changes to **AgentCli** are documented here.  
+Version SSOT: `pyproject.toml` + `src/AgentCli/__init__.py` `__version__`.
 
-## [Unreleased]
-
-## [1.0.5] - 2026-10-04
-
-### Changed
-
-- `about` shows one page: product identity, a host check of this computer, and a star box. The page stays English. It does not probe `ffmpeg` and it does not print a pip install line.
-- Self-management row 83 reads "version, FFmpeg, and this computer."
-- Version is **1.0.5**. `ChronicleLogger>=1.3.1` is unchanged.
-- Product README Screenshots links every picture in `screenshots/` with an absolute `https` URL. Menu pictures captured before the about page still show **1.0.4**.
-
-## [1.0.4] - 2026-10-04
+## [1.0.0] - 2026-10-11
 
 ### Added
 
-- Text menu on a terminal when `video-join` is started with no arguments. Front rows are join (1), system-log (3), language (4), self-management (8), and Exit (9). system-log lists view-log (31), clear-log (32), log-folder (33), and Back (0). language lists English through Ελληνικά (41–53) and Back (0). self-management lists version (82), about (83), version-check (84), self-update (85), self-uninstall (86), self-install (87), and Back (0).
-- Menu language file `~/.local/VideoJoin/language`. `VIDEOJOIN_LANG` overrides that file for one process and does not write it. `language` is not a command-line verb.
-- Typed verbs `help`, `version`, `about`, `hello`, `join`, `list-videos`, `self-install`, `version-check`, `self-update`, and `self-uninstall`.
-- `ChronicleLogger` is constructed in `main` and required at `ChronicleLogger>=1.3.1`.
-- Product README shows the main menu, the system-log board, the language board, and the self-management board.
-- Product README PyPI version badge (`pypi.org/project/VideoJoin`).
+- Python package **AgentCli**. Console script `agent-cli`. Module `python -m AgentCli`.
+- Text menu on a terminal when `agent-cli` is started with no arguments. Multi-user front rows are grok-auth (1), system-log (3), language (5), sudoers (7), self-management (8), and Exit (9). A this-login-only host shows run (2) and hides sudoers.
+- Language board codes 51–63. Leaf `~/.local/agent-cli/language`. `AGENT_CLI_LANG` overrides one process and does not write the file. `language` is not a typed verb.
+- Domain verbs for peer `grok`: setup, update-grok, reinstall, run, check-session, backup, sync-auth, sync-auth-from-remote, sync-auth-to-remote, add-crontab, and the sudoers verbs. The elevated path is `backup` only.
+- Cache tiers from the shell storage law. Linux prefers `/dev/shm/cache`, then `/tmp/cache`, then `${HOME}/.cache`. The about page prints the tier in use and the persistence folder.
+- `ChronicleLogger>=1.3.1`, constructed inside `def main`.
+- Typed `hello` prints `Welcome to AgentCli 1.0.0.` and does not draw the menu.
 
 ### Changed
 
-- Empty argv on a terminal opens that menu and does not start the join questions. With no terminal, empty argv prints help and returns 0.
-- Quick Installation documents **`pip install VideoJoin`**. This tree is **1.0.4**. A registry probe on 2026-08-19 reported **1.0.3**. Checkout `pip install -e .` stays the local path.
-- Join still prefers stream copy, then re-encode, and still publishes with `shutil.move`.
+- This tree is the first **1.0.0** of AgentCli. It specializes the HelloTui text menu and the grok-cli domain into one Python package. Empty argv off a terminal prints help and returns 0. The shell name `ensure` points at pip `self-install`.
+- Public source home is `https://github.com/cloudgen/agent-cli`.
 
----
+## Older notes
 
-## [1.0.3] - 2026-08-09
-
-### Added
-
-- Same-FS staging helpers (`staging_dir_for`, `make_temp_path`) and **`promote_file` → `shutil.move`** for publishing intermediates.
-- Unique temp concat list and media intermediates (no fixed cwd-only `filelist.txt` strategy).
-- Product requirements set (class, domain, pipeline, CLI, coding-style, packaging, structure, errors, runtime).
-- Promote gate checklist **`CL-PYTHON-SHUTIL-MOVE-PUBLISH`** (blank + filled run).
-
-### Changed
-
-- Join pipeline: stream-copy to temp → promote; on failure re-encode to temp → promote.
-- Package public surface: `__version__` and `main` only (no phantom `ChronicleLogger` re-export from `.cli`).
-- Product README rewritten for install/usage honesty (local package primary; FFmpeg system dep).
-
-### Fixed
-
-- Fail-closed re-encode path: non-zero FFmpeg or missing intermediate no longer prints success.
-- Reject final output path equal to either source path.
-
-### Security
-
-- Still user-level only; no Type 1 elevation. FFmpeg invoked with argument lists (no shell string interpolation of free-form filters).
-
----
-
-## [1.0.2] - prior
-
-### Added
-
-- Interactive two-file join with FFmpeg stream-copy and re-encode fallback.
-- Package layout under `src/VideoJoin/` with console script `video-join`.
-
-### Notes
-
-- Earlier packaging claims may have listed broad Python support and optional Cython tooling; runtime join does not require Cython.
-
----
-
-Update this file when shipping version bumps; keep body complete (no hollow TBD sections for claimed releases).
+Releases numbered 1.0.4 and 1.0.5 belonged to the previous media-join tree. They are not AgentCli releases. `join`, `list-videos`, and the encoder are unknown here.
