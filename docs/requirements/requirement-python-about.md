@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-about.md
-**Status**: Active (Version 1.0.1)
+**Status**: Active (Version 1.0.2)
 **Area**: python
 **Key**: `requirement-python-about`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -188,7 +188,7 @@ Invocation: `agent-cli` on a terminal, then `8`, then `83`. The same page is `ag
 | **TTY / Interactive** | `yes` or `no` from `sys.stdout.isatty()` |
 | **JSON** | Not claimed. No `--json` stream |
 | **Privilege** | normal user privilege |
-| **Product version** | `1.1.0` |
+| **Product version** | `1.2.0` |
 
 ### 2.3 Why This Requirement Exists (Direct CIAO Alignment)
 
@@ -284,6 +284,7 @@ TP-ABOUT-01 asserts the identity line, every host-check label, the star-box titl
 |------|--------|------|
 | 2026-10-04 | Active 1.0.0 | About page: identity, host check, star box. Pyenv and conda reads stay here. No `--json`. Product version **1.0.5**. `./tests/run.sh` — 23 tests, OK. `TP-ABOUT-01` through `TP-ABOUT-14` and `TP-ABOUT-16` are have. There is no `TP-ABOUT-15` |
 | 2026-10-12 | Active 1.0.1 | Product version cite is **1.1.0**. `about` is a typed page, not menu row 83 |
+| 2026-10-12 | Active 1.0.2 | Product version cite is **1.2.0** |
 
 **Last Updated**: 2026-10-12
 **Owner**: project maintainers

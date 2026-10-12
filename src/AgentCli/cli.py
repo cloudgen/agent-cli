@@ -126,7 +126,7 @@ class Cli:
         )
         self.self_manage = SelfManage(Cli.APP_NAME, Cli.VERSION, logger=logger)
         self.output = Output()
-        self.domain = GrokDomain(output=self.output)
+        self.domain = GrokDomain(output=self.output, logger=logger, version=Cli.VERSION)
         self.tui = Tui(self, logger=logger)
 
     @staticmethod
@@ -205,7 +205,12 @@ class Cli:
                 "self-update runs: python -m pip install --upgrade {0}\n"
                 "self-install runs: python -m pip install {0}\n"
                 "self-uninstall runs: python -m pip uninstall -y {0}\n"
-                "and needs --force. Empty arguments do not install or update."
+                "and needs --force. Empty arguments do not install or update.\n"
+                "Operational verbs include install, setup, and self-install.\n"
+                "Test-purpose, apart from those: rc-test --root DIR "
+                "--file bashrc|zshenv|zprofile|profile|fish|ash "
+                "--case create|modify|noop.\n"
+                "Environment: BASHRC, ZSHENV, ZPROFILE, ZSHRC, PROFILE, FISH_CONFIG, USER_BIN."
                 .format(Cli.APP_NAME)
             ),
         )
@@ -256,29 +261,46 @@ class Cli:
             "help": False,
             "version": False,
             "error": "",
+            "root": "",
+            "file": "",
+            "case": "",
+            "feature": "",
         }
-        for token in argv:
+        valued = {
+            "--root": "root",
+            "--file": "file",
+            "--case": "case",
+            "--feature": "feature",
+        }
+        index = 0
+        tokens = list(argv)
+        while index < len(tokens):
+            token = tokens[index]
+            if token in valued:
+                if index + 1 >= len(tokens) or str(tokens[index + 1]).startswith("-"):
+                    parsed["error"] = token
+                    return parsed
+                parsed[valued[token]] = tokens[index + 1]
+                index += 2
+                continue
             if token == "--json":
                 parsed["json"] = True
-                continue
-            if token == "--force":
+            elif token == "--force":
                 parsed["force"] = True
-                continue
-            if token in ("--debug", "--quiet"):
-                continue
-            if token in ("-h", "--help"):
+            elif token in ("--debug", "--quiet"):
+                pass
+            elif token in ("-h", "--help"):
                 parsed["help"] = True
-                continue
-            if token == "--version":
+            elif token == "--version":
                 parsed["version"] = True
-                continue
-            if token.startswith("-"):
+            elif token.startswith("-"):
                 parsed["error"] = token
                 return parsed
-            if parsed["verb"] is None:
+            elif parsed["verb"] is None:
                 parsed["verb"] = token
-                continue
-            parsed["extra"].append(token)
+            else:
+                parsed["extra"].append(token)
+            index += 1
         return parsed
 
     def _json_help(self):
@@ -311,10 +333,15 @@ class Cli:
         if parsed["json"]:
             self.output.json_mode = True
             self.domain.output = self.output
-        if parsed["force"] and verb not in ("self-uninstall", "setup", "reinstall"):
+        if parsed["force"] and verb not in ("self-uninstall", "uninstall", "setup", "reinstall"):
             return self.report_error(
                 "--force is only for self-uninstall.",
                 "{0} self-uninstall --force".format(Cli.CONSOLE_NAME),
+            )
+        if verb != "rc-test" and (parsed["root"] or parsed["file"] or parsed["case"] or parsed["feature"]):
+            return self.report_error(
+                "--root, --file, --case, and --feature belong to rc-test.",
+                "{0} rc-test --root DIR --file zprofile --case create".format(Cli.CONSOLE_NAME),
             )
         if verb == "about":
             if parsed["json"]:
@@ -333,7 +360,15 @@ class Cli:
                     "self-uninstall removes this package with pip.",
                     "{0} self-uninstall --force".format(Cli.CONSOLE_NAME),
                 )
+            self.domain.startup.cleanup_path()
             return self.self_manage.emit(verb)
+        if verb == "rc-test":
+            return self.domain.rc_test(
+                parsed["root"],
+                parsed["file"] or "bashrc",
+                parsed["case"] or "create",
+                parsed["feature"],
+            )
         if verb in ("version-check", "self-update", "self-install"):
             return self.self_manage.emit(verb)
         if verb in ("menu", "main") or verb is None:

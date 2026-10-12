@@ -19,6 +19,7 @@ import subprocess
 
 from .host import Host
 from .output import Output
+from .shell_startup import ShellStartup
 from .storage import Storage
 
 
@@ -44,8 +45,13 @@ class GrokDomain:
         environ=None,
         runner=None,
         grok_home=None,
+        logger=None,
+        version="",
     ):
         self.environ = os.environ if environ is None else environ
+        self.logger = logger
+        if logger is not None:
+            logger.log_message("instantiated", component="GrokDomain")
         self.output = output if output is not None else Output()
         self.storage = storage if storage is not None else Storage(
             app_name=self.APP_NAME, environ=self.environ
@@ -55,6 +61,13 @@ class GrokDomain:
         self.deposit_root = deposit_root or self.environ.get("AGENT_CLI_DEPOSIT") or self.DEPOSIT
         self.runner = runner
         self.grok_home = grok_home
+        self.startup = ShellStartup(
+            version=version,
+            output=self.output,
+            environ=self.environ,
+            logger=logger,
+            host=self.host,
+        )
 
     def global_bin(self) -> str:
         root = self.environ.get("AGENT_CLI_GLOBAL_BIN", self.GLOBAL_BIN)
@@ -577,6 +590,28 @@ class GrokDomain:
             {"path": path},
         )
 
+    def install_startup(self) -> int:
+        """User-bin companion. Writes this login's startup files. Does not call pip."""
+        self.startup.path_add_shell()
+        return 0
+
+    def uninstall_startup(self, force=False) -> int:
+        """Strip this product's stickers when --force is set. Does not delete the files."""
+        if not force:
+            return self.output.error(
+                "uninstall edits this login's startup-file stickers.",
+                "agent-cli uninstall --force",
+            )
+        self.startup.cleanup_path()
+        return self.output.ok(
+            "uninstall",
+            "Removed this product's startup-file stickers. Type: agent-cli self-uninstall --force",
+        )
+
+    def rc_test(self, root, file_name="bashrc", case="create", feature="") -> int:
+        """Fixture writer. Does not call install or setup."""
+        return self.startup.path_rc_test(root, file_name or "bashrc", case or "create", feature)
+
     def where_is_me(self) -> int:
         binary = self.global_bin()
         peer = self.peer_path()
@@ -645,14 +680,16 @@ class GrokDomain:
             return self.submit_sudoer_request(args[0] if args else "")
         if verb == "where-is-me":
             return self.where_is_me()
-        if verb in ("ensure", "install"):
+        if verb == "ensure":
             return self.output.ok(verb, "Type: agent-cli self-install")
+        if verb == "install":
+            return self.install_startup()
         if verb == "uninstall":
-            return self.output.ok(verb, "Type: agent-cli self-uninstall --force")
+            return self.uninstall_startup(force=force)
         if verb == "rc-test":
-            return self.output.ok(
-                "rc-test",
-                "This Python package does not edit shell rc files.",
+            return self.output.error(
+                "rc-test requires --root a tmp/cache folder.",
+                'agent-cli rc-test --root "$tmpdir" --file zprofile --case create',
             )
         return self.output.error(
             "Unknown verb '{0}'.".format(verb),

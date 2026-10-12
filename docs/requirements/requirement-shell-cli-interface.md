@@ -1,7 +1,7 @@
 **file**: docs/requirements/requirement-shell-cli-interface.md  
 
 > Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
-**Status**: Active (Version 2.15.7)  
+**Status**: Active (Version 2.15.8)  
 **Area**: shell  
 **Key**: `requirement-shell-cli-interface`  
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -87,6 +87,7 @@ In JSON mode, help **MUST NOT** dump long human text; return a short structured 
 | **Primary install story** | User bin: `~/.local/bin/agent-cli` |
 | **Interactive rc write path** | `BASHRC` default `${HOME}/.bashrc`. User-bin PATH ensure creates/modifies this file. Tests/CI **MAY** set `BASHRC` to a file in a temp folder. Dual mention: `requirement-shell-path-and-shell-support`. |
 | **Zsh always-on rc write path** | `ZSHENV` default `${HOME}/.zshenv`. User-bin zsh PATH ensure writes this file (not `.zshrc`). Tests/CI **MAY** set `ZSHENV` to a file in a temp folder. Dual mention: `requirement-shell-zshenv`. |
+| **Zsh login rc write path** | `ZPROFILE` default `${HOME}/.zprofile`. User-bin zsh login PATH writes this file. Setting `ZSHENV` does not create it. Tests/CI **MAY** set `ZPROFILE` to a file in a temp folder. Dual mention: `requirement-shell-startup-files`. |
 | **Online channel env** | `SCRIPT_URL` default `https://raw.githubusercontent.com/cloudgen/agent-cli/main/src/agent-cli` |
 | **Type 2 commands** | None |
 | **Dedicated system user** | Not required |
@@ -98,7 +99,7 @@ In JSON mode, help **MUST NOT** dump long human text; return a short structured 
 | *(no command token — empty argv; overlay flags such as `--debug` allowed)* | Type 0 | TTY → `app_default`; off-TTY → help, exit 0 | TTY numbered menu; off-TTY help (**MUST NOT** pip). `--json` no-command is 0-argv **special case** → JSON help (TTY and off-TTY) |
 | `install` | Type 0 | `inst_local_install` | Checkout copy of the running ship unit; idempotent unless `--force`. User-bin: **always** `inst_ensure_companion` (PATH + profile), including already-installed skip. Dual mention: `requirement-shell-local-self-management` · `requirement-shell-path-and-shell-support` |
 | `uninstall` | Type 0 | `inst_local_uninstall` | Remove managed binary; confirm unless `--force`. User-bin: PATH cleanup per `requirement-shell-path-and-shell-support` |
-| `rc-test` | Type 0 **test-purpose** | `path_rc_test` | Fixture create / modify / no-op against `--root` tmp/cache. **MUST NOT** write this login’s real `{{HOME}}/.bashrc` or `{{HOME}}/.zshenv`. Help lists this **apart** from operational verbs. Dual mention: `requirement-shell-path-and-shell-support` · `requirement-shell-zshenv` · `requirement-shell-alpine`. Samples: `agent-cli rc-test --root "$tmpdir" --file bashrc --case create` · `agent-cli rc-test --root "$tmpdir" --file zshenv --case create` · `agent-cli rc-test --root "$tmpdir" --file ash --case create`. `--file zshrc` **MUST** fail closed (Next: `--file zshenv`) |
+| `rc-test` | Type 0 **test-purpose** | `path_rc_test` | Fixture create / modify / no-op against `--root` tmp/cache. **MUST NOT** write this login’s real `{{HOME}}/.bashrc`, `{{HOME}}/.zshenv`, or `{{HOME}}/.zprofile`. Help lists this **apart** from operational verbs. Dual mention: `requirement-shell-path-and-shell-support` · `requirement-shell-zshenv` · `requirement-shell-startup-files` · `requirement-shell-alpine`. Samples: `agent-cli rc-test --root "$tmpdir" --file bashrc --case create` · `agent-cli rc-test --root "$tmpdir" --file zshenv --case create` · `agent-cli rc-test --root "$tmpdir" --file zprofile --case create` · `agent-cli rc-test --root "$tmpdir" --file ash --case create`. `--file zshrc` **MUST** fail closed (Next: `--file zshenv`; zsh PATH is `.zshenv` and `.zprofile`) |
 | `version-check` | Type 0 | `ver_check` | Compare local vs remote VERSION on `SCRIPT_URL` |
 | `self-update` | Type 0 | `inst_self_update` | Re-download from `SCRIPT_URL` when remote is newer (or `--force`). Proceeding first INFO: `Starting the self-update of {{APP_NAME}}({{local}}) to new version:{{remote}}...` |
 | `self-uninstall` | Type 0 | `inst_self_uninstall` | Remove managed binary (channel name; same dest as `uninstall`). User-bin PATH cleanup: `requirement-shell-path-and-shell-support` |
@@ -318,9 +319,10 @@ Detect: Termux — `uname` contains Android, or `PREFIX` / `TERMUX_VERSION` is s
 | 2026-10-10 | Active 2.15.5 | This-login-only menu follows default-interaction **2.25.0** (auth **11** and **13** omitted; auth **12** when logged out; `sync-auth-to-remote` is not a row) |
 | 2026-10-10 | Active 2.15.6 | Logged-out not-available line follows default-interaction **2.26.0** (`backup features are not available for logged-out environment.`) |
 | 2026-10-12 | Active 2.15.7 | Menu language is front **7** / assigned **80–92** (dual mention `requirement-shell-cli-language` 1.2.0 and default-interaction 2.27.0). 2.15.3 was front **5** / **51–63**. |
+| 2026-10-12 | Active 2.15.8 | `rc-test --file zprofile` and env `ZPROFILE` (dual mention `requirement-shell-startup-files` 1.0.0). `--file zshrc` still fails closed |
 
 ---
 
-**Last Updated**: 2026-10-12 (2.15.7 — menu language is front **7** / **80–92**. 2.15.6 followed default-interaction **2.26.0**.)  
+**Last Updated**: 2026-10-12 (2.15.8 — `rc-test --file zprofile` and `ZPROFILE`. 2.15.7 kept menu language on front **7** / **80–92**.)  
 **Owner**: project maintainers  
 **Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-cli-interface.md
-**Status**: Active (Version 1.1.4)
+**Status**: Active (Version 1.1.5)
 **Area**: python
 **Key**: `requirement-python-cli-interface`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -153,7 +153,7 @@ There is no folder question. Esc on the text screen returns to the front board a
 | **Quiet / JSON** | Text screen sets `is_quiet=True` on the logger construct. No `--json` |
 | **Privilege** | user-level only |
 | **Running tree** | `cli.py` still calls `ensure_ffmpeg()` and then the prompt session. That is not the allowed end state |
-| **Product version** | `1.1.0` |
+| **Product version** | `1.2.0` |
 | **User docs** | Root `README.md` Usage must match this contract when the behavior ships. This pass does not edit that README |
 
 ### 2.9 Why This Requirement Exists (CIAO)
@@ -241,6 +241,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 | 2026-10-04 | Active 1.1.2 | Verb `about` is `requirement-python-about`. Rule 33 no longer claims a live ffmpeg probe. Product version **1.0.5** |
 | 2026-10-12 | Active 1.1.3 | `language` stays off the verb list. Front row 7 owns it. Codes are 80–92 |
 | 2026-10-12 | Active 1.1.4 | Product version cite is **1.1.0** |
+| 2026-10-12 | Active 1.1.5 | Product version cite is **1.2.0**. `install` writes shell startup files. `rc-test` stays test-purpose |
 
 ---
 

@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-oop.md
-**Status**: Active (Version 1.0.4)
+**Status**: Active (Version 1.0.5)
 **Area**: python
 **Key**: `requirement-python-oop`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -92,6 +92,7 @@ The target is an ordinary multi-class split. A StateLogic + `Attr` rewrite stays
 20. Class `SystemLog` in `src/AgentCli/system_log.py` owns `log_dir`, `log_files`, `read_log`, `clear_log`, and `folder_text`. The menu rows and the result-page words stay on `requirement-python-tui`. `Tui` writes `SystemLog(...)` at the site that needs it and passes the same logger. `cli.py` **MUST NOT** list the log files, read one, or empty one.
 21. Class `SelfManage` in `src/AgentCli/self_management.py` owns `local_version`, `argv_for`, `run_pip`, and `emit`. `local_version` reads `__version__` and does not call pip. `argv_for` builds the pip argument lists for `version-check`, `self-update`, `self-install`, and `self-uninstall`. The verb names and the command strings stay on `requirement-python-cli-interface` and `requirement-python-tui`. `cli.py` **MUST NOT** build those pip argument lists. The about body is not this class.
 22. Version display stays the single string `__version__` in `src/AgentCli/__init__.py`. **MUST NOT** add a second integer triple.
+23. Class `ShellStartup` in `src/AgentCli/shell_startup.py` owns `path_add_shell`, `path_add_bashrc`, `path_add_zshenv`, `path_add_zprofile`, `path_add_zshrc`, `path_add_fish`, `path_ensure_profile`, `path_add_profile_ash`, `path_invoking_is_ash`, `path_rc_test`, and `cleanup_path`. The missing-file matrix and `.zprofile` stay on `requirement-shell-startup-files`. `cli.py` does not write those files. `SelfManage` does not build the sticker cleanup. `GrokDomain` writes `ShellStartup(...)` and calls it from `install`, `uninstall`, and `rc-test`.
 
 ### 2.6 Implementation Notes (this project)
 
@@ -107,6 +108,7 @@ The target is an ordinary multi-class split. A StateLogic + `Attr` rewrite stays
 | `SelfManage` | `src/AgentCli/self_management.py` | Local version and the pip commands for rows 84–87 |
 | `CheckSystem` | `src/AgentCli/check_system.py` | Host-check reads for the about page. Does not draw the star box |
 | `AboutPage` | `src/AgentCli/about_page.py` | `framework_about`, the star box, and the install kind. Calls `CheckSystem` |
+| `ShellStartup` | `src/AgentCli/shell_startup.py` | Shell startup files. `.zprofile` and the shared PATH line |
 
 | Item | Value |
 |------|--------|
@@ -178,7 +180,7 @@ class Cli:
 
 | ID | Criterion |
 |----|-----------|
-| AC-1 | The map names `Cli`, `Tui`, `MenuPainter`, `MenuLanguage`, `MenuModel`, `MenuSession`, `SystemLog`, `SelfManage`, `CheckSystem`, `AboutPage`, and `Join`, each in its own file |
+| AC-1 | The map names `Cli`, `Tui`, `MenuPainter`, `MenuLanguage`, `MenuModel`, `MenuSession`, `SystemLog`, `SelfManage`, `CheckSystem`, `AboutPage`, and `ShellStartup`, each in its own file. There is no class `Join` |
 | AC-2 | `def main` stays in `cli.py`. The console script stays `AgentCli.cli:main` |
 | AC-3 | Every class `__init__` accepts the logger. The site writes `ClassName(...)` |
 | AC-4 | `Cli` owns the identity constants. `MenuPainter` owns the row tuples and the glyphs |
@@ -222,6 +224,7 @@ class Cli:
 | 2026-10-04 | Active 1.0.2 | Class `MenuLanguage` is the language home. `MenuPainter` writes `MenuLanguage(...)`. `TP-OOP-*` stay todo |
 | 2026-10-04 | Active 1.0.3 | `display_width`, `clip_columns`, and `clip_columns_right` are methods of `MenuPainter`. `TP-OOP-*` stay todo |
 | 2026-10-04 | Active 1.0.4 | `CheckSystem` owns the host check. `AboutPage` owns `framework_about`. No second version triple. `TP-OOP-*` stay todo |
+| 2026-10-12 | Active 1.0.5 | `ShellStartup` owns the shell startup files. `TP-OOP-*` stay todo |
 
 ---
 

@@ -3,12 +3,12 @@
 Executable proof for product law. **Design map:** `docs/reviews/test-plan.md`.  
 **RTM:** `docs/reviews/requirement-test-matrix.md`.
 
-## Status (2026-10-12, product 1.1.0)
+## Status (2026-10-12, product 1.2.0)
 
 | Item | State |
 |------|--------|
 | Design TP map | **present** under `docs/reviews/test-plan.md` |
-| Automated suites | `tests/test_about.py` covers **TP-ABOUT-01** through **TP-ABOUT-14** and **TP-ABOUT-16** (have). There is no **TP-ABOUT-15**. `tests/test_tui.py` covers **TP-TUI-09**, **TP-TUI-10**, **TP-TUI-11**, and **TP-TUI-12** (have). `tests/test_language.py` covers **TP-LANG-01** (have): front row 7, codes 80–92. `tests/test_docs.py` covers **TP-DOC-01** (have). **TP-DOC-03** stays `todo`. **TP-LOG-*** and **TP-OOP-*** stay `todo` |
+| Automated suites | `tests/test_about.py` covers **TP-ABOUT-01** through **TP-ABOUT-14** and **TP-ABOUT-16** (have). There is no **TP-ABOUT-15**. `tests/test_tui.py` covers **TP-TUI-09**, **TP-TUI-10**, **TP-TUI-11**, and **TP-TUI-12** (have). `tests/test_language.py` covers **TP-LANG-01** (have): front row 7, codes 80–92. `tests/test_docs.py` covers **TP-DOC-01** (have). `tests/test_shell_startup.py` covers **TP-LC-43**, **TP-LC-44**, **TP-LC-45**, and **TP-LC-46** (have). **TP-DOC-03** stays `todo`. **TP-LOG-*** and **TP-OOP-*** stay `todo` |
 | Runner | `tests/run.sh` (`python3 -m unittest discover`) |
 | Last run | 2026-10-12 `python3 -m unittest discover -s tests` |
 
@@ -27,6 +27,7 @@ Executable proof for product law. **Design map:** `docs/reviews/test-plan.md`.
 | `test_domain.py` | grok domain: session, backup, setup, sudoer JSON |
 | `test_hello.py` | typed hello; join and list-videos stay unknown |
 | `test_storage.py` | cache tiers and persistence |
+| `test_shell_startup.py` | TP-LC-43..46 (have). Zsh `.zprofile` and `.zshenv`. Bash does not invent them. `rc-test --file zprofile` |
 | `test_errors.py` | TP-ERR |
 | `test_fs_publish.py` | TP-FS |
 

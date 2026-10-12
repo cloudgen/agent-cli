@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-class-software-dev.md
-**Status**: Active (Version 1.2.1 – AgentCli software-development class law + residual stack)
+**Status**: Active (Version 1.2.2 – AgentCli software-development class law + residual stack)
 **Area**: class
 **Key**: `requirement-class-software-dev`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -110,7 +110,7 @@ This file is class law plus the residual SSOT. It is not a second copy of domain
 | **Architectures supported** | any architecture with CPython. `setup` fetches `linux`, `macos`, or `windows` and `x86_64` or `aarch64` |
 | **Git surface** | used — remote `https://github.com/cloudgen/agent-cli` |
 | **Ship surface** | installable Python package `AgentCli`; console script `agent-cli`; module form `python -m AgentCli` |
-| **Product version SSOT** | `src/AgentCli/__init__.py` → `__version__` and `pyproject.toml` `[project].version` stay equal when either is bumped (current: **1.1.0**) |
+| **Product version SSOT** | `src/AgentCli/__init__.py` → `__version__` and `pyproject.toml` `[project].version` stay equal when either is bumped (current: **1.2.0**) |
 | **Install mode** | pip / local package. Empty argv is not a shell installer. Peer `grok` is fetched by `setup` |
 | **Type 1 elevation** | narrow. `agent-cli backup` only, after an installed sudoers fragment. Args are `backup`. No other root surface |
 | **Actor / role / subject / approver** | **Considered — no dest approver.** The human operator of `agent-cli` is the only actor. No dest approval machine. **None** is valid. Do not add an actor requirement file |
@@ -200,6 +200,7 @@ This file is class law plus the residual SSOT. It is not a second copy of domain
 | `requirement-python-cli-logging` | Logger construct |
 | `requirement-domain-agent-cli` | Domain: grok install, session, and auth backup |
 | `requirement-shell-cli-storage` | Cache tiers and persistence |
+| `requirement-shell-startup-files` | Shell startup files. `.zprofile` PATH. Peers point |
 | `requirement-three-layer-privilege-model` | Narrow Type 1 `backup` |
 | `requirement-video-ffmpeg-pipeline` | Retired encoder |
 | `requirement-python-coding-style` | Temps and `shutil.move` |
@@ -230,6 +231,7 @@ On Termux, Git Bash, Windows cmd, or the same class, AgentCli runs as the normal
 | 2026-10-04 | Active 1.1.2 | Residual row for the about page. Product version **1.0.5** |
 | 2026-10-11 | Active 1.2.0 | AgentCli 1.0.0. Domain is grok. Type 1 is backup only. Empty argv off a terminal is help. Author is cloudgen |
 | 2026-10-12 | Active 1.2.1 | Product version SSOT is **1.1.0**. Menu language stays front row 7, codes 80–92 |
+| 2026-10-12 | Active 1.2.2 | Product version SSOT is **1.2.0**. Residual points at `requirement-shell-startup-files` |
 
 ---
 

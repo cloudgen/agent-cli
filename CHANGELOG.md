@@ -3,6 +3,14 @@
 All notable changes to **AgentCli** are documented here.  
 Version SSOT: `pyproject.toml` + `src/AgentCli/__init__.py` `__version__`.
 
+## [1.2.0] - 2026-10-12
+
+### Added
+
+- Shell startup files. `agent-cli install` appends `export PATH="<USER_BIN>:$PATH"` for this login. A zsh login gets the line on `.zshenv` and on `.zprofile`. A bash-only login does not invent those files. `.zshrc` is not a PATH file.
+- `agent-cli rc-test --root DIR --file zprofile --case create` writes a fixture and leaves this login's real notes still. `--file zshrc` fails closed.
+- `agent-cli uninstall --force` and `self-uninstall --force` may strip `# Added by agent-cli installer` stickers. They do not delete the startup files. Root does not edit this login's notes.
+
 ## [1.1.0] - 2026-10-12
 
 ### Changed

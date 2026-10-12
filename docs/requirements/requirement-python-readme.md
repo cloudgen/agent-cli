@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-readme.md
-**Status**: Active (Version 1.1.0)
+**Status**: Active (Version 1.2.0)
 **Area**: python
 **Key**: `requirement-python-readme`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -94,7 +94,7 @@ The first-row sentence in the user document **MUST** name the current directory 
 | **Pictures** | `screenshots/` |
 | **Package** | `AgentCli` |
 | **Console script** | `agent-cli` |
-| **Version** | `1.1.0` from `src/AgentCli/__init__.py` (`__version__`). `pyproject.toml` copies that string |
+| **Version** | `1.2.0` from `src/AgentCli/__init__.py` (`__version__`). `pyproject.toml` copies that string |
 | **Python** | `>=2.7`, excluding 3.0 through 3.4. The badge says 2.7+ (3.x recommended) |
 | **License file** | `LICENSE.md` (MIT). The file is present. The document link stays relative |
 | **Homes** | `https://github.com/cloudgen/agent-cli` and `https://pypi.org/project/AgentCli/` |
@@ -117,13 +117,13 @@ The first-row sentence in the user document **MUST** name the current directory 
 | Advantages | The four parts and the comparison table below | This file for the contrast. Peers in §2.2 for the behavior |
 | Quick Installation | `ChronicleLogger>=1.3.1`. `pip install AgentCli`. Checkout uses a venv and `pip install -e .`. The fenced text menu shows **1** grok-auth, **5** sudoers, **6** self-management, **7** language, and **9** Exit | `requirement-runtime-prerequisites`, `requirement-python-packaging`, `requirement-python-tui` |
 | Usage | Menu versus typed verbs. `hello` prints the welcome line and does not draw the menu. `about` stays English and is not a numbered row. No terminal: empty argv prints help and returns 0. `self-uninstall` needs `--force`. No sudo | `requirement-python-cli-interface`, `requirement-python-tui` |
-| Screenshots | Lead: each heading is the file name, and the paragraph is what that picture shows. Package **1.1.0**. The three-row light band is under the input box. The paragraph and the image alt are the catalog below | This file |
+| Screenshots | Lead: each heading is the file name, and the paragraph is what that picture shows. Package **1.2.0**. The three-row light band is under the input box. The paragraph and the image alt are the catalog below | This file |
 | Examples | `agent-cli`, then `agent-cli version`, `agent-cli hello`, `agent-cli about`, and `agent-cli setup` | `requirement-python-cli-interface` |
 | Platform Compatibility | Linux primary. macOS and Windows when Python is present. The text menu needs a terminal. This-login-only shows **run** and hides **sudoers** | `requirement-runtime-prerequisites` |
 | Related Projects | The eight lines below, in that order, each with one sentence | This file |
 | Contributing | Keep product law in sync. Do not strip `shutil.move`. Version strings stay together | `requirement-python-coding-style`, `requirement-python-packaging` |
 | License | MIT, link `LICENSE.md`, and that file exists | `requirement-python-packaging` |
-| Last Update | Names package **1.1.0** and the picture catalog | This file for the line. `__version__` for the string |
+| Last Update | Names package **1.2.0** and the picture catalog | This file for the line. `__version__` for the string |
 
 **Related projects, in this order.** The first two are this program. Each line is one sentence. Do not add an install recipe.
 
@@ -177,7 +177,7 @@ The first-row sentence in the user document **MUST** name the current directory 
 | 16 | `self-management.png` | Row **6** has opened self-management. **64 version-check** is highlighted: "compare this install with pip." Then **65 self-update**, **66 self-uninstall**, **68 where-is-me**, and **0 Back**. The path label is `Path`. The status line says `self-management`. | Self-management, 64 version-check |
 | 17 | `grok-auth.png` | **1 grok-auth** on a multi-user host while the session word is missing. The board shows **12 sync-auth-from-remote**, **13 sync-auth**, **14 add-crontab**, **15 setup**, **16 reinstall**, and **0 Back**. A signed-in session shows **11 backup** instead of the sync rows. The status line says `grok-auth`. | Logged-out grok-auth board |
 | 18 | `sudoers.png` | Row **5** has opened sudoers. The rows are **51 generate-sudoer-request**, **52 submit-sudoer-request**, **53 print-sudoers**, **54 print-sudoers-install-script**, **55 remove-project-sudoers**, and **0 Back**. The grant argument is `backup` only. The status line says `sudoers`. | Sudoers board, backup grant only |
-| 19 | `tui-about.png` | **about** on the result page. The title is `AgentCli (1.1.0) — result`. The page prints `AgentCli 1.1.0`, `Domain: Install and run xAI grok, and back up its auth files.`, `Runtime tools: curl, grok`, and `Entry points: agent-cli, python -m AgentCli`. The host check is headed `[CHECK SYSTEM]:` and includes the cache lines. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About page with cache lines |
+| 19 | `tui-about.png` | **about** on the result page. The title is `AgentCli (1.2.0) — result`. The page prints `AgentCli 1.2.0`, `Domain: Install and run xAI grok, and back up its auth files.`, `Runtime tools: curl, grok`, and `Entry points: agent-cli, python -m AgentCli`. The host check is headed `[CHECK SYSTEM]:` and includes the cache lines. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About page with cache lines |
 
 `TP-DOC-01` asserts the Version badge token, that every PNG is linked with the absolute `https` URL above, that no markdown image uses a relative `screenshots/` destination, that the section headings are present, that the document does not name `setup.sh` or `curl | sh` or `sudo pip`, that the related-project URLs are in order, and that the path row names the local clock (`HH:MM:SS`). There is no `video.png`. `TP-DOC-03` stays **todo**. Map: `docs/reviews/test-plan.md`.
 
@@ -264,6 +264,7 @@ The documented install is for this login. **This requirement:** the user documen
 | 2026-10-04 | Active 1.0.0 | User-document sections, Advantages, eight related projects, and twenty-two pictures. Image destinations are absolute `https`. `TP-DOC-01` have. `TP-DOC-03` todo |
 | 2026-10-04 | Active 1.0.1 | About and self-management pictures match the new page. Other menu pictures still show **1.0.4**. Package string is **1.0.5** |
 | 2026-10-12 | Active 1.1.0 | Package **1.1.0**. Catalog is language, thirteen main menus, system-log, self-management, grok-auth, sudoers, and about. Language is front **7**, codes **80–92** |
+| 2026-10-12 | Active 1.2.0 | Package **1.2.0**. The same catalog. Status line and about title name **1.2.0** |
 
 ---
 

@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-project-structure.md
-**Status**: Active (Version 1.1.2)
+**Status**: Active (Version 1.1.3)
 **Area**: python
 **Key**: `requirement-python-project-structure`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -42,7 +42,7 @@ Define the repository layout and the package structure for AgentCli: where sourc
 
 1. **MUST** keep the installable package under `src/AgentCli/`.
 2. The running package **MUST** include `__init__.py` (version export), `__main__.py` (module entry), and `cli.py` (the running CLI and join session).
-3. The allowed end state adds the modules named by `requirement-python-oop` (`tui.py`, `menu_painter.py`, `menu_model.py`, `menu_session.py`, `menu_language.py`, `system_log.py`, `self_management.py`, `check_system.py`, `about_page.py`). `join.py` is not part of that set. After that order, `cli.py` holds class `Cli` and `def main`, and it does not hold the other classes’ methods.
+3. The allowed end state adds the modules named by `requirement-python-oop` (`tui.py`, `menu_painter.py`, `menu_model.py`, `menu_session.py`, `menu_language.py`, `system_log.py`, `self_management.py`, `check_system.py`, `about_page.py`, `shell_startup.py`). `join.py` is not part of that set. After that order, `cli.py` holds class `Cli` and `def main`, and it does not hold the other classes’ methods.
 4. **MUST NOT** scatter a second installable package name that contradicts the packaging SSOT.
 
 ### 2.2 Project root layout
@@ -153,6 +153,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the package is the normal u
 | 2026-10-04 | Active 1.1.0 | Running tree is three modules. Target modules are the OOP map. Deleted design-note paths are not listed as present. Changelog is root `CHANGELOG.md` |
 | 2026-10-04 | Active 1.1.1 | Sections, badges, and pictures in root `README.md` are `requirement-python-readme` |
 | 2026-10-04 | Active 1.1.2 | Allowed end state names `check_system.py`. `__version__` is **1.0.5** |
+| 2026-10-12 | Active 1.1.3 | Allowed end state names `shell_startup.py` |
 
 ---
 

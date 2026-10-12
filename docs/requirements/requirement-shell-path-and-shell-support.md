@@ -1,7 +1,7 @@
 **file**: docs/requirements/requirement-shell-path-and-shell-support.md  
 
 > Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
-**Status**: Active (Version 1.2.0 – ash PATH points at alpine)  
+**Status**: Active (Version 1.2.1 – `.zprofile` points at startup-files)  
 **Area**: shell  
 **Key**: `requirement-shell-path-and-shell-support`  
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -13,7 +13,7 @@ This file is the **topic-owner** for **shell-rc** edits on agent-cli: after a **
 It owns **path-ensure** (one shared `USER_BIN` line on interactive rc) and **profile-ensure** (create `~/.profile` if missing so a login shell sources `.bashrc`). It also owns **sibling unify** so another similar CLI does not, *by design*, make `.bashrc` non-compliant; **heal** on every user-bin `install` / channel ensure / `self-update` (including already-installed skip); **scoped uninstall**; and **detect** via a Type 0 `rc-test` (not a lock on the file).
 
 **Scope:** Which rc files this product writes; the exact PATH line; create / append / no-op; profile create-if-absent; write-path env; sibling comments; uninstall of **this** product’s stickers; fixture tests; `rc-test`.  
-**Out of scope (cited, not re-owned):** Placing or removing the binary (`requirement-shell-local-self-management` · `requirement-shell-online-install` · `requirement-shell-self-management`); peer grok vendor PATH block for `~/.grok/bin` (`requirement-grok-setup`); Termux host writing (`requirement-shell-termux-coding`); scratch/cache (`requirement-shell-cli-storage`); ash PATH on `.profile` (`requirement-shell-alpine`).
+**Out of scope (cited, not re-owned):** Placing or removing the binary (`requirement-shell-local-self-management` · `requirement-shell-online-install` · `requirement-shell-self-management`); peer grok vendor PATH block for `~/.grok/bin` (`requirement-grok-setup`); Termux host writing (`requirement-shell-termux-coding`); scratch/cache (`requirement-shell-cli-storage`); ash PATH on `.profile` (`requirement-shell-alpine`); zsh login PATH on `.zprofile` (`requirement-shell-startup-files`).
 
 **Not claimed:** login-review hook; Type 1 `setup` `chown` of another login’s rc; `/etc/environment`; crontab.
 
@@ -62,6 +62,7 @@ It owns **path-ensure** (one shared `USER_BIN` line on interactive rc) and **pro
 | `.bashrc` | Yes (create) | — | **Unused** | This login |
 | `.zshrc` | **No** (do not write PATH) | — | Unused | — |
 | `.zshenv` | **Not this file** — `requirement-shell-zshenv` | — | Unused | This login (that REQ) |
+| `.zprofile` | **Not this file** — `requirement-shell-startup-files` | — | Unused | This login (that REQ) |
 | `.profile` | **No** PATH line | **Yes** | Unused | This login |
 | Fish `config.fish` | Yes (create dir) | — | Unused | This login |
 
@@ -155,7 +156,7 @@ agent-cli rc-test --root "$tmpdir" --file profile --case create
 | Flag | Meaning |
 |------|---------|
 | `--root` | Fixture directory (tmp/cache). Keep real `HOME`. |
-| `--file` | `bashrc` \| `zshenv` \| `profile` (Fish when claimed). **`zshrc` MUST fail closed** (Next: `--file zshenv`; owner `requirement-shell-zshenv`) |
+| `--file` | `bashrc` \| `zshenv` \| `zprofile` \| `profile` \| `fish` \| `ash`. **`zshrc` MUST fail closed** (Next: `--file zshenv`; zsh PATH is `.zshenv` and `.zprofile`). `.zprofile` owner: `requirement-shell-startup-files` |
 | `--case` | `create` \| `modify` \| `noop` |
 | `--feature` | Optional: `path-ensure` \| `profile-ensure` (default from `--file`) |
 
@@ -169,13 +170,14 @@ Help **MUST** list `rc-test` under a heading **apart** from operational verbs (i
 |----------|---------|-------|
 | `BASHRC` | `${HOME}/.bashrc` | Fixture file; **MUST** honor a non-empty override |
 | `ZSHENV` | `${HOME}/.zshenv` | Fixture; honor override — **owner `requirement-shell-zshenv`** |
+| `ZPROFILE` | `${HOME}/.zprofile` | Fixture; honor override — **owner `requirement-shell-startup-files`**. The orchestrator **MUST NOT** pre-assign it |
 | `ZSHRC` | `${HOME}/.zshrc` | Uninstall may still strip leftover agent-cli comments. PATH ensure **MUST NOT** write this file |
 | `FISH_CONFIG` | `${HOME}/.config/fish/config.fish` | Fixture; honor override when Fish PATH is claimed |
 | `PROFILE` | `${HOME}/.profile` | Fixture; honor override when profile-ensure is claimed |
 
 **MUST NOT** ignore a non-empty `BASHRC` (always write `${HOME}/.bashrc` instead). Same for `ZSHRC` / `FISH_CONFIG` / `PROFILE` when those helpers run.
 
-Helpers: `path_add_shell` (orchestrator), `path_add_bashrc`, `path_add_zshenv` (body: `requirement-shell-zshenv`), `path_add_fish`, `path_ensure_profile`, `path_rc_test`. Prefix ownership: `requirement-shell-modular-function-design`.
+Helpers: `path_add_shell` (orchestrator), `path_add_bashrc`, `path_add_zshenv` (body: `requirement-shell-zshenv`), `path_add_zprofile` (body: `requirement-shell-startup-files`), `path_add_fish`, `path_ensure_profile`, `path_rc_test`. `path_add_shell` calls `path_add_zprofile` after `path_add_zshenv` and does not pre-assign `ZPROFILE`. Prefix ownership: `requirement-shell-modular-function-design`.
 
 ### 2.8 Implementation Notes (this project)
 
@@ -227,6 +229,7 @@ This chat **MUST NOT** edit those other project trees. Unify means agent-cli **b
 | Exact-line match on Fish (not `USER_BIN` substring) | **Implemented** |
 | Honor `BASHRC` / `FISH_CONFIG` / `PROFILE` env | **Implemented** |
 | Zsh PATH (`.zshenv`, not `.zshrc`) | **Pointed** — `requirement-shell-zshenv` |
+| Zsh login PATH (`.zprofile`) | **Pointed** — `requirement-shell-startup-files` |
 | Comment-only append when sibling already wrote the exact PATH | **Implemented** (MAY = do append the agent-cli sticker) |
 | `rc-test` routed; help testers heading | **Implemented** |
 | Login-hook | **Unused** (honest) |
@@ -358,6 +361,7 @@ Work claiming PATH / login-rc support for agent-cli is **not done** if any of th
 | 2026-09-09 | Active (1.0.0) | Topic-owner: path-ensure + profile-ensure; sibling unify; scoped uninstall; heal on already-installed; routed `rc-test` |
 | 2026-09-17 | Active (1.1.0) | Zsh PATH **points** at `requirement-shell-zshenv` (`.zshenv`, not `.zshrc`) |
 | 2026-09-22 | Active (1.2.0) | Ash PATH **points** at `requirement-shell-alpine` (`.profile` when `$0` is ash) |
+| 2026-10-12 | Active (1.2.1) | `.zprofile` **points** at `requirement-shell-startup-files`. Orchestrator calls `path_add_zprofile` and does not pre-assign `ZPROFILE` |
 
 **Last Updated**: 2026-09-22  
 **Owner**: agent-cli project maintainers  

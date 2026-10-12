@@ -1,7 +1,7 @@
 **file**: docs/requirements/requirement-shell-zshenv.md  
 
 > Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
-**Status**: Active (Version 1.0.0)  
+**Status**: Active (Version 1.0.1)  
 **Area**: shell  
 **Key**: `requirement-shell-zshenv`  
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -13,7 +13,7 @@ This file is the **topic-owner** for **zsh PATH** on agent-cli. After a **user-b
 It owns **zshenv path-ensure**: one shared `USER_BIN` export on `.zshenv` (`ZSHENV`). It does **not** write PATH to `.zshrc`. Bash PATH, Fish PATH, and profile-ensure stay on `requirement-shell-path-and-shell-support`. Peer grok’s `# >>> grok installer >>>` block for `~/.grok/bin` is a **second** directory; when `$SHELL` is zsh, that block **MUST** land on `.zshenv` too (dual mention `requirement-grok-setup`).
 
 **Scope:** Which zsh file this product writes for PATH; create / append / no-op; `ZSHENV` env; `rc-test --file zshenv`; uninstall of this product’s stickers on `.zshenv` (and leftover `.zshrc` stickers).  
-**Out of scope (cited, not re-owned):** Bash / Fish / `.profile` (`requirement-shell-path-and-shell-support`); placing the binary (`requirement-shell-local-self-management` · `requirement-shell-online-install`); peer grok fetch (`requirement-grok-setup`).
+**Out of scope (cited, not re-owned):** Bash / Fish / `.profile` (`requirement-shell-path-and-shell-support`); placing the binary (`requirement-shell-local-self-management` · `requirement-shell-online-install`); peer grok fetch (`requirement-grok-setup`); zsh login PATH on `.zprofile` (`requirement-shell-startup-files`). Setting `ZSHENV` does **not** create `.zprofile`.
 
 **Not claimed:** login-review hook in `.zshenv` or `.zshrc`; Type 1 `chown` of another login’s home; `/etc/environment`.
 
@@ -270,6 +270,7 @@ Work claiming zsh PATH support for agent-cli is **not done** if any of the follo
 | `docs/requirements/requirement-shell-online-install.md` | Channel place / already-installed skip **call site** |
 | `docs/requirements/requirement-shell-self-management.md` | `self-update` / `self-uninstall` **call site** |
 | `docs/requirements/requirement-shell-modular-function-design.md` | `path_add_zshenv` prefix |
+| `docs/requirements/requirement-shell-startup-files.md` | Family owner. `.zprofile` PATH. This file does not write `.zprofile` |
 | `docs/requirements/requirement-grok-setup.md` | Vendor grok PATH block on `.zshenv` when `$SHELL` is zsh |
 | `docs/requirements/requirement-class-software-dev.md` | Leftover pointer |
 | `./src/agent-cli` | Implementation under test |
@@ -293,6 +294,7 @@ Work claiming zsh PATH support for agent-cli is **not done** if any of the follo
 | Date | Status | Note |
 |------|--------|------|
 | 2026-09-17 | Active (1.0.0) | Independent zsh PATH owner: `.zshenv` instead of `.zshrc` |
+| 2026-10-12 | Active (1.0.1) | `.zprofile` points at `requirement-shell-startup-files`. A set `ZSHENV` does not create it |
 
 **Last Updated**: 2026-09-17  
 **Owner**: agent-cli project maintainers  

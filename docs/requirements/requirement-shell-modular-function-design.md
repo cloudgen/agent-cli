@@ -1,7 +1,7 @@
 **file**: docs/requirements/requirement-shell-modular-function-design.md  
 
 > Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
-**Status**: Active (Version 1.1.1)  
+**Status**: Active (Version 1.1.2)  
 **Area**: shell  
 **Key**: `requirement-shell-modular-function-design`  
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -52,7 +52,7 @@ One file `src/agent-cli` with prefixes: `out_`, `inst_`, `app_`, `gc_` for grok 
 | `inst_` | Installation lifecycle | Local install/uninstall detect and place/remove | `inst_local_install`, `inst_local_uninstall`, `inst_is_installed` |
 | `util_` | General utilities | Path resolve, storage, safe helpers, named volatile internal-timer | `util_resolve_storage`, `util_get_install_bin_path`, `util_int_timer_start` |
 | `app_` | Cross-cutting CLI surface | Entry, dispatch, about/help/version/where-is-me | `app_main`, `app_about`, `app_help`, `app_version`, `app_where_is_me` |
-| `path_` | Shell PATH & environment | PATH + profile ensure after user install | `path_add_shell`, `path_add_bashrc`, `path_add_zshenv`, `path_ensure_profile`, `path_rc_test` |
+| `path_` | Shell PATH & environment | PATH + profile ensure after user install | `path_add_shell`, `path_add_bashrc`, `path_add_zshenv`, `path_add_zprofile`, `path_ensure_profile`, `path_rc_test` |
 | `prompt_` | Interactive prompts | TTY-safe confirmations | `prompt_yes_no` |
 | `gc_` | Domain business logic | Grok auth backup/sync + sudoers fragment | `gc_backup`, `gc_check_session`, `gc_sync_auth`, `gc_print_sudoers` |
 
@@ -167,6 +167,7 @@ Detect: Termux — `uname` contains Android, or `PREFIX` / `TERMUX_VERSION` is s
 |------|--------|------|
 | 2026-08-03 | Active | Modular prefixes for folder-backup |
 | 2026-09-17 | Active (1.1.1) | `path_add_zshenv` listed (zsh PATH owner `requirement-shell-zshenv`) |
+| 2026-10-12 | Active (1.1.2) | `path_add_zprofile` listed (owner `requirement-shell-startup-files`) |
 
 ---
 

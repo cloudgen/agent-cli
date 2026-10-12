@@ -116,6 +116,7 @@ When agent-cli runs on Termux, Git Bash, Windows cmd, or the same class (this lo
 | `requirement-shell-path-and-shell-support.md` | Orchestrator; bash source-bashrc block; not the ash PATH line |
 | `requirement-shell-cli-interface.md` | `rc-test --file ash` dual mention |
 | `requirement-shell-zshenv.md` | Zsh peer; does not own `.profile` |
+| `requirement-shell-startup-files.md` | Family matrix. This file still owns ash PATH on `.profile` |
 | `src/agent-cli` | `path_invoking_is_ash`, `path_add_profile_ash` |
 
 ## 7. Status history
