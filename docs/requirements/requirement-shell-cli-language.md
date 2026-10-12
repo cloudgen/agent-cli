@@ -1,24 +1,24 @@
 **file**: docs/requirements/requirement-shell-cli-language.md
 
 > Ship unit: AgentCli is Python. Behavioral MUST rules in this file stay. POSIX function names are behavior names. Python class methods implement them. Empty argv off a terminal prints help and returns 0. The shell Type O curl|sh ensure specializes to pip self-install because the ship unit is Python. Peer binary remains `grok`. Auth files remain under `~/.grok`.
-**Status**: Active (Version 1.1.2)
+**Status**: Active (Version 1.2.0)
 **Area**: shell
 **Key**: `requirement-shell-cli-language`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
 
 ## 1. Purpose
 
-This requirement is the product law for **menu language** on agent-cli. The thirteen codes and the order **51–63** match sshd-cli: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. It owns the language codes, the saved file, which boards follow the code, and the words those boards print.
+This requirement is the product law for **menu language** on agent-cli. The thirteen codes and the order **80–92** match sshd-cli: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. It owns the language codes, the saved file, which boards follow the code, and the words those boards print.
 
-Which row is **5**, and how Back and Exit behave on the numbered tree, stays owned by `requirement-shell-cli-default-interaction`. The persistence directory stays owned by `requirement-shell-cli-storage`. This file owns the `language` leaf and the copy.
+Which row is **7**, and how Back and Exit behave on the numbered tree, stays owned by `requirement-shell-cli-default-interaction`. The persistence directory stays owned by `requirement-shell-cli-storage`. This file owns the `language` leaf and the copy.
 
 ### 1.1 Human-facing
 
-**In one sentence:** Menu **5** chooses one of thirteen languages, **51** English through **63** Ελληνικά, for the numbered menu, for human `help`, and for human `about`, and the next run opens in that language.
+**In one sentence:** Menu **7** chooses one of thirteen languages, **80** English through **92** Ελληνικά, for the numbered menu, for human `help`, and for human `about`, and the next run opens in that language.
 
 | Includes | Excludes |
 |----------|----------|
-| Codes `en`, `zh-Hans`, `zh-Hant`, `es`, `ar`, `fr`, `pt`, `ru`, `de`, `ja`, `ko`, `nl`, and `el`; front **5** / block **50–69** (assigned **51–63**); human `help` and human `about` | Translating command output, argv `version`, JSON about fields, or the setup keep / reinstall list |
+| Codes `en`, `zh-Hans`, `zh-Hant`, `es`, `ar`, `fr`, `pt`, `ru`, `de`, `ja`, `ko`, `nl`, and `el`; front **7** / assigned **80–92** (reserved **70–79** and **93–98**); human `help` and human `about` | Translating command output, argv `version`, JSON about fields, or the setup keep / reinstall list |
 | File `${HOME}/.local/${APP_NAME}/language` | Putting that file in the cache folder or under `/var/agent-cli` |
 
 ## 2. Core Rules / Requirements (Mandatory)
@@ -29,21 +29,21 @@ Which row is **5**, and how Back and Exit behave on the numbered tree, stays own
 
 | Code | Name on the language board | Number | Default |
 |------|----------------------------|--------|---------|
-| `en` | English | **51** | yes |
-| `zh-Hans` | 简体中文 | **52** | no |
-| `zh-Hant` | 繁體中文 | **53** | no |
-| `es` | Español | **54** | no |
-| `ar` | العربية | **55** | no |
-| `fr` | Français | **56** | no |
-| `pt` | Português | **57** | no |
-| `ru` | Русский | **58** | no |
-| `de` | Deutsch | **59** | no |
-| `ja` | 日本語 | **60** | no |
-| `ko` | 한국어 | **61** | no |
-| `nl` | Nederlands | **62** | no |
-| `el` | Ελληνικά | **63** | no |
+| `en` | English | **80** | yes |
+| `zh-Hans` | 简体中文 | **81** | no |
+| `zh-Hant` | 繁體中文 | **82** | no |
+| `es` | Español | **83** | no |
+| `ar` | العربية | **84** | no |
+| `fr` | Français | **85** | no |
+| `pt` | Português | **86** | no |
+| `ru` | Русский | **87** | no |
+| `de` | Deutsch | **88** | no |
+| `ja` | 日本語 | **89** | no |
+| `ko` | 한국어 | **90** | no |
+| `nl` | Nederlands | **91** | no |
+| `el` | Ελληνικά | **92** | no |
 
-**MUST** accept only these thirteen codes in this version. **MUST** treat a missing file, an empty file, or any other first line as English for this process. **MUST NOT** rewrite a file whose first line is not one of these codes. **MUST NOT** add a fourteenth code without a new revision of this file. Numbers **50** through **69** are the only language rows (not more than 20 languages). **50** and **64** through **69** are reserved and are not printed.
+**MUST** accept only these thirteen codes in this version. **MUST** treat a missing file, an empty file, or any other first line as English for this process. **MUST NOT** rewrite a file whose first line is not one of these codes. **MUST NOT** add a fourteenth code without a new revision of this file. Assigned language rows are **80** through **92**. **70** through **79** and **93** through **98** are reserved and are not printed. Those gaps leave room for a later language.
 
 The short names **English**, **简体中文**, **繁體中文**, **Español**, **العربية**, **Français**, **Português**, **Русский**, **Deutsch**, **日本語**, **한국어**, **Nederlands**, and **Ελληνικά** are the same words in every language (each language’s own name).
 
@@ -57,29 +57,29 @@ The short names **English**, **简体中文**, **繁體中文**, **Español**, *
 
 ### 2.3 Menu numbers
 
-Front **5** opens the language board on every host, including Termux, Git Bash, and Windows cmd. It is not a hide cause. Front **6** is not a row. Choosing **6** warns and does not open the language board and does not write the file. **51** saves `en`. **52** saves `zh-Hans`. **53** saves `zh-Hant`. **54** saves `es`. **55** saves `ar`. **56** saves `fr`. **57** saves `pt`. **58** saves `ru`. **59** saves `de`. **60** saves `ja`. **61** saves `ko`. **62** saves `nl`. **63** saves `el`. Each is a valid leaf: an info line names the language, then the front board redisplays in that language.
+Front **7** opens the language board on every host, including Termux, Git Bash, and Windows cmd. It is not a hide cause. Front **8** is not a row. Choosing **8** warns and does not open the language board and does not write the file. **80** saves `en`. **81** saves `zh-Hans`. **82** saves `zh-Hant`. **83** saves `es`. **84** saves `ar`. **85** saves `fr`. **86** saves `pt`. **87** saves `ru`. **88** saves `de`. **89** saves `ja`. **90** saves `ko`. **91** saves `nl`. **92** saves `el`. Each is a valid leaf: an info line names the language, then the front board redisplays in that language.
 
-**0** / `q` / empty / `back` is Back and does not write the file. **9** / `exit` / `quit` leaves the program, the same as the other grok submenus. EOF leaves the program. An invalid choice, including **50** and **64** through **69**, `out_error` and reprints this board. **MUST NOT** `out_die`.
+**0** / `q` / empty / `back` is Back and does not write the file. **9** / `exit` / `quit` leaves the program, the same as the other grok submenus. EOF leaves the program. An invalid choice, including **70** and **79** and **93** through **98**, `out_error` and reprints this board. **MUST NOT** `out_die`.
 
-`language` is not an argv verb. Typed `language`, `語言`, `语言`, `idioma`, `langue`, `Sprache`, `sprache`, `言語`, `언어`, `لغة`, `язык`, `taal`, and `γλώσσα` on the front board open it when row **5** is listed (it always is).
+`language` is not an argv verb. Typed `language`, `語言`, `语言`, `idioma`, `langue`, `Sprache`, `sprache`, `言語`, `언어`, `لغة`, `язык`, `taal`, and `γλώσσα` on the front board open it when row **7** is listed (it always is).
 
 The language board also accepts:
 
 | Row | Typed tokens |
 |-----|----------------|
-| **51** | `english`, `en`, `English` |
-| **52** | `simplified-chinese`, `zh-hans`, `zh-Hans`, `简体中文` |
-| **53** | `traditional-chinese`, `zh-hant`, `zh-Hant`, `繁體中文` |
-| **54** | `spanish`, `es`, `Español`, `español` |
-| **55** | `arabic`, `ar`, `العربية`, `عربي` |
-| **56** | `french`, `fr`, `Français`, `français` |
-| **57** | `portuguese`, `pt`, `Português`, `português`, `portugues` |
-| **58** | `russian`, `ru`, `Русский`, `русский` |
-| **59** | `german`, `de`, `Deutsch`, `deutsch` |
-| **60** | `japanese`, `ja`, `日本語` |
-| **61** | `korean`, `ko`, `한국어` |
-| **62** | `dutch`, `nl`, `Nederlands`, `nederlands` |
-| **63** | `greek`, `el`, `Ελληνικά`, `ελληνικά` |
+| **80** | `english`, `en`, `English` |
+| **81** | `simplified-chinese`, `zh-hans`, `zh-Hans`, `简体中文` |
+| **82** | `traditional-chinese`, `zh-hant`, `zh-Hant`, `繁體中文` |
+| **83** | `spanish`, `es`, `Español`, `español` |
+| **84** | `arabic`, `ar`, `العربية`, `عربي` |
+| **85** | `french`, `fr`, `Français`, `français` |
+| **86** | `portuguese`, `pt`, `Português`, `português`, `portugues` |
+| **87** | `russian`, `ru`, `Русский`, `русский` |
+| **88** | `german`, `de`, `Deutsch`, `deutsch` |
+| **89** | `japanese`, `ja`, `日本語` |
+| **90** | `korean`, `ko`, `한국어` |
+| **91** | `dutch`, `nl`, `Nederlands`, `nederlands` |
+| **92** | `greek`, `el`, `Ελληνικά`, `ελληνικά` |
 
 The front board also accepts the displayed category short: `grok-auth`, `grok 認證`, `grok 认证`, `autenticación grok`, `authentification grok`, `grok-Anmeldung`, `grok 認証`, `grok 인증`, `مصادقة grok`, `autenticação grok`, `вход grok`, `grok-aanmelding`, `σύνδεση grok`; `self-management`, `自我管理`, `autogestión`, `autogestion`, `Selbstverwaltung`, `selbstverwaltung`, `自己管理`, `자기관리`, `إدارة-ذاتية`, `autogestão`, `самоуправление`, `zelfbeheer`, `αυτοδιαχείριση`. The sudoers short stays `sudoers` in every language.
 
@@ -107,7 +107,7 @@ Category shorts:
 | self-management | самоуправление | Selbstverwaltung | 自己管理 | 자기관리 | zelfbeheer | αυτοδιαχείριση |
 | sudoers | sudoers | sudoers | sudoers | sudoers | sudoers | sudoers |
 
-English front longs: grok-auth `Backup, sync, crontab, setup, and reinstall`; language `display language for this menu`; sudoers `Grant and drafts`; self-management `Check, update, or remove agent-cli`; run `Start grok without auto-update`. The other twelve languages use the same meaning through `app_menu_text`.
+English front longs: grok-auth `backup, sync, crontab, setup, and reinstall`; language `display language for this menu`; sudoers `grant and drafts`; self-management `check, update, or remove this package`; run `start grok without auto-update`. The other twelve languages use the same meaning through `app_menu_text`.
 
 Language-board longs (English): `use English for this menu`, `use Simplified Chinese for this menu`, `use Traditional Chinese for this menu`, `use Spanish for this menu`, `use Arabic for this menu`, `use French for this menu`, `use Portuguese for this menu`, `use Russian for this menu`, `use German for this menu`, `use Japanese for this menu`, `use Korean for this menu`, `use Dutch for this menu`, `use Greek for this menu`.
 
@@ -143,14 +143,14 @@ A failed write warns in the language that was current before the failed write, l
 
 | TP family / ID | Suite | Status |
 |----------------|-------|--------|
-| **TP-CLI-32** | `tests/test_cli.sh` | have (front **5** / block **50–69**, assigned **51–63**, **50** and **64–69** unprinted, front **6** does not open the board, save mode 0600, `AGENT_CLI_LANG` override, Back does not write, next run uses the file, help and about follow the code) |
-| **TP-CLI-13** · **TP-CLI-19** · **TP-CLI-20** · **TP-CLI-30** | `tests/test_cli.sh` | have (English front still matches; **5** opens language; unused front integer is **4**; on Termux the unused integer that replaced **5** is **6**) |
+| **TP-CLI-32** | `tests/test_cli.sh` | have (front **7** / assigned **80–92**, **70–79** and **93–98** unprinted, front **8** does not open the board, save mode 0600, `AGENT_CLI_LANG` override, Back does not write, next run uses the file, help and about follow the code) |
+| **TP-CLI-13** · **TP-CLI-19** · **TP-CLI-20** · **TP-CLI-30** | `tests/test_cli.sh` | have (English front still matches; **7** opens language; unused front integer is **4**; on Termux the unused integer that replaced omitted sudoers is **8**, not **6**) |
 
 **Matrix:** `reviews/requirement-test-matrix.md`
 **Map:** `reviews/test-plan.md`
 
 ---
 
-**Last Updated**: 2026-10-10 (1.1.2 — logged-out hide sentence names `backup`. 1.1.1 also named `sync-auth-to-remote`.)
+**Last Updated**: 2026-10-12 (1.2.0 — front **7**; assigned **80–92**; reserved **70–79** and **93–98**. 1.1.2 kept front **5** / **51–63**.)
 **Owner**: product
 **Alignment**: `requirement-shell-cli-default-interaction` · `requirement-shell-cli-storage` · `requirement-shell-cli-interface` · CIAO / CIAO-Lite

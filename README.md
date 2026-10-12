@@ -1,6 +1,6 @@
 # AgentCli - Install and run xAI grok, and back up its auth files
 
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue?style=flat-square)](https://github.com/cloudgen/agent-cli)
+[![Version](https://img.shields.io/badge/Version-1.1.0-blue?style=flat-square)](https://github.com/cloudgen/agent-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](LICENSE.md)
 [![CIAO](https://img.shields.io/badge/CIAO-Defensive%20Programming-orange?style=flat-square)](https://github.com/cloudgen/ciao)
 [![Stars](https://img.shields.io/github/stars/cloudgen/agent-cli?style=flat-square)](https://github.com/cloudgen/agent-cli)
@@ -13,17 +13,17 @@ AgentCli installs and runs the peer binary `grok`, and it backs up `~/.grok` aut
 
 - Console script `agent-cli` and module entry `python -m AgentCli`.
 - On a terminal with no arguments, the text menu opens. The first row names the current directory on the left and a local clock (`HH:MM:SS`) on the right when the row has room.
-- Multi-user front rows are **1 grok-auth**, **3 system-log**, **5 language**, **7 sudoers**, **8 self-management**, and **9 Exit**. A this-login-only host shows **2 run** and hides **7**.
+- Multi-user front rows are **1 grok-auth**, **5 sudoers**, **6 self-management**, **7 language**, and **9 Exit**. A this-login-only host shows **2 run** and hides **5**. **3**, **4**, and **8** are not rows. Typing `system-log` opens view, clear, and the log folder.
 - **grok-auth** covers session, backup, sync, crontab, setup, and reinstall. **sudoers** covers the backup grant only.
-- Thirteen menu languages, codes **51**–**63**. The saved leaf is `~/.local/agent-cli/language`. `AGENT_CLI_LANG` overrides one process and does not write the file. `language` is not a typed verb.
+- Thirteen menu languages, codes **80**–**92**. **70**–**79** and **93**–**98** stay unprinted so a later language can be added. The saved leaf is `~/.local/agent-cli/language`. `AGENT_CLI_LANG` overrides one process and does not write the file. `language` is not a typed verb.
 - **about** stays in English. It prints the domain line, the runtime tools, a host check, the cache tiers, and the persistence folder.
 - Pip lifecycle: `version-check`, `self-update`, `self-install`, and `self-uninstall`. Those verbs do not use sudo. `self-uninstall` on the command line needs `--force`.
 - Empty arguments on a terminal do not run pip and do not download `grok`. With no terminal and no verb, the program prints help and returns 0.
 
 ## Advantages
 
-1. **Two ways to do the work.** A menu number and the same typed verb share one action. `agent-cli hello` prints `Welcome to AgentCli 1.0.0.` and does not draw the menu. With no arguments on a terminal, the text menu opens and waits. With no terminal and no verb, the program prints help and returns 0.
-2. **Built-in languages.** Row **5** lists thirteen languages. The choice is saved for the next run. Leaf shorts stay English.
+1. **Two ways to do the work.** A menu number and the same typed verb share one action. `agent-cli hello` prints `Welcome to AgentCli 1.1.0.` and does not draw the menu. With no arguments on a terminal, the text menu opens and waits. With no terminal and no verb, the program prints help and returns 0.
+2. **Built-in languages.** Row **7** lists thirteen languages. The numbers are **80** through **92**. **70** through **79** and **93** through **98** stay unprinted so a later language can be added. The choice is saved for the next run. Leaf shorts stay English.
 3. **Cache and persistence.** Linux prefers `/dev/shm/cache`, then `/tmp/cache`, then a leaf under the home cache directory. A missed tier is silent. Persistence is `~/.local/agent-cli`. The about page names the tier this process selected.
 4. **A narrow root path.** The only elevated action is `agent-cli backup`, and only after an administrator installs a sudoers fragment whose argument is `backup`. Other verbs stay this login. Peer `grok` is fetched by `setup` from the vendor channel, then the public fallback. This package does not run a vendor shell installer.
 
@@ -33,9 +33,9 @@ AgentCli installs and runs the peer binary `grok`, and it backs up `~/.grok` aut
 | Welcome line | `agent-cli hello` | not a front row |
 | Peer binary | `agent-cli setup` | grok-auth row **15** |
 | Auth deposit | `agent-cli backup` | grok-auth row **11** when signed in |
-| Menu language | not a verb | row **5**, codes **51**–**63** |
-| This computer | `agent-cli about` | self-management row **83** |
-| Pip lifecycle | `version-check`, `self-update`, `self-install`, `self-uninstall` | rows **84**–**87** and **91**–**93** |
+| Menu language | not a verb | row **7**, codes **80**–**92** |
+| This computer | `agent-cli about` | typed `about`, not a numbered row |
+| Pip lifecycle | `version-check`, `self-update`, `self-install`, `self-uninstall` | rows **64**, **65**, and **66**. `self-install` is typed. **68** is `where-is-me` |
 
 ## Quick Installation
 
@@ -47,7 +47,7 @@ AgentCli installs and runs the peer binary `grok`, and it backs up `~/.grok` aut
 pip install AgentCli
 ```
 
-This installs the console entry **`agent-cli`** and the package **`AgentCli`**. Packaging name SSOT is `pyproject.toml` `[project].name` = `AgentCli`. This tree is **1.0.0**. The PyPI badge above shows the live index. Nothing in this tree uploads a release by itself.
+This installs the console entry **`agent-cli`** and the package **`AgentCli`**. Packaging name SSOT is `pyproject.toml` `[project].name` = `AgentCli`. This tree is **1.1.0**. The PyPI badge above shows the live index. Nothing in this tree uploads a release by itself.
 
 From a checkout:
 
@@ -64,11 +64,10 @@ After install, on a terminal, `agent-cli` with no arguments prints this screen. 
 ```text
 $ agent-cli
 Path: <current directory>                                          HH:MM:SS
-1. grok-auth      : session, backup, and setup
-3. system-log     : view, clear, and the log folder
-5. language       : display language for this menu
-7. sudoers        : grant backup as root
-8. self-management: version, about, and pip lifecycle
+1. grok-auth      : backup, sync, crontab, setup, and reinstall
+5. sudoers        : grant and drafts
+6. self-management: check, update, or remove this package
+7. language       : display language for this menu
 9. Exit           : leave
 ```
 
@@ -100,7 +99,7 @@ agent-cli self-install
 agent-cli self-uninstall --force
 ```
 
-`version` prints `AgentCli 1.0.0` and does not call pip. `about` shows one English page: the product identity, a host check of this computer, the cache tiers, the persistence folder, and a star box. It does not call pip. `hello` prints `Welcome to AgentCli 1.0.0.` and does not draw the menu. `help` prints usage.
+`version` prints `AgentCli 1.1.0` and does not call pip. `about` shows one English page: the product identity, a host check of this computer, the cache tiers, the persistence folder, and a star box. It does not call pip. `hello` prints `Welcome to AgentCli 1.1.0.` and does not draw the menu. `help` prints usage.
 
 `setup` downloads peer `grok` for this platform and links `~/.grok/bin/grok`. `backup` copies `auth.*` into `/var/agent-cli` when this login may run that one command as root. `sync-auth` copies the deposit back and skips that copy when grok is already signed in. `add-crontab` stays closed until the backup grant is present.
 
@@ -113,119 +112,119 @@ main()
 
 ## Screenshots
 
-Each heading is the file name. The paragraph is what that picture shows. Package **1.0.0**. The path row is the current directory. The clock on these captures is `12:06:45`. Leaf shorts stay English.
+Each heading is the file name. The paragraph is what that picture shows. Package **1.1.0**. On these captures the path is `/tmp/agent-cli-shots` and the clock is `12:06:45`. Under the rounded input box, three light rows show the logged-out sentence `backup features are not available for logged-out environment.` The status line starts with `AgentCli 1.1.0`. Leaf shorts stay English. **1 grok-auth** is highlighted on each main menu.
 
 ### `language-menu.png`
 
-Row **5** has opened the language list. **51 English** is highlighted, with the note "use English for this menu." The other rows are **52 简体中文**, **53 繁體中文**, **54 Español**, **55 العربية**, **56 Français**, **57 Português**, **58 Русский**, **59 Deutsch**, **60 日本語**, **61 한국어**, **62 Nederlands**, and **63 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The local clock is on the right of that row. The status line says `language`.
+Row **7** has opened the language list. **80 English** is highlighted, with the note "use English for this menu." The other rows are **81 简体中文**, **82 繁體中文**, **83 Español**, **84 العربية**, **85 Français**, **86 Português**, **87 Русский**, **88 Deutsch**, **89 日本語**, **90 한국어**, **91 Nederlands**, and **92 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The status line says `language`.
 
-![Language list, 51 English highlighted](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/language-menu.png)
+![Language list, 80 English highlighted](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/language-menu.png)
 
 ### `main-menu-en.png`
 
-English main menu. The path label is `Path`. The local clock is on the right of that row. **1 grok-auth** is shown as "session, backup, and setup." Then **3 system-log**, **5 language**, **7 sudoers**, **8 self-management**, and **9 Exit**. The status line says `main menu`.
+English main menu. There is no saved-language line above the box. The path label is `Path`. **1 grok-auth** is "backup, sync, crontab, setup, and reinstall." Then **5 sudoers** "grant and drafts," **6 self-management** "check, update, or remove this package," **7 language** "display language for this menu," and **9 Exit** "leave." The status line says `main menu`.
 
 ![English main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-en.png)
 
 ### `main-menu-zh-hans.png`
 
-Simplified Chinese main menu. The path label is `路径`. **1 grok-auth** stays the English token. **3** is `系统日志`, **5** is `语言`, **7** stays `sudoers`, **8** is `自我管理`, and **9** is `离开`.
+Simplified Chinese main menu. The line above the box says `菜单语言是简体中文`. The path label is `路径`. **1 grok-auth** stays the English token. **5** stays `sudoers`. **6** is `自我管理`, **7** is `语言`, and **9** is `离开`. The status line says `主菜单`.
 
 ![Simplified Chinese main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-zh-hans.png)
 
 ### `main-menu-zh-hant.png`
 
-Traditional Chinese main menu. The path label is `路徑`. **3** is `系統日誌`, **5** is `語言`, **8** is `自我管理`, and **9** is `離開`.
+Traditional Chinese main menu. The line above the box says `選單語言是繁體中文`. The path label is `路徑`. **5** stays `sudoers`. **6** is `自我管理`, **7** is `語言`, and **9** is `離開`. The status line says `主選單`.
 
 ![Traditional Chinese main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-zh-hant.png)
 
 ### `main-menu-es.png`
 
-Spanish main menu. The path label is `Ruta`. **3** is `registro`, **5** is `idioma`, **8** is `autogestión`, and **9** is `Salir`.
+Spanish main menu. The line above the box says `El idioma del menú es español`. The path label is `Ruta`. **6** is `autogestión`, **7** is `idioma`, and **9** is `Salir`. The status line says `menú principal`.
 
 ![Spanish main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-es.png)
 
 ### `main-menu-ar.png`
 
-Arabic main menu. The path label is `المسار`. The numbers stay on the left. **3** is `سجل النظام`, **5** is `لغة`, **8** is `إدارة ذاتية`, and **9** is `خروج`.
+Arabic main menu. The line above the box says `لغة القائمة هي العربية`. The path label is `المسار`. The numbers stay on the left. **6** is `إدارة ذاتية`, **7** is `لغة`, and **9** is `خروج`. The status line says `القائمة الرئيسية`.
 
 ![Arabic main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-ar.png)
 
 ### `main-menu-fr.png`
 
-French main menu. The path label is `Chemin`. **3** is `journal`, **5** is `langue`, **8** is `autogestion`, and **9** is `Quitter`.
+French main menu. The line above the box says `La langue du menu est le français`. The path label is `Chemin`. **6** is `autogestion`, **7** is `langue`, and **9** is `Quitter`. The status line says `menu principal`.
 
 ![French main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-fr.png)
 
 ### `main-menu-pt.png`
 
-Portuguese main menu. The path label is `Caminho`. **3** is `registo`, **5** is `idioma`, **8** is `autogestão`, and **9** is `Sair`.
+Portuguese main menu. The line above the box says `O idioma do menu é português`. The path label is `Caminho`. **6** is `autogestão`, **7** is `idioma`, and **9** is `Sair`. The status line says `menu principal`.
 
 ![Portuguese main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-pt.png)
 
 ### `main-menu-ru.png`
 
-Russian main menu. The path label is `Путь`. **3** is `системный журнал`, **5** is `язык`, **8** is `самоуправление`, and **9** is `Выход`.
+Russian main menu. The line above the box says `Язык меню — русский`. The path label is `Путь`. **6** is `самоуправление`, **7** is `язык`, and **9** is `Выход`. The status line says `главное меню`.
 
 ![Russian main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-ru.png)
 
 ### `main-menu-de.png`
 
-German main menu. The path label is `Pfad`. **3** is `Systemprotokoll`, **5** is `Sprache`, **8** is `Selbstverwaltung`, and **9** is `Beenden`.
+German main menu. The line above the box says `Die Menüsprache ist Deutsch`. The path label is `Pfad`. **6** is `Selbstverwaltung`, **7** is `Sprache`, and **9** is `Beenden`. The status line says `Hauptmenü`.
 
 ![German main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-de.png)
 
 ### `main-menu-ja.png`
 
-Japanese main menu. The path label is `パス`. **3** is `システムログ`, **5** is `言語`, **8** is `自己管理`, and **9** is `終了`.
+Japanese main menu. The line above the box says `メニューの言語は日本語`. The path label is `パス`. **6** is `自己管理`, **7** is `言語`, and **9** is `終了`. The status line says `メインメニュー`.
 
 ![Japanese main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-ja.png)
 
 ### `main-menu-ko.png`
 
-Korean main menu. The path label is `경로`. **3** is `시스템 로그`, **5** is `언어`, **8** is `자기관리`, and **9** is `종료`.
+Korean main menu. The line above the box says `메뉴 언어는 한국어`. The path label is `경로`. **6** is `자기관리`, **7** is `언어`, and **9** is `종료`. The status line says `주 메뉴`.
 
 ![Korean main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-ko.png)
 
 ### `main-menu-nl.png`
 
-Dutch main menu. The path label is `Pad`. **3** is `systeemlog`, **5** is `taal`, **8** is `zelfbeheer`, and **9** is `Afsluiten`.
+Dutch main menu. The line above the box says `De menutaal is Nederlands`. The path label is `Pad`. **6** is `zelfbeheer`, **7** is `taal`, and **9** is `Afsluiten`. The status line says `hoofdmenu`.
 
 ![Dutch main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-nl.png)
 
 ### `main-menu-el.png`
 
-Greek main menu. The path label is `Διαδρομή`. **3** is `αρχείο καταγραφής`, **5** is `γλώσσα`, **8** is `αυτοδιαχείριση`, and **9** is `Έξοδος`.
+Greek main menu. The line above the box says `Η γλώσσα του μενού είναι ελληνικά`. The path label is `Διαδρομή`. **6** is `αυτοδιαχείριση`, **7** is `γλώσσα`, and **9** is `Έξοδος`. The status line says `κύριο μενού`.
 
 ![Greek main menu](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/main-menu-el.png)
 
 ### `system-log.png`
 
-Row **3** has opened system-log. **31 view-log** is "list a log file and show it." Then **32 clear-log**, **33 log-folder**, and **0 Back**. The path label is `Path`. The local clock is on the right of that row. The status line says `system-log`.
+Typing `system-log` has opened that board. **31 view-log** is highlighted: "list a log file and show it." Then **32 clear-log**, **33 log-folder**, and **0 Back**. The path label is `Path`. The status line says `system-log`. **3** is not a front row.
 
 ![System log, 31 view-log](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/system-log.png)
 
 ### `self-management.png`
 
-Row **8** has opened self-management. **82 version** is "show the installed version." **83 about** is "version and this computer." **84** and **91** are version-check. **85** and **92** are self-update. **86** and **93** are self-uninstall. **87** is self-install. **94 where-is-me** shows agent-cli and grok. **0 Back** returns to the main menu. The local clock is `12:06:45`.
+Row **6** has opened self-management. **64 version-check** is highlighted: "compare this install with pip." Then **65 self-update**, **66 self-uninstall**, **68 where-is-me**, and **0 Back**. The path label is `Path`. The status line says `self-management`.
 
-![Self-management, version and pip lifecycle](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/self-management.png)
+![Self-management, 64 version-check](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/self-management.png)
 
 ### `grok-auth.png`
 
-**1 grok-auth** on a multi-user host while the session word is `missing`. The board shows **12 sync-auth-from-remote**, **13 sync-auth**, **14 add-crontab**, **15 setup**, **16 reinstall**, and **0 Back**. A signed-in session shows **11 backup** instead of the sync rows. The local clock is on the path row.
+**1 grok-auth** on a multi-user host while the session word is missing. The board shows **12 sync-auth-from-remote**, **13 sync-auth**, **14 add-crontab**, **15 setup**, **16 reinstall**, and **0 Back**. A signed-in session shows **11 backup** instead of the sync rows. The status line says `grok-auth`.
 
 ![Logged-out grok-auth board](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/grok-auth.png)
 
 ### `sudoers.png`
 
-Row **7** has opened sudoers. The rows are **1 generate-sudoer-request**, **2 submit-sudoer-request**, **3 print-sudoers**, **4 print-sudoers-install-script**, **5 remove-project-sudoers**, and **0 Back**. The grant argument is `backup` only.
+Row **5** has opened sudoers. The rows are **51 generate-sudoer-request**, **52 submit-sudoer-request**, **53 print-sudoers**, **54 print-sudoers-install-script**, **55 remove-project-sudoers**, and **0 Back**. The grant argument is `backup` only. The status line says `sudoers`.
 
 ![Sudoers board, backup grant only](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/sudoers.png)
 
 ### `tui-about.png`
 
-**about** stays in English. The page prints `AgentCli 1.0.0`, `Domain: Install and run xAI grok, and back up its auth files.`, `Runtime tools: curl, grok`, and `Entry points: agent-cli, python -m AgentCli`. The host check is headed `[CHECK SYSTEM]:` and includes the cache lines: cache folder used, preferred, 1st fallback, 2nd fallback, and persistence storage. There is no input box. The page does not call pip.
+**about** on the result page. The title is `AgentCli (1.1.0) — result`. The page prints `AgentCli 1.1.0`, `Domain: Install and run xAI grok, and back up its auth files.`, `Runtime tools: curl, grok`, and `Entry points: agent-cli, python -m AgentCli`. The host check is headed `[CHECK SYSTEM]:` and includes the cache lines. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English.
 
 ![About page with cache lines](https://raw.githubusercontent.com/cloudgen/agent-cli/main/screenshots/tui-about.png)
 
@@ -239,13 +238,13 @@ agent-cli about
 agent-cli setup
 ```
 
-`version` prints `AgentCli 1.0.0` and does not call pip. A run that is not the text menu can also print ChronicleLogger status lines above that. The text menu keeps those lines off the screen.
+`version` prints `AgentCli 1.1.0` and does not call pip. A run that is not the text menu can also print ChronicleLogger status lines above that. The text menu keeps those lines off the screen.
 
 ```bash
 agent-cli hello
 ```
 
-That prints `Welcome to AgentCli 1.0.0.` and does not draw the menu.
+That prints `Welcome to AgentCli 1.1.0.` and does not draw the menu.
 
 ## Platform Compatibility
 
@@ -277,4 +276,4 @@ Copyright (c) 2026 cloudgen.
 
 ## Last Update
 
-2026-10-11 — **1.0.0**. The package name is **AgentCli** and the console script is `agent-cli`. The text menu keeps the path line, the local clock (`HH:MM:SS`), the three-row input box, and the status line. Front rows are grok-auth, system-log, language, sudoers, self-management, and Exit. Language codes are **51**–**63**. The about page names the cache tiers. `ChronicleLogger>=1.3.1` is required. Pictures in `screenshots/` match this menu.
+2026-10-12 — **1.1.0**. Front rows are **1 grok-auth**, **5 sudoers**, **6 self-management**, **7 language**, and **9 Exit**. Language codes are **80**–**92**, with **70**–**79** and **93**–**98** left unprinted. Self-management lists **64**, **65**, **66**, and **68**. Typing `system-log` opens **31**–**33**. Under the input box, three light rows name features that are not available. The path line, the local clock (`HH:MM:SS`), and the status line stay. Pictures in `screenshots/` match this menu.

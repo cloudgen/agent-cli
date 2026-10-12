@@ -9,6 +9,8 @@ from __future__ import annotations
 
 from collections.abc import Callable
 
+import curses
+
 from .menu_model import MenuModel
 from .menu_painter import MenuPainter
 
@@ -84,14 +86,35 @@ class MenuSession:
                 logger=self.logger,
             )
         while True:
-            self.painter.paint(screen, self.model, self.app_name, self.version)
+            height, width = screen.getmaxyx()
+            if not self.painter.screen_can_hold(height, width):
+                self._paint_too_small(screen)
+            else:
+                self.painter.paint(screen, self.model, self.app_name, self.version)
             _height, _width = screen.getmaxyx()
             key = self.wait_key(screen)
-            if key is None:
+            if key is None or MenuPainter.is_resize(key):
+                if MenuPainter.is_resize(key):
+                    MenuPainter.note_resize()
                 continue
             action = self.model.apply_key(key, _height)
             if self.take_action(action) == "exit":
                 return 0
+
+    def _paint_too_small(self, screen) -> None:
+        """One line while a resize is too small. The next larger size draws the board again."""
+        try:
+            screen.erase()
+        except curses.error:
+            return
+        self.painter._put(
+            screen,
+            0,
+            0,
+            "The text screen is too small for the menu and the input box.",
+        )
+        if hasattr(screen, "refresh"):
+            screen.refresh()
 
     def take_action(self, action) -> str:
         """Run one committed kind. A language pick saves, then returns to the front board."""

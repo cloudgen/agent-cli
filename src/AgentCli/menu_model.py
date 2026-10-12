@@ -15,8 +15,8 @@ class MenuModel:
 
     boards, when set, replaces the rows for this session. Omit boards and
     the painter supplies the live rows, so a language save repaints them.
-    Front rows are grok-auth, system-log, language, sudoers, self-management, and Exit.
-    This-login-only shows run and hides sudoers. System-log is under 3. Language is under 5.
+    Multi-user front rows are grok-auth, sudoers, self-management, language, and Exit.
+    This-login-only shows run and hides sudoers. Language is under 7. Front 3, 4, and 8 are not rows.
     """
 
     def __init__(self, boards: dict | None = None, logger=None, painter=None) -> None:
@@ -80,6 +80,8 @@ class MenuModel:
         wait never arrives here as -1. A saved-language notice lasts until
         the next key.
         """
+        if MenuPainter.is_resize(key):
+            return None
         self.notice = ""
         if key == 27:
             if self.phase == "result" or self.layer != "front":

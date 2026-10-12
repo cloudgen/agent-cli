@@ -189,43 +189,39 @@ class TestWideColumns(unittest.TestCase):
 
             expected = {
                 "zh-Hans": [
-                    "1. grok-auth: session, backup, and setup",
-                    "3. 系统日志 : 查看、清空，以及日志文件夹",
-                    "5. 语言     : 此菜单的显示语言",
-                    "7. sudoers  : grant backup as root",
-                    "8. 自我管理 : 版本、关于，以及 pip 生命周期",
+                    "1. grok-auth: backup, sync, crontab, setup, and reinstall",
+                    "5. sudoers  : grant and drafts",
+                    "6. 自我管理 : 检查、更新，或移除此包",
+                    "7. 语言     : 此菜单的显示语言",
                     "9. 离开     : 离开",
                 ],
                 "zh-Hant": [
-                    "1. grok-auth: session, backup, and setup",
-                    "3. 系統日誌 : 查看、清空，以及日誌資料夾",
-                    "5. 語言     : 這個選單的顯示語言",
-                    "7. sudoers  : grant backup as root",
-                    "8. 自我管理 : 版本、關於，以及 pip 生命週期",
+                    "1. grok-auth: backup, sync, crontab, setup, and reinstall",
+                    "5. sudoers  : grant and drafts",
+                    "6. 自我管理 : 檢查、更新，或移除此套件",
+                    "7. 語言     : 這個選單的顯示語言",
                     "9. 離開     : 離開",
                 ],
                 "ko": [
-                    "1. grok-auth  : session, backup, and setup",
-                    "3. 시스템 로그: 보기, 비우기, 로그 폴더",
-                    "5. 언어       : 이 메뉴의 표시 언어",
-                    "7. sudoers    : grant backup as root",
-                    "8. 자기관리   : 버전, 정보, pip 수명 주기",
-                    "9. 종료       : 종료",
+                    "1. grok-auth: backup, sync, crontab, setup, and reinstall",
+                    "5. sudoers  : grant and drafts",
+                    "6. 자기관리 : 확인, 업데이트, 또는 이 패키지 제거",
+                    "7. 언어     : 이 메뉴의 표시 언어",
+                    "9. 종료     : 종료",
                 ],
                 "ja": [
-                    "1. grok-auth   : session, backup, and setup",
-                    "3. システムログ: 表示、消去、ログフォルダ",
-                    "5. 言語        : このメニューの表示言語",
-                    "7. sudoers     : grant backup as root",
-                    "8. 自己管理    : バージョン、概要、pip のライフサイクル",
-                    "9. 終了        : 終了",
+                    "1. grok-auth: backup, sync, crontab, setup, and reinstall",
+                    "5. sudoers  : grant and drafts",
+                    "6. 自己管理 : 確認、更新、またはこのパッケージの削除",
+                    "7. 言語     : このメニューの表示言語",
+                    "9. 終了     : 終了",
                 ],
             }
             shorts = {
-                "zh-Hans": ("语言", "系统日志", "自我管理", "离开"),
-                "zh-Hant": ("語言", "系統日誌", "自我管理", "離開"),
-                "ko": ("언어", "시스템 로그", "자기관리", "종료"),
-                "ja": ("言語", "システムログ", "自己管理", "終了"),
+                "zh-Hans": ("语言", "自我管理", "离开"),
+                "zh-Hant": ("語言", "自我管理", "離開"),
+                "ko": ("언어", "자기관리", "종료"),
+                "ja": ("言語", "自己管理", "終了"),
             }
             for code, words in shorts.items():
                 os.environ["AGENT_CLI_LANG"] = code
@@ -297,6 +293,326 @@ class TestWideColumns(unittest.TestCase):
                     os.environ.pop(name, None)
                 else:
                     os.environ[name] = value
+
+
+class TestUnavailableBand(unittest.TestCase):
+    """TP-TUI-11. Light lines under the box. The status line is the last row."""
+
+    def _painter(self, override, word):
+        from AgentCli.host import Host
+
+        painter = MenuPainter()
+        painter.host = Host(environ={"AGENT_CLI_HOST_OVERRIDE": override})
+        painter.session_word = word
+        painter.clock_text = lambda: "12:00:00"
+        return painter
+
+    def test_tp_tui_11_band_under_the_box(self):
+        """TP-TUI-11: sentences, chrome height, last-row status, no result-page band."""
+        from AgentCli.menu_model import MenuModel
+
+        logged_out = MenuPainter.LOGGED_OUT_UNAVAILABLE
+        logged_in = MenuPainter.LOGGED_IN_UNAVAILABLE
+        host_termux = MenuPainter.HOST_UNAVAILABLE.format(label="termux")
+        host_gitbash = MenuPainter.HOST_UNAVAILABLE.format(label="gitbash")
+        host_windows = MenuPainter.HOST_UNAVAILABLE.format(label="windows-cmd")
+
+        multi = self._painter("multiuser", "missing")
+        self.assertEqual(MenuPainter.NOTICE_ROWS, 3)
+        self.assertEqual(multi.unavailable_lines(), (logged_out,))
+        self.assertEqual(
+            multi.chrome_rows(),
+            MenuPainter.FRAME_ROWS + MenuPainter.NOTICE_ROWS + MenuPainter.FOOTER_ROWS,
+        )
+        self.assertEqual(self._painter("termux", "missing").chrome_rows(), multi.chrome_rows())
+        self.assertEqual(self._painter("multiuser", "timeout").unavailable_lines(), (logged_out,))
+        self.assertEqual(self._painter("multiuser", "").unavailable_lines(), (logged_out,))
+        self.assertEqual(self._painter("multiuser", "valid").unavailable_lines(), (logged_in,))
+        self.assertEqual(
+            self._painter("termux", "missing").unavailable_lines(),
+            (host_termux, logged_out),
+        )
+        self.assertEqual(
+            self._painter("termux", "valid").unavailable_lines(),
+            (host_termux, logged_in),
+        )
+        self.assertEqual(
+            self._painter("gitbash", "timeout").unavailable_lines(),
+            (host_gitbash, logged_out),
+        )
+        self.assertEqual(
+            self._painter("windows-cmd", "valid").unavailable_lines(),
+            (host_windows, logged_in),
+        )
+
+        termux = self._painter("termux", "missing")
+        fit_multi = MenuPainter.MIN_MENU_ABOVE + multi.chrome_rows()
+        self.assertTrue(multi.screen_can_hold(fit_multi, 40))
+        self.assertFalse(multi.screen_can_hold(fit_multi - 1, 40))
+        self.assertTrue(termux.screen_can_hold(fit_multi, 40))
+
+        class BandScreen:
+            def __init__(self, size):
+                self.size = size
+                self.calls = []
+
+            def getmaxyx(self):
+                return self.size
+
+            def erase(self):
+                self.calls = []
+
+            def addstr(self, y, x, text, attr=0):
+                self.calls.append((y, x, text, attr))
+
+            def refresh(self):
+                return None
+
+            def curs_set(self, _visibility):
+                return None
+
+            def move(self, _y, _x):
+                return None
+
+        height, width = 24, 80
+        model = MenuModel(painter=multi)
+        screen = BandScreen((height, width))
+        multi.paint(screen, model, "AgentCli", "1.0.0")
+        box_top = height - multi.chrome_rows()
+        band_y = box_top + MenuPainter.FRAME_ROWS
+        status_y = band_y + MenuPainter.NOTICE_ROWS
+        self.assertEqual(status_y, height - 1)
+        band_rows = []
+        for offset in range(MenuPainter.NOTICE_ROWS):
+            row = [
+                item for item in screen.calls
+                if item[0] == band_y + offset and item[1] == 0
+            ]
+            self.assertEqual(len(row), 1)
+            self.assertNotEqual(row[0][3], 0)
+            self.assertEqual(MenuPainter.display_width(row[0][2]), width - 1)
+            band_rows.append(row[0][2])
+        self.assertIn(logged_out, band_rows[0])
+        self.assertEqual(band_rows[1].strip(), "")
+        self.assertEqual(band_rows[2].strip(), "")
+        termux_model = MenuModel(painter=termux)
+        termux_screen = BandScreen((height, width))
+        termux.paint(termux_screen, termux_model, "AgentCli", "1.0.0")
+        termux_rows = []
+        for offset in range(MenuPainter.NOTICE_ROWS):
+            row = [
+                item for item in termux_screen.calls
+                if item[0] == band_y + offset and item[1] == 0
+            ]
+            self.assertEqual(len(row), 1, offset)
+            termux_rows.append(row[0][2])
+        self.assertIn(host_termux, termux_rows[0])
+        self.assertIn(logged_out, termux_rows[1])
+        self.assertEqual(termux_rows[2].strip(), "")
+        status = [item for item in screen.calls if item[0] == status_y and "Up/Down" in item[2]]
+        self.assertEqual(len(status), 1)
+        self.assertEqual(status[0][1], 0)
+        self.assertIn("AgentCli 1.0.0", status[0][2])
+        self.assertFalse(any(item[0] > status_y for item in screen.calls))
+
+        narrow = BandScreen((height, 41))
+        multi.paint(narrow, model, "AgentCli", "1.0.0")
+        narrow_rows = []
+        for offset in range(MenuPainter.NOTICE_ROWS):
+            row = [
+                item for item in narrow.calls
+                if item[0] == band_y + offset and item[1] == 0
+            ]
+            self.assertEqual(len(row), 1, offset)
+            self.assertEqual(MenuPainter.display_width(row[0][2]), 40)
+            narrow_rows.append(row[0][2].rstrip())
+        self.assertEqual(narrow_rows[0], "backup features are not available for")
+        self.assertEqual(narrow_rows[1], "logged-out environment.")
+        self.assertEqual(narrow_rows[2], "")
+        self.assertNotEqual(narrow_rows[0], MenuPainter.clip_columns(logged_out, 40))
+        self.assertFalse(any(item[0] > status_y for item in narrow.calls))
+        packed = termux.notice_display_lines(40)
+        self.assertEqual(
+            packed,
+            (
+                "backup, sync-auth and sudoers features",
+                "are not available in termux.",
+                "backup features are not available for",
+            ),
+        )
+
+        model.show_result("done")
+        result = BandScreen((height, width))
+        multi.paint(result, model, "AgentCli", "1.0.0")
+        self.assertFalse(any(logged_out in item[2] for item in result.calls))
+        self.assertFalse(any(logged_in in item[2] for item in result.calls))
+
+
+class TestWindowResize(unittest.TestCase):
+    """TP-TUI-12. A window-size change redraws and wraps inside the three light rows."""
+
+    def _painter(self):
+        from AgentCli.host import Host
+
+        painter = MenuPainter()
+        painter.host = Host(environ={"AGENT_CLI_HOST_OVERRIDE": "multiuser"})
+        painter.session_word = "missing"
+        painter.clock_text = lambda: "12:00:00"
+        return painter
+
+    def test_tp_tui_12_resize_redraws_and_wraps(self):
+        """TP-TUI-12: resize is not a choice. Narrow text continues. Too small waits."""
+        import curses
+
+        from AgentCli.menu_model import MenuModel
+        from AgentCli.menu_session import MenuSession
+        from AgentCli.tui import MenuScreenError, Tui
+
+        logged_out = MenuPainter.LOGGED_OUT_UNAVAILABLE
+        painter = self._painter()
+        self.assertEqual(painter.wrap_columns("abcdefghij", 4), ["abcd", "efgh", "ij"])
+        self.assertEqual(painter.wrap_columns("漢" * 3, 3), ["漢", "漢", "漢"])
+        self.assertEqual(painter.wrap_columns("漢", 1), [])
+        self.assertEqual(painter.wrap_columns("", 10), [])
+
+        model = MenuModel(painter=painter)
+        model.notice = "Language saved."
+        model.index = 1
+        self.assertIsNone(model.apply_key(curses.KEY_RESIZE, 24))
+        self.assertEqual(model.notice, "Language saved.")
+        self.assertEqual(model.index, 1)
+        self.assertEqual(model.error, "")
+
+        class ResizeScreen:
+            def __init__(self, size, keys):
+                self.size = size
+                self.keys = list(keys)
+                self.calls = []
+                self.paints = []
+
+            def getmaxyx(self):
+                return self.size
+
+            def keypad(self, _flag):
+                return None
+
+            def erase(self):
+                self.calls = []
+
+            def addstr(self, y, x, text, attr=0):
+                self.calls.append((y, x, text, attr))
+
+            def refresh(self):
+                self.paints.append((self.size, list(self.calls)))
+
+            def curs_set(self, _visibility):
+                return None
+
+            def move(self, _y, _x):
+                return None
+
+            def getch(self):
+                key, new_size = self.keys.pop(0)
+                if new_size is not None:
+                    self.size = new_size
+                return key
+
+        session = MenuSession(
+            "AgentCli",
+            "1.0.0",
+            on_version=lambda: "1.0.0",
+            on_about=lambda: "about",
+            on_kind=lambda _kind: None,
+            painter=painter,
+        )
+        session.model.notice = "Language saved."
+        session.model.index = 1
+        wide_then_narrow = ResizeScreen(
+            (24, 80),
+            [(curses.KEY_RESIZE, (24, 41)), (-1, None)],
+        )
+        self.assertEqual(session.run(wide_then_narrow), 0)
+        self.assertEqual(session.model.error, "")
+        self.assertEqual(session.model.index, 1)
+        self.assertEqual(len(wide_then_narrow.paints), 2)
+        wide_paint, narrow_paint = wide_then_narrow.paints
+        self.assertEqual(wide_paint[0], (24, 80))
+        self.assertTrue(any(logged_out in text for _y, _x, text, _attr in wide_paint[1]))
+        self.assertTrue(any("Language saved." in text for _y, _x, text, _attr in wide_paint[1]))
+        self.assertEqual(narrow_paint[0], (24, 41))
+        narrow_text = [text for _y, _x, text, _attr in narrow_paint[1]]
+        self.assertTrue(any(text.startswith("backup features are not available for") for text in narrow_text))
+        self.assertTrue(any(text.startswith("logged-out environment.") for text in narrow_text))
+        self.assertFalse(any(logged_out in text for text in narrow_text))
+        self.assertTrue(any("Language saved." in text for text in narrow_text))
+
+        shrink = ResizeScreen(
+            (24, 80),
+            [
+                (curses.KEY_RESIZE, (4, 40)),
+                (curses.KEY_RESIZE, (24, 80)),
+                (-1, None),
+            ],
+        )
+        session.model.notice = ""
+        self.assertEqual(session.run(shrink), 0)
+        self.assertEqual(len(shrink.paints), 3)
+        too_small = " ".join(text for _y, _x, text, _attr in shrink.paints[1][1])
+        self.assertIn("too small", too_small)
+        self.assertNotIn(logged_out, too_small)
+        restored = " ".join(text for _y, _x, text, _attr in shrink.paints[2][1])
+        self.assertIn(logged_out, restored)
+
+        opened_small = ResizeScreen((4, 40), [])
+        with self.assertRaises(MenuScreenError):
+            session.run(opened_small)
+        self.assertEqual(opened_small.paints, [])
+
+        class NoticeScreen:
+            def __init__(self):
+                self.size = (24, 80)
+                self.keys = [curses.KEY_RESIZE, ord("x")]
+                self.calls = []
+                self.paints = []
+
+            def getmaxyx(self):
+                return self.size
+
+            def timeout(self, _ms):
+                return None
+
+            def erase(self):
+                self.calls = []
+
+            def addstr(self, y, x, text, attr=0):
+                self.calls.append((y, x, text, attr))
+
+            def refresh(self):
+                self.paints.append((self.size, list(self.calls)))
+
+            def curs_set(self, _visibility):
+                return None
+
+            def move(self, _y, _x):
+                return None
+
+            def getch(self):
+                key = self.keys.pop(0)
+                if key == curses.KEY_RESIZE:
+                    self.size = (24, 41)
+                return key
+
+        notice_screen = NoticeScreen()
+        notice_model = MenuModel(painter=painter)
+        tui = Tui(app_name="AgentCli", version="1.0.0")
+        tui.painter = painter
+        tui.notice(notice_screen, notice_model, ["done"], title="result")
+        self.assertEqual(len(notice_screen.paints), 2)
+        self.assertEqual(notice_screen.paints[0][0], (24, 80))
+        self.assertEqual(notice_screen.paints[1][0], (24, 41))
+        second = [text for _y, _x, text, _attr in notice_screen.paints[1][1]]
+        self.assertTrue(any(text.startswith("logged-out environment.") for text in second))
+        self.assertTrue(any("done" in text for text in second))
 
 
 if __name__ == "__main__":

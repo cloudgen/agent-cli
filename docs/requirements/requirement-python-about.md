@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-about.md
-**Status**: Active (Version 1.0.0)
+**Status**: Active (Version 1.0.1)
 **Area**: python
 **Key**: `requirement-python-about`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -173,12 +173,12 @@ Invocation: `agent-cli` on a terminal, then `8`, then `83`. The same page is `ag
 | **Pyenv paths** | Rule 16. Not a separate requirement |
 | **Conda paths** | Rule 15. Not a separate requirement |
 | **Star box** | `AboutPage.about_box_lines` calls `CheckSystem` for `self_location` and the Python executable name |
-| **Menu hook** | Row 83 and `agent-cli about` use `AboutPage.framework_about` |
+| **Menu hook** | Typed `about` uses `AboutPage.framework_about`. `about` is not a numbered row |
 | **APP_NAME** | `AgentCli` |
 | **Console script** | `agent-cli` |
 | **Author** | `cloudgen` |
 | **Homepage** | `https://github.com/cloudgen/agent-cli` |
-| **About date** | `2026-10-04` (`Cli.LAST_UPDATE`). This is the box date, not the host-check stamp |
+| **About date** | `2026-10-12` (`Cli.LAST_UPDATE`). This is the box date, not the host-check stamp |
 | **Usage line** | `agent-cli join` (`Cli.BASIC_USAGE`) |
 | **Download URL** | empty (`Cli.DOWNLOAD_URL`) |
 | **Docker marker** | `/.dockerenv` only |
@@ -188,7 +188,7 @@ Invocation: `agent-cli` on a terminal, then `8`, then `83`. The same page is `ag
 | **TTY / Interactive** | `yes` or `no` from `sys.stdout.isatty()` |
 | **JSON** | Not claimed. No `--json` stream |
 | **Privilege** | normal user privilege |
-| **Product version** | `1.0.0` |
+| **Product version** | `1.1.0` |
 
 ### 2.3 Why This Requirement Exists (Direct CIAO Alignment)
 
@@ -283,7 +283,8 @@ TP-ABOUT-01 asserts the identity line, every host-check label, the star-box titl
 | Date | Status | Note |
 |------|--------|------|
 | 2026-10-04 | Active 1.0.0 | About page: identity, host check, star box. Pyenv and conda reads stay here. No `--json`. Product version **1.0.5**. `./tests/run.sh` — 23 tests, OK. `TP-ABOUT-01` through `TP-ABOUT-14` and `TP-ABOUT-16` are have. There is no `TP-ABOUT-15` |
+| 2026-10-12 | Active 1.0.1 | Product version cite is **1.1.0**. `about` is a typed page, not menu row 83 |
 
-**Last Updated**: 2026-10-04
+**Last Updated**: 2026-10-12
 **Owner**: project maintainers
 **Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

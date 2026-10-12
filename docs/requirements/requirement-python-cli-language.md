@@ -1,41 +1,41 @@
 **file**: docs/requirements/requirement-python-cli-language.md
-**Status**: Active (Version 1.0.1)
+**Status**: Active (Version 1.1.0)
 **Area**: python
 **Key**: `requirement-python-cli-language`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
 
 ## 1. Purpose
 
-This file owns the menu language for AgentCli. The text menu can show its boards in one of thirteen languages. English is the default. The person picks a language on front row **4**. The pick is saved for the next run. The picture of the menu stays on `requirement-python-tui`. Typed verbs stay on `requirement-python-cli-interface`. `language` is not one of those verbs.
+This file owns the menu language for AgentCli. The text menu can show its boards in one of thirteen languages. English is the default. The person picks a language on front row **7**. The pick is saved for the next run. The picture of the menu stays on `requirement-python-tui`. Typed verbs stay on `requirement-python-cli-interface`. `language` is not one of those verbs.
 
 Class `MenuLanguage` in `src/AgentCli/menu_language.py` holds the codes, the saved leaf, and the words. Class `MenuPainter` writes `MenuLanguage(...)` in its constructor and asks that object for the path word and the row text. A factory does not create it.
 
 ### 1.1 Human-facing
 
-**In one sentence:** On the AgentCli menu, you type **4** to pick the language the menu uses, and the next time you open the menu it still uses that language.
+**In one sentence:** On the AgentCli menu, you type **7** to pick the language the menu uses, and the next time you open the menu it still uses that language.
 
 | Box | Meaning | Example |
 |-----|---------|---------|
-| You / this login | The person at the keyboard | `agent-cli`, then `4` |
+| You / this login | The person at the keyboard | `agent-cli`, then `7` |
 | The other role | The menu language object | class `MenuLanguage` in `menu_language.py` |
 | Not this file | Join questions, pip output, help, and the about page | Those stay English in this version |
 
 | Includes | Excludes |
 |----------|----------|
-| Front row 5, the language board, the saved file, and the words on the menu boards | A `language` argument on the command line |
+| Front row 7, the language board, the saved file, and the words on the menu boards | A `language` argument on the command line |
 | English as the default when the file is missing or not a known code | Reading `LANG` or `LC_ALL` to pick the menu language |
 | The path word, board titles, category names, Back, Exit, and the choice warning | Translating the folder path, the clock, or a leaf command token such as `join` |
 
 | Surface | What you open | What for |
 |---------|---------------|----------|
-| `agent-cli` on a terminal | Front board | Row **5** is language. Row **3** is system-log |
+| `agent-cli` on a terminal | Front board | Row **7** is language. `system-log` is a typed token, not a front number |
 | `~/.local/agent-cli/language` | One-line file in this login’s home | The code saved from the menu |
 | `AGENT_CLI_LANG` | Environment value for this process | Wins over the file and does not write it |
 
 | You do… | What it means | What you type |
 |---------|---------------|---------------|
-| Open the language board | The board lists thirteen language names in their own script, numbered 51 through 63, then Back. Numbers 50 and 64 through 69 are not printed. | `5` |
-| Save Traditional Chinese | The file stores `zh-Hant`. The front board comes back in Traditional Chinese, and the line above the box says the menu language is Traditional Chinese. | `53` |
+| Open the language board | The board lists thirteen language names in their own script, numbered 80 through 92, then Back. Numbers 70 through 79 and 93 through 98 are not printed. | `7` |
+| Save Traditional Chinese | The file stores `zh-Hant`. The front board comes back in Traditional Chinese, and the line above the box says the menu language is Traditional Chinese. | `82` |
 | Go back | The file is not written. The front board stays in the language you already had. | `0`, or Esc |
 | Start with no saved language | The menu is English. A Traditional Chinese locale does not switch it. | `agent-cli` |
 
@@ -45,8 +45,8 @@ Class `MenuLanguage` in `src/AgentCli/menu_language.py` holds the codes, the sav
 2. **Default.** The code **MUST** be `en` when the leaf is missing, when the first line is empty, or when that line is not one of the thirteen codes. An invalid first line **MUST NOT** be rewritten. `LANG`, `LANGUAGE`, `LC_ALL`, and `LC_MESSAGES` **MUST NOT** select a code. This file does not use gettext.
 3. **Process override.** When `AGENT_CLI_LANG` is one of the thirteen codes, that code **MUST** win at process start. That start **MUST NOT** write the leaf. Any other value of `AGENT_CLI_LANG` is ignored and the leaf is read.
 4. **Leaf.** The leaf is `${HOME}/.local/agent-cli/language`. The program reads only the first line, ignores a trailing carriage return, and ignores later lines. A menu pick **MUST** write the code, one newline, and nothing else. The directory **MUST** be mode `0700`. The file **MUST** be mode `0600`. The program creates that directory only when a pick is saved. A missing home, or a write that fails, **MUST** keep the code this process already had and **MUST** show the failed-write line in that previous language. The front board **MUST** still return.
-5. **Front row 5.** On every host, including Termux, Git Bash, and Windows cmd, the front board **MUST** print row **5** `language`. That row **MUST** open the language board. It **MUST NOT** run a command and **MUST NOT** leave the program. Multi-user front rows are **1** grok-auth, **3** system-log, **5** language, **7** sudoers, **8** self-management, and **9** Exit. This-login-only shows **2** run and hides **7** sudoers. System-log is front row **3**. Its children are **31** view-log, **32** clear-log, and **33** log-folder. Those numbers are the picture on `requirement-python-tui`.
-6. **Language block.** The language board uses the twenty numbers **50** through **69**. Assigned rows are **51** through **63**, in the order below. **50** and **64** through **69** are reserved. They **MUST NOT** be printed. Typing a reserved number **MUST** show the unknown-choice line and **MUST NOT** write the leaf. **0**, an empty Enter on Back, and Esc **MUST** return to the front board and **MUST NOT** write the leaf.
+5. **Front row 7.** On every host, including Termux, Git Bash, and Windows cmd, the front board **MUST** print row **7** `language`. That row **MUST** open the language board. It **MUST NOT** run a command and **MUST NOT** leave the program. Multi-user front rows are **1** grok-auth, **5** sudoers, **6** self-management, **7** language, and **9** Exit. This-login-only shows **2** run and hides **5** sudoers. **3**, **4**, and **8** are not front rows. Typing `system-log` opens that board. Its children are **31** view-log, **32** clear-log, and **33** log-folder. Those numbers are the picture on `requirement-python-tui`.
+6. **Language block.** Assigned rows are **80** through **92**, in the order below. **70** through **79** and **93** through **98** are reserved so a later language can be added without renumbering **80**–**92**. Reserved numbers **MUST NOT** be printed. Typing a reserved number **MUST** show the unknown-choice line and **MUST NOT** write the leaf. **0**, an empty Enter on Back, and Esc **MUST** return to the front board and **MUST NOT** write the leaf.
 7. **Names on the language board.** Each assigned row **MUST** show that language’s endonym as the short, in every UI language. The explain **MUST** be that UI language’s sentence with the endonym in the name slot. The English sentence is `use {name} for this menu`.
 8. **What follows the code.** On the front board, the language board, the system-log board, and the self-management board, these follow the selected code: the path label, the board title, category shorts, category longs, leaf longs, Back, Exit, the unknown-choice line, the saved-language line, and the failed-write line. Leaf shorts stay the English tokens `hello`, `view-log`, `clear-log`, `log-folder`, `version`, `about`, `version-check`, `self-update`, `self-uninstall`, and `self-install`.
 9. **What stays English.** The welcome line, command output, pip lifecycle output, the argv `version` line, the help body, and the about page stay English in this version. The key hint `Up/Down  •  Enter` stays English. The folder path and the clock `HH:MM:SS` are not translated. The product name and the version stay on the status line.
@@ -61,31 +61,31 @@ Class `MenuLanguage` in `src/AgentCli/menu_language.py` holds the codes, the sav
 
 | Code | Endonym | Row | Path label | Saved line | Failed-write line |
 |------|---------|-----|------------|------------|-------------------|
-| `en` | English | 51 | Path | Menu language is English | Could not save the menu language |
-| `zh-Hans` | 简体中文 | 52 | 路径 | 菜单语言是简体中文 | 无法保存菜单语言 |
-| `zh-Hant` | 繁體中文 | 53 | 路徑 | 選單語言是繁體中文 | 無法儲存選單語言 |
-| `es` | Español | 54 | Ruta | El idioma del menú es español | No se pudo guardar el idioma del menú |
-| `ar` | العربية | 55 | المسار | لغة القائمة هي العربية | تعذر حفظ لغة القائمة |
-| `fr` | Français | 56 | Chemin | La langue du menu est le français | Impossible d'enregistrer la langue du menu |
-| `pt` | Português | 57 | Caminho | O idioma do menu é português | Não foi possível guardar o idioma do menu |
-| `ru` | Русский | 58 | Путь | Язык меню — русский | Не удалось сохранить язык меню |
-| `de` | Deutsch | 59 | Pfad | Die Menüsprache ist Deutsch | Die Menüsprache konnte nicht gespeichert werden |
-| `ja` | 日本語 | 60 | パス | メニューの言語は日本語 | メニューの言語を保存できませんでした |
-| `ko` | 한국어 | 61 | 경로 | 메뉴 언어는 한국어 | 메뉴 언어를 저장하지 못했습니다 |
-| `nl` | Nederlands | 62 | Pad | De menutaal is Nederlands | De menutaal kon niet worden opgeslagen |
-| `el` | Ελληνικά | 63 | Διαδρομή | Η γλώσσα του μενού είναι ελληνικά | Δεν ήταν δυνατή η αποθήκευση της γλώσσας του μενού |
+| `en` | English | 80 | Path | Menu language is English | Could not save the menu language |
+| `zh-Hans` | 简体中文 | 81 | 路径 | 菜单语言是简体中文 | 无法保存菜单语言 |
+| `zh-Hant` | 繁體中文 | 82 | 路徑 | 選單語言是繁體中文 | 無法儲存選單語言 |
+| `es` | Español | 83 | Ruta | El idioma del menú es español | No se pudo guardar el idioma del menú |
+| `ar` | العربية | 84 | المسار | لغة القائمة هي العربية | تعذر حفظ لغة القائمة |
+| `fr` | Français | 85 | Chemin | La langue du menu est le français | Impossible d'enregistrer la langue du menu |
+| `pt` | Português | 86 | Caminho | O idioma do menu é português | Não foi possível guardar o idioma do menu |
+| `ru` | Русский | 87 | Путь | Язык меню — русский | Не удалось сохранить язык меню |
+| `de` | Deutsch | 88 | Pfad | Die Menüsprache ist Deutsch | Die Menüsprache konnte nicht gespeichert werden |
+| `ja` | 日本語 | 89 | パス | メニューの言語は日本語 | メニューの言語を保存できませんでした |
+| `ko` | 한국어 | 90 | 경로 | 메뉴 언어는 한국어 | 메뉴 언어를 저장하지 못했습니다 |
+| `nl` | Nederlands | 91 | Pad | De menutaal is Nederlands | De menutaal kon niet worden opgeslagen |
+| `el` | Ελληνικά | 92 | Διαδρομή | Η γλώσσα του μενού είναι ελληνικά | Δεν ήταν δυνατή η αποθήκευση της γλώσσας του μενού |
 
 | Item | Value |
 |------|--------|
 | **Class** | `MenuLanguage` in `src/AgentCli/menu_language.py` |
 | **Painter site** | `MenuPainter.__init__` writes `MenuLanguage(logger=logger, home=home)` |
-| **Front row** | **5** language. Children **51**–**63**. Reserved and not printed: **50**, **64**–**69** |
-| **System-log** | Front **3**. Children **31** view-log, **32** clear-log, **33** log-folder |
+| **Front row** | **7** language. Children **80**–**92**. Reserved and not printed: **70**–**79** and **93**–**98** |
+| **System-log** | Typed token `system-log`. Children **31** view-log, **32** clear-log, **33** log-folder. Not a front number |
 | **Leaf** | `${HOME}/.local/agent-cli/language`. Directory mode `0700`. File mode `0600`. Not the cache folder. Not `/var/agent-cli` |
 | **Override** | `AGENT_CLI_LANG` at process start. Does not write |
 | **Back / Exit shorts** | en Back / Exit. zh-Hans 返回 / 离开. zh-Hant 返回 / 離開. es Atrás / Salir. ar رجوع / خروج. fr Retour / Quitter. pt Voltar / Sair. ru Назад / Выход. de Zurück / Beenden. ja 戻る / 終了. ko 뒤로 / 종료. nl Terug / Afsluiten. el Πίσω / Έξοδος |
 | **Category shorts** | language: language, 语言, 語言, idioma, لغة, langue, язык, Sprache, 言語, 언어, taal, γλώσσα. Spanish and Portuguese both use idioma. system-log and self-management shorts are the words in `MenuLanguage` for that code. The English tokens stay `system-log` and `self-management` |
-| **Language-board tokens** | 51 `english` / `en` / `English`. 52 `simplified-chinese` / `zh-hans` / `zh-Hans` / `简体中文`. 53 `traditional-chinese` / `zh-hant` / `zh-Hant` / `繁體中文`. 54 `spanish` / `es` / `Español` / `español`. 55 `arabic` / `ar` / `العربية` / `عربي`. 56 `french` / `fr` / `Français` / `français`. 57 `portuguese` / `pt` / `Português` / `português` / `portugues`. 58 `russian` / `ru` / `Русский` / `русский`. 59 `german` / `de` / `Deutsch` / `deutsch`. 60 `japanese` / `ja` / `日本語`. 61 `korean` / `ko` / `한국어`. 62 `dutch` / `nl` / `Nederlands` / `nederlands`. 63 `greek` / `el` / `Ελληνικά` / `ελληνικά` |
+| **Language-board tokens** | 80 `english` / `en` / `English`. 81 `simplified-chinese` / `zh-hans` / `zh-Hans` / `简体中文`. 82 `traditional-chinese` / `zh-hant` / `zh-Hant` / `繁體中文`. 83 `spanish` / `es` / `Español` / `español`. 84 `arabic` / `ar` / `العربية` / `عربي`. 85 `french` / `fr` / `Français` / `français`. 86 `portuguese` / `pt` / `Português` / `português` / `portugues`. 87 `russian` / `ru` / `Русский` / `русский`. 88 `german` / `de` / `Deutsch` / `deutsch`. 89 `japanese` / `ja` / `日本語`. 90 `korean` / `ko` / `한국어`. 91 `dutch` / `nl` / `Nederlands` / `nederlands`. 92 `greek` / `el` / `Ελληνικά` / `ελληνικά` |
 | **About leaf long (en)** | `version, FFmpeg, and this computer`. The other twelve codes say that fact in that language. The about page stays English and is `requirement-python-about` |
 | **Not a verb** | `language` is absent from `Cli.PRODUCT_VERBS` |
 | **Proof** | `TP-LANG-01` has. `TP-TUI-09` still proves that `LANG` does not select `路徑` when the leaf is missing |
@@ -102,8 +102,8 @@ Invocation sample for the row this file owns. There is no `agent-cli language` c
 
 ```text
 agent-cli
-5
-53
+7
+82
 ```
 
 That sequence opens the menu, opens the language board, and saves `zh-Hant`.
@@ -117,12 +117,12 @@ That sequence opens the menu, opens the language board, and saves `zh-Hant`.
 
 ## Under command line for normal user only
 
-On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli` as the normal user. **This requirement:** saving the language file is this login’s home. Do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to write it. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`. Row 4 is numbered on those hosts the same way it is numbered on Linux.
+On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli` as the normal user. **This requirement:** saving the language file is this login’s home. Do not use administrator privilege, `sudo`, `apt`, or a dedicated system user to write it. Do not pipe a downloaded script into a shell. Type 1 and Type 2 are unused on Termux, Git Bash, and Windows cmd. Git Bash and Windows cmd do not call Termux `pkg`. Row 7 is numbered on those hosts the same way it is numbered on Linux.
 
 ## 3. Design Principles (CIAO / CIAO-Lite)
 
 - **Caution:** An invalid file stays English and is not rewritten. A failed write keeps the previous code.
-- **Intentional:** Thirteen codes, a block of twenty numbers, and one leaf.
+- **Intentional:** Thirteen codes on 80–92, with 70–79 and 93–98 reserved for a later language, and one leaf.
 - **Anti-fragile:** `AGENT_CLI_LANG` can force a code for one process without touching the file.
 - **Over-protect:** Reserved numbers warn and do not write. Back does not write.
 
@@ -132,11 +132,11 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 
 - Add `language` as an argv verb.
 - Read `LANG` or `LC_ALL` to select the menu language, or restore gettext for this menu.
-- Print reserved numbers 40 or 54–59, or write the leaf when one of those numbers is typed.
+- Print reserved numbers 70–79 or 93–98, or write the leaf when one of those numbers is typed.
 - Write the leaf on Back, on an empty Enter of Back, or on Esc.
 - Translate the folder path, the clock, or a leaf short such as `join`.
 - Put the language file in the cache folder or under `/var/agent-cli`.
-- Renumber row 5, or move system-log onto row 5, to make room.
+- Move language off front row 7, or place a self-management child on 80–92. Reserved 70–79 and 93–98 stay unprinted so a later language can be added.
 - Mark `TP-OOP-*` or `TP-TUI-01` through `TP-TUI-08` have from this file.
 
 **Violating this rule is a critical menu-language regression.**
@@ -157,8 +157,8 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 
 | ID | Criterion |
 |----|-----------|
-| AC-1 | Front row 5 opens the language board. Rows 51–63 show the endonyms. 50 and 64–69 are not printed |
-| AC-2 | System-log is front row 3. Its children are 31, 32, and 33 |
+| AC-1 | Front row 7 opens the language board. Rows 80–92 show the endonyms. 70–79 and 93–98 are not printed |
+| AC-2 | system-log is not a front number. Typing it opens children 31, 32, and 33 |
 | AC-3 | A pick writes `${HOME}/.local/agent-cli/language` mode `0600` and switches this process |
 | AC-4 | Back, Esc, and a reserved number do not write. A failed write keeps the previous code |
 | AC-5 | A missing or invalid leaf is English and is not rewritten. `LANG` does not select a code. `AGENT_CLI_LANG` wins and does not write |
@@ -168,7 +168,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 
 | TP family / ID | Suite | Status | Note |
 |----------------|-------|--------|------|
-| **TP-LANG-01** | `tests/test_language.py` | have | Row 5, rows 51–63, system-log at 3 / 31–33, save mode `0600`, Back and reserved numbers do not write, `zh-Hant` path word `路徑`, invalid leaf, `AGENT_CLI_LANG`, failed write, leaf shorts stay English |
+| **TP-LANG-01** | `tests/test_language.py` | have | Row 7, rows 80–92, reserved 70–79 and 93–98, front 3/4/8 do not open the board, system-log token opens 31–33, save mode `0600`, Back does not write, `zh-Hant` is 82, `AGENT_CLI_LANG`, failed write |
 | **TP-TUI-09** | `tests/test_tui.py` | have | With no language file, `LANG=zh_TW.UTF-8` keeps `Path`. Peer proof on `requirement-python-tui` |
 
 **Matrix:** `docs/reviews/requirement-test-matrix.md`
@@ -180,9 +180,10 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 |------|--------|------|
 | 2026-10-04 | Active 1.0.0 | Menu language for AgentCli. Front row 5. Thirteen codes. Leaf under this login’s home. `TP-LANG-01` has |
 | 2026-10-04 | Active 1.0.1 | English about explain is `version, FFmpeg, and this computer`. The about page stays English |
+| 2026-10-12 | Active 1.1.0 | Front row 7. Assigned 80–92. Reserved 70–79 and 93–98. Sudoers is front 5. Self-management is front 6 |
 
 ---
 
-**Last Updated**: 2026-10-04
+**Last Updated**: 2026-10-12
 **Owner**: project maintainers
 **Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

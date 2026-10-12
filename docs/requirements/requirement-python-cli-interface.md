@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-cli-interface.md
-**Status**: Active (Version 1.1.2)
+**Status**: Active (Version 1.1.4)
 **Area**: python
 **Key**: `requirement-python-cli-interface`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -61,7 +61,7 @@ The text-menu picture is `requirement-python-tui`. Join steps and formats are `r
 ### 2.3 Typed verbs
 
 8. `ArgumentParser.parse_args` **MUST** run after `ChronicleLogger(...)` and after the debug block.
-9. The typed verbs are `help`, `version`, `about`, `hello`, `self-install`, `version-check`, `self-update`, and `self-uninstall`. Each one is operational. **MUST NOT** add a verb whose only purpose is a test. **MUST NOT** add `join` or `list-videos`. `language` is not a typed verb. Front row 5 owns it (`requirement-python-cli-language`). **MUST NOT** add `language` to `PRODUCT_VERBS`.
+9. The typed verbs are `help`, `version`, `about`, `hello`, `self-install`, `version-check`, `self-update`, and `self-uninstall`. Each one is operational. **MUST NOT** add a verb whose only purpose is a test. **MUST NOT** add `join` or `list-videos`. `language` is not a typed verb. Front row 7 owns it (`requirement-python-cli-language`). **MUST NOT** add `language` to `PRODUCT_VERBS`.
 10. **MUST NOT** invent file-operand flags. **MUST NOT** scan the working directory for media files.
 11. On a terminal, `hello` **MUST NOT** draw the text screen. `about` **MUST** open the about page.
 12. With no terminal, `about` **MUST** print the about page and return 0. It does not draw the text screen. `hello` **MUST** print the welcome line and return 0.
@@ -153,7 +153,7 @@ There is no folder question. Esc on the text screen returns to the front board a
 | **Quiet / JSON** | Text screen sets `is_quiet=True` on the logger construct. No `--json` |
 | **Privilege** | user-level only |
 | **Running tree** | `cli.py` still calls `ensure_ffmpeg()` and then the prompt session. That is not the allowed end state |
-| **Product version** | `1.0.0` |
+| **Product version** | `1.1.0` |
 | **User docs** | Root `README.md` Usage must match this contract when the behavior ships. This pass does not edit that README |
 
 ### 2.9 Why This Requirement Exists (CIAO)
@@ -207,7 +207,7 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 | Key | Relationship |
 |-----|----------------|
 | `requirement-python-tui` | Menu picture and numbered rows |
-| `requirement-python-cli-language` | `language` is not an argv verb. Front row 5 |
+| `requirement-python-cli-language` | `language` is not an argv verb. Front row 7, codes 80–92 |
 | `requirement-domain-videojoin` | Join steps, `list-videos`, and the about domain sentence |
 | `requirement-python-about` | The about page |
 | `requirement-python-cli-logging` | Construct before the parser |
@@ -239,9 +239,11 @@ On Termux, Git Bash, Windows cmd, or the same class, the person runs `agent-cli`
 | 2026-10-04 | Active 1.1.0 | Empty argv opens the text menu on a terminal and prints help off a terminal. Typed verbs. Join questions are the `join` verb |
 | 2026-10-04 | Active 1.1.1 | `language` is not an argv verb. Menu row 4 owns it |
 | 2026-10-04 | Active 1.1.2 | Verb `about` is `requirement-python-about`. Rule 33 no longer claims a live ffmpeg probe. Product version **1.0.5** |
+| 2026-10-12 | Active 1.1.3 | `language` stays off the verb list. Front row 7 owns it. Codes are 80–92 |
+| 2026-10-12 | Active 1.1.4 | Product version cite is **1.1.0** |
 
 ---
 
-**Last Updated**: 2026-10-04
+**Last Updated**: 2026-10-12
 **Owner**: project maintainers
 **Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

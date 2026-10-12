@@ -97,7 +97,7 @@ class Cli:
     AUTHOR_NAME = "cloudgen"
     AUTHOR_EMAIL = "wongcf22@gmail.com"
     HOMEPAGE = "https://github.com/cloudgen/agent-cli"
-    LAST_UPDATE = "2026-10-11"
+    LAST_UPDATE = "2026-10-12"
     DOWNLOAD_URL = ""
     BASIC_USAGE = "agent-cli"
 
@@ -199,7 +199,7 @@ class Cli:
                 "With no arguments and no terminal, prints this help and stops.\n"
                 "--json with no verb prints JSON help and does not open the menu.\n"
                 "hello prints a welcome line and does not draw the menu.\n"
-                "Menu row 1 is grok-auth. language is menu row 5 and is not a verb.\n"
+                "Menu row 1 is grok-auth. language is menu row 7 and is not a verb.\n"
                 "This program does not join media or list files in this folder.\n"
                 "version-check runs: python -m pip index versions {0}\n"
                 "self-update runs: python -m pip install --upgrade {0}\n"

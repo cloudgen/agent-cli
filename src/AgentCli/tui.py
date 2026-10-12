@@ -29,7 +29,7 @@ class Tui:
     """Text menu session. The welcome page and the front board stay on this screen.
 
     MenuModel, MenuSession, and MenuPainter live in their own modules.
-    The rows are hello, system-log, language, self-management, and Exit.
+    Multi-user front rows are grok-auth, sudoers, self-management, language, and Exit.
     """
 
     def __init__(self, app=None, app_name="AgentCli", version=None, logger=None):
@@ -62,19 +62,19 @@ class Tui:
         )
 
     def self_lines(self):
-        """General Purpose: Path line and the self-management board under 8."""
+        """General Purpose: Path line and the self-management board under 6."""
         return [self.painter.path_line()] + self.painter.format_rows(
             self.painter.display_rows("self")
         )
 
     def log_lines(self):
-        """General Purpose: Path line and the system-log board under 3."""
+        """General Purpose: Path line and the system-log board opened by the typed token."""
         return [self.painter.path_line()] + self.painter.format_rows(
             self.painter.display_rows("log")
         )
 
     def language_lines(self):
-        """General Purpose: Path line and the language board under 4."""
+        """General Purpose: Path line and the language board under 7."""
         return [self.painter.path_line()] + self.painter.format_rows(
             self.painter.display_rows("lang")
         )
@@ -157,6 +157,9 @@ class Tui:
             self._paint_lines(screen, model, title, lines, pin_last=True)
             self._arm_blocking(screen)
             key = screen.getch()
+            if MenuPainter.is_resize(key):
+                MenuPainter.note_resize()
+                continue
             if key in (-1, 27):
                 model.error = ""
                 model.buffer = ""
@@ -192,11 +195,16 @@ class Tui:
         if closing is None:
             closing = "Press a key to return to the main menu."
         body = list(lines) + ["", closing]
-        self._paint_lines(screen, model, title, body, pin_last=True)
-        self._arm_blocking(screen)
-        try:
-            screen.getch()
-        except Exception:
+        while True:
+            self._paint_lines(screen, model, title, body, pin_last=True)
+            self._arm_blocking(screen)
+            try:
+                key = screen.getch()
+            except Exception:
+                return
+            if MenuPainter.is_resize(key):
+                MenuPainter.note_resize()
+                continue
             return
 
     def _read_yes_no(self, screen, model, lines, title="system-log"):

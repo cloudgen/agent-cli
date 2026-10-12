@@ -2,20 +2,20 @@
 
 Authoritative specialized product law for **AgentCli** lives here.
 
-**Current state (2026-10-11):** Specialized **software-development** product. Left genesis. Registry is populated — see `index.md`. Product version is **1.0.0**. Exactly one Active domain file: `requirement-domain-agent-cli`.
+**Current state (2026-10-12):** Specialized **software-development** product. Left genesis. Registry is populated — see `index.md`. Product version is **1.1.0**. Exactly one Active domain file: `requirement-domain-agent-cli`.
 
 ## Product identity (summary)
 
 | Field | Value |
 |-------|--------|
 | Product / package | `AgentCli` |
-| Version SSOT | **`1.0.0`** (`pyproject.toml` + `src/AgentCli/__init__.py`) |
+| Version SSOT | **`1.1.0`** (`pyproject.toml` + `src/AgentCli/__init__.py`) |
 | Product README SSOT | Root `README.md`. Sections and pictures: `requirement-python-readme` |
 | Ship surface | Python package; console script **`agent-cli`**; module `python -m AgentCli` |
-| Install mode | **pip / local package** (`pip install AgentCli`; this tree **1.0.0**; checkout `pip install -e .`). Empty argv off a terminal prints help and returns 0 |
+| Install mode | **pip / local package** (`pip install AgentCli`; this tree **1.1.0**; checkout `pip install -e .`). Empty argv off a terminal prints help and returns 0 |
 | Domain surface | `requirement-domain-agent-cli` — install and run peer `grok`, and back up `~/.grok` auth files |
-| Text menu | `requirement-python-tui` — multi-user front rows 1 grok-auth, 3 system-log, 5 language, 7 sudoers, 8 self-management, 9 Exit. This-login-only shows 2 run and hides 7 |
-| Menu language | `requirement-python-cli-language` — row 5, codes 51–63, leaf `~/.local/agent-cli/language`. `language` is not an argv verb |
+| Text menu | `requirement-python-tui` — multi-user front rows 1 grok-auth, 5 sudoers, 6 self-management, 7 language, 9 Exit. This-login-only shows 2 run and hides 5. Front 3, 4, and 8 are not rows |
+| Menu language | `requirement-python-cli-language` — row 7, codes 80–92, reserved 70–79 and 93–98, leaf `~/.local/agent-cli/language`. `language` is not an argv verb |
 | Status logger | `requirement-python-cli-logging` — `ChronicleLogger(...)` inside `def main`. Required (`ChronicleLogger>=1.3.1`) |
 | Cache | `requirement-shell-cli-storage` — Linux preferred `/dev/shm/cache`, then `/tmp/cache`, then `${HOME}/.cache`. Silent tier miss |
 | Class map | `requirement-python-oop` — one class in each module under `src/AgentCli/` |

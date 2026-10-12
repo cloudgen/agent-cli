@@ -1,5 +1,5 @@
 **file**: docs/requirements/requirement-python-readme.md
-**Status**: Active (Version 1.0.1)
+**Status**: Active (Version 1.1.0)
 **Area**: python
 **Key**: `requirement-python-readme`
 **Philosophy**: CIAO **v2.10.2** / CIAO-Lite (Caution • Intentional • Anti-fragile • Over-engineered / Over-protect)
@@ -94,7 +94,7 @@ The first-row sentence in the user document **MUST** name the current directory 
 | **Pictures** | `screenshots/` |
 | **Package** | `AgentCli` |
 | **Console script** | `agent-cli` |
-| **Version** | `1.0.0` from `src/AgentCli/__init__.py` (`__version__`). `pyproject.toml` copies that string |
+| **Version** | `1.1.0` from `src/AgentCli/__init__.py` (`__version__`). `pyproject.toml` copies that string |
 | **Python** | `>=2.7`, excluding 3.0 through 3.4. The badge says 2.7+ (3.x recommended) |
 | **License file** | `LICENSE.md` (MIT). The file is present. The document link stays relative |
 | **Homes** | `https://github.com/cloudgen/agent-cli` and `https://pypi.org/project/AgentCli/` |
@@ -113,17 +113,17 @@ The first-row sentence in the user document **MUST** name the current directory 
 
 | Heading | What this document must keep | Owner of the behavior |
 |---------|------------------------------|------------------------|
-| Features | Text menu: grok-auth, system-log, language, sudoers, self-management, Exit. Path and a local clock on the first row. system-log is **3**. language is **5**. sudoers is **7** on a multi-user host. self-management is **8**. Typed verbs include `help`, `version`, `about`, `hello`, `setup`, `backup`, and the pip lifecycle verbs. `join` and `list-videos` are unknown | Peers in §2.2. The path-row sentence is the clock rule in §2.2 |
+| Features | Text menu: grok-auth, sudoers, self-management, language, Exit. Path and a local clock on the first row. Three light rows under the input box. language is **7**. sudoers is **5** on a multi-user host. self-management is **6**. **3**, **4**, and **8** are not rows. Typing `system-log` opens that board. Typed verbs include `help`, `version`, `about`, `hello`, `setup`, `backup`, and the pip lifecycle verbs. `join` and `list-videos` are unknown | Peers in §2.2. The path-row sentence is the clock rule in §2.2 |
 | Advantages | The four parts and the comparison table below | This file for the contrast. Peers in §2.2 for the behavior |
-| Quick Installation | FFmpeg on `PATH`. `ChronicleLogger>=1.3.1`. `pip install AgentCli`. Checkout uses a venv and `pip install -e .`. The fenced text menu (front, system-log, language, self-management) stays in this section | `requirement-runtime-prerequisites`, `requirement-python-packaging`, `requirement-python-tui` |
-| Usage | Menu versus typed verbs. Join asks for two indexes and an output name. No folder prompt. Esc returns. No terminal: empty argv prints help and returns 0. Direct `join` with no terminal exits non-zero. `self-uninstall` needs `--force`. No sudo | `requirement-python-cli-interface`, `requirement-domain-videojoin`, `requirement-python-tui` |
-| Screenshots | Lead: each heading is the file name, and the paragraph is what that picture shows. Package **1.0.5**. The paragraph and the image alt are the catalog below. Pictures that still show **1.0.4** say so | This file |
-| Examples | `cd` to a folder of clips, then `agent-cli`, then `agent-cli version`, then `agent-cli join` | `requirement-domain-videojoin` |
-| Platform Compatibility | Linux primary. macOS and Windows when Python and FFmpeg are present. The text menu needs a terminal | `requirement-runtime-prerequisites` |
+| Quick Installation | `ChronicleLogger>=1.3.1`. `pip install AgentCli`. Checkout uses a venv and `pip install -e .`. The fenced text menu shows **1** grok-auth, **5** sudoers, **6** self-management, **7** language, and **9** Exit | `requirement-runtime-prerequisites`, `requirement-python-packaging`, `requirement-python-tui` |
+| Usage | Menu versus typed verbs. `hello` prints the welcome line and does not draw the menu. `about` stays English and is not a numbered row. No terminal: empty argv prints help and returns 0. `self-uninstall` needs `--force`. No sudo | `requirement-python-cli-interface`, `requirement-python-tui` |
+| Screenshots | Lead: each heading is the file name, and the paragraph is what that picture shows. Package **1.1.0**. The three-row light band is under the input box. The paragraph and the image alt are the catalog below | This file |
+| Examples | `agent-cli`, then `agent-cli version`, `agent-cli hello`, `agent-cli about`, and `agent-cli setup` | `requirement-python-cli-interface` |
+| Platform Compatibility | Linux primary. macOS and Windows when Python is present. The text menu needs a terminal. This-login-only shows **run** and hides **sudoers** | `requirement-runtime-prerequisites` |
 | Related Projects | The eight lines below, in that order, each with one sentence | This file |
 | Contributing | Keep product law in sync. Do not strip `shutil.move`. Version strings stay together | `requirement-python-coding-style`, `requirement-python-packaging` |
 | License | MIT, link `LICENSE.md`, and that file exists | `requirement-python-packaging` |
-| Last Update | Names package **1.0.0** and the picture catalog | This file for the line. `__version__` for the string |
+| Last Update | Names package **1.1.0** and the picture catalog | This file for the line. `__version__` for the string |
 
 **Related projects, in this order.** The first two are this program. Each line is one sentence. Do not add an install recipe.
 
@@ -140,47 +140,44 @@ The first-row sentence in the user document **MUST** name the current directory 
 **Advantages, after Features and before Quick Installation.** Four parts, then the comparison. The path row in this section names the local clock.
 
 1. **Dual-mode interface.** Typed verbs do the same work as the menu tokens. `hello` prints a welcome line and does not draw the menu. Exit is menu-only. With no arguments on a terminal, the text menu opens. With no terminal and no verb, the program prints help and returns 0. Empty argv does not run pip.
-2. **Built-in languages.** Row **5** lists thirteen languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. The choice is saved for the next run.
-3. **USB-safe staging.** Intermediate files are written beside the output when that folder can be written, including on a removable drive. The finished file is published with `shutil.move`. When that folder cannot be written, the stage uses the system temporary directory. The section **MUST NOT** say the stage never uses that directory.
-4. **Lifecycle and diagnostics.** `version-check`, `self-update`, `self-install`, and `self-uninstall` are menu rows **84**–**87** and typed verbs. `self-uninstall` on the command line needs `--force`. They call pip and do not use root. **system-log** (**3**) views a log, clears a log, and shows the log folder. **about** (**83**) stays in English.
+2. **Built-in languages.** Row **7** lists thirteen languages: English, Simplified Chinese, Traditional Chinese, Spanish, Arabic, French, Portuguese, Russian, German, Japanese, Korean, Dutch, and Greek. The numbers are **80** through **92**. **70** through **79** and **93** through **98** stay unprinted so a later language can be added. The choice is saved for the next run.
+3. **Cache and persistence.** Linux prefers `/dev/shm/cache`, then `/tmp/cache`, then a leaf under the home cache directory. A missed tier is silent. Persistence is `~/.local/agent-cli`. The about page names the tier this process selected.
+4. **Lifecycle and diagnostics.** On the self-management board, **64** is `version-check`, **65** is `self-update`, and **66** is `self-uninstall`. `self-install` is a typed verb and is not a numbered row. `self-uninstall` on the command line needs `--force`. They call pip and do not use root. **68** is `where-is-me`. Typing `system-log` views a log, clears a log, and shows the log folder. **about** stays in English and is not a numbered row.
 
 **Comparison table.** Columns: Feature, Raw FFmpeg CLI, Typical Python wrappers (moviepy), AgentCli.
 
 | Feature | Raw FFmpeg CLI | Typical Python wrappers (moviepy) | AgentCli |
 |---------|----------------|-----------------------------------|-----------|
-| Learning curve | A concat graph the person writes | A Python script | Text menu, or two file numbers and an output name |
-| Non-interactive | Native command line | A custom script | Typed verbs. No terminal and no verb: help, return 0. Direct `join` with no terminal: non-zero. No `--json` |
+| Learning curve | A concat graph the person writes | A Python script | Text menu, or the same typed verb |
+| Non-interactive | Native command line | A custom script | Typed verbs. No terminal and no verb: help, return 0. No `--json` |
 | Menu languages | None | None | Thirteen, kept for the next run |
-| Temporary files | You choose the paths | Often the system temporary directory | Beside the output when that folder can be written. Otherwise the system temporary directory. Publish with `shutil.move` |
+| Temporary files | You choose the paths | Often the system temporary directory | Cache tiers: `/dev/shm/cache`, then `/tmp/cache`, then a home cache leaf. A missed tier is silent |
 | Self-management | The system package manager | pip from outside the tool | Built-in version-check, self-update, self-install, and self-uninstall |
-| Diagnostics and logs | The encode stream | A logging setup in the script | system-log (row 3) and about (83), in English |
+| Diagnostics and logs | The encode stream | A logging setup in the script | typed `system-log` and `about`, in English |
 
 **Screenshot catalog, in this order.** Each image destination is the absolute `https` URL in Implementation Notes, with that file’s basename. The paragraph and the alt are the words `README.md` prints for that file.
 
 | Order | File | Paragraph | Alt |
 |------:|------|-----------|-----|
-| 1 | `language-menu.png` | Row **4** has opened the language list. **41 English** is highlighted, with the note "use English for this menu." The other rows are **42 简体中文**, **43 繁體中文**, **44 Español**, **45 العربية**, **46 Français**, **47 Português**, **48 Русский**, **49 Deutsch**, **50 日本語**, **51 한국어**, **52 Nederlands**, and **53 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The clock is on the right of that row. The status line says `language`. AgentCli 1.0.4. | Language list, 41 English highlighted |
-| 2 | `main-menu-en.png` | English main menu. There is no saved-language line above the box. The path label is `Path`. The clock is on the right of that row. **1 join** is highlighted: "pick two videos in this folder and concatenate." Then **3 system-log** "view, clear, and the log folder," **4 language** "display language for this menu," **8 self-management** "version, about, and pip lifecycle," and **9 Exit** "leave." The status line says `main menu`. | English main menu |
-| 3 | `main-menu-zh-hans.png` | Simplified Chinese main menu. The line above the box says `菜单语言是简体中文`. The path label is `路径`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `系统日志`, **4** is `语言`, **8** is `自我管理`, and **9** is `离开`. The status line says `主菜单`. | Simplified Chinese main menu |
-| 4 | `main-menu-zh-hant.png` | Traditional Chinese main menu. The line above the box says `選單語言是繁體中文`. The path label is `路徑`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `系統日誌`, **4** is `語言`, **8** is `自我管理`, and **9** is `離開`. The status line says `主選單`. | Traditional Chinese main menu |
-| 5 | `main-menu-es.png` | Spanish main menu. The line above the box says `El idioma del menú es español`. The path label is `Ruta`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `registro`, **4** is `idioma`, **8** is `autogestión`, and **9** is `Salir`. The status line says `menú principal`. | Spanish main menu |
-| 6 | `main-menu-ar.png` | Arabic main menu. The line above the box says `لغة القائمة هي العربية`. The path label is `المسار`. The clock is on the right of that row. The numbers stay on the left. Arabic words on each row are shaped and read right to left. **1 join** is highlighted and stays `join`. **3** is `سجل النظام`, **4** is `لغة`, **8** is `إدارة ذاتية`, and **9** is `خروج`. The status line says `القائمة الرئيسية`. | Arabic main menu |
-| 7 | `main-menu-fr.png` | French main menu. The line above the box says `La langue du menu est le français`. The path label is `Chemin`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `journal`, **4** is `langue`, **8** is `autogestion`, and **9** is `Quitter`. The status line says `menu principal`. | French main menu |
-| 8 | `main-menu-pt.png` | Portuguese main menu. The line above the box says `O idioma do menu é português`. The path label is `Caminho`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `registo`, **4** is `idioma`, **8** is `autogestão`, and **9** is `Sair`. The status line says `menu principal`. | Portuguese main menu |
-| 9 | `main-menu-ru.png` | Russian main menu. The line above the box says `Язык меню — русский`. The path label is `Путь`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `системный журнал`, **4** is `язык`, **8** is `самоуправление`, and **9** is `Выход`. The status line says `главное меню`. | Russian main menu |
-| 10 | `main-menu-de.png` | German main menu. The line above the box says `Die Menüsprache ist Deutsch`. The path label is `Pfad`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `Systemprotokoll`, **4** is `Sprache`, **8** is `Selbstverwaltung`, and **9** is `Beenden`. The status line says `Hauptmenü`. | German main menu |
-| 11 | `main-menu-ja.png` | Japanese main menu. The line above the box says `メニューの言語は日本語`. The path label is `パス`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `システムログ`, **4** is `言語`, **8** is `自己管理`, and **9** is `終了`. The status line says `メインメニュー`. | Japanese main menu |
-| 12 | `main-menu-ko.png` | Korean main menu. The line above the box says `메뉴 언어는 한국어`. The path label is `경로`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `시스템 로그`, **4** is `언어`, **8** is `자기관리`, and **9** is `종료`. The status line says `주 메뉴`. | Korean main menu |
-| 13 | `main-menu-nl.png` | Dutch main menu. The line above the box says `De menutaal is Nederlands`. The path label is `Pad`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `systeemlog`, **4** is `taal`, **8** is `zelfbeheer`, and **9** is `Afsluiten`. The status line says `hoofdmenu`. | Dutch main menu |
-| 14 | `main-menu-el.png` | Greek main menu. The line above the box says `Η γλώσσα του μενού είναι ελληνικά`. The path label is `Διαδρομή`. The clock is on the right of that row. **1 join** is highlighted and stays `join`. **3** is `αρχείο καταγραφής`, **4** is `γλώσσα`, **8** is `αυτοδιαχείριση`, and **9** is `Έξοδος`. The status line says `κύριο μενού`. | Greek main menu |
-| 15 | `join-first.png` | Join, first question. The title is `AgentCli (1.0.4) — join`. The page says "Join two videos in this folder." and "Esc returns to the menu." The list is `1. clip-a.mp4` and `2. clip-b.mp4`. The prompt is "Choose FIRST video →". The input box contains `1` and the block caret. The status line says `join`. There is no clock on this page. | Choose the first video, 1 typed |
-| 16 | `join-second.png` | Join, second question. The title is `AgentCli (1.0.4) — join`. The remaining list is `1. clip-b.mp4`. The prompt is "Choose SECOND video →". The input box contains `1` and the block caret. The status line says `join`. | Choose the second video, 1 typed for clip-b.mp4 |
-| 17 | `join-output.png` | Join, output name. The page says "Joining:", then `clip-a.mp4`, then `+ clip-b.mp4`, then "Output filename [clip-a + clip-b.mp4]:". The input box is empty except for the block caret, so the bracketed default stands. The status line says `join`. | Output name, default clip-a + clip-b.mp4, box empty |
-| 18 | `join-done.png` | The join has finished by stream copy. The page says "Joining with perfect audio sync:", lists `clip-a.mp4` and `clip-b.mp4`, then "→ clip-a + clip-b.mp4", then "Staging dir → .", then "Running ffmpeg (stream copy – no quality loss)…", then "SUCCESS! Perfectly joined with original sound → clip-a + clip-b.mp4". The footer says "Press a key to return to the main menu." The input box is empty. The status line says `join`. | Stream-copy join of clip-a.mp4 and clip-b.mp4 succeeded |
-| 19 | `self-management.png` | Row **8** has opened self-management. **82 version** is highlighted: "show the installed version." Then **83 about** "version, FFmpeg, and this computer", **84 version-check** "compare this install with pip", **85 self-update** "upgrade this package with pip", **86 self-uninstall** "remove this package with pip", **87 self-install** "install this package with pip", and **0 Back** "return to the main menu." The path label is `Path`. The path is `/tmp/clips`. The clock is `14:05:09` on the right of that row. The status line says `AgentCli 1.0.5` and `self-management`. | Self-management, 82 version highlighted |
-| 20 | `tui-about.png` | **about** (83) on the result page. The title is `AgentCli (1.0.5) — result`. The page prints `AgentCli 1.0.5`, `Domain: Concatenate two local videos with FFmpeg (copy, then fallback)`, `Runtime tools: FFmpeg (copy, then re-encode)`, and `Entry points: agent-cli, python -m AgentCli`. The host check is stamped `2026-10-04 21:14:59.669782` and headed `[CHECK SYSTEM]:`. Visible lines include Python 3.12.11, C Library GCC 13.3.0, Ubuntu 24.04.5 LTS, amd64, the current user, the shell, the Python executable, python2 location, python3 location, conda location, pyenv location, `Inside docker container: False`, and `Cython String: cpython-312-x86_64-linux-gnu`. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About host check, English |
-| 21 | `system-log.png` | Row **3** has opened system-log. **31 view-log** is highlighted: "list a log file and show it." Then **32 clear-log** "empty one log file", **33 log-folder** "show the log folder", and **0 Back** "return to the main menu." The path label is `Path`. The clock is on the right of that row. The status line says `system-log`. | System log, 31 view-log highlighted |
-| 22 | `video.png` | A still picture, not a text-menu capture. A woman with long brown hair, in a grey shirt with a small blue mark, sits at a round wooden table and holds a white cup. An open book with a worn cover and a metal clasp lies on the table. Behind her are a beige sofa, a wide window onto trees, a potted plant, and a wooden floor in daylight. | Woman at a table with an open book and a cup |
+| 1 | `language-menu.png` | Row **7** has opened the language list. **80 English** is highlighted, with the note "use English for this menu." The other rows are **81 简体中文**, **82 繁體中文**, **83 Español**, **84 العربية**, **85 Français**, **86 Português**, **87 Русский**, **88 Deutsch**, **89 日本語**, **90 한국어**, **91 Nederlands**, and **92 Ελληνικά**. Each note says to use that language for this menu. **0 Back** says "return to the main menu." The path label is `Path`. The status line says `language`. | Language list, 80 English highlighted |
+| 2 | `main-menu-en.png` | English main menu. There is no saved-language line above the box. The path label is `Path`. **1 grok-auth** is "backup, sync, crontab, setup, and reinstall." Then **5 sudoers** "grant and drafts," **6 self-management** "check, update, or remove this package," **7 language** "display language for this menu," and **9 Exit** "leave." The status line says `main menu`. | English main menu |
+| 3 | `main-menu-zh-hans.png` | Simplified Chinese main menu. The line above the box says `菜单语言是简体中文`. The path label is `路径`. **1 grok-auth** stays the English token. **5** stays `sudoers`. **6** is `自我管理`, **7** is `语言`, and **9** is `离开`. The status line says `主菜单`. | Simplified Chinese main menu |
+| 4 | `main-menu-zh-hant.png` | Traditional Chinese main menu. The line above the box says `選單語言是繁體中文`. The path label is `路徑`. **5** stays `sudoers`. **6** is `自我管理`, **7** is `語言`, and **9** is `離開`. The status line says `主選單`. | Traditional Chinese main menu |
+| 5 | `main-menu-es.png` | Spanish main menu. The line above the box says `El idioma del menú es español`. The path label is `Ruta`. **6** is `autogestión`, **7** is `idioma`, and **9** is `Salir`. The status line says `menú principal`. | Spanish main menu |
+| 6 | `main-menu-ar.png` | Arabic main menu. The line above the box says `لغة القائمة هي العربية`. The path label is `المسار`. The numbers stay on the left. **6** is `إدارة ذاتية`, **7** is `لغة`, and **9** is `خروج`. The status line says `القائمة الرئيسية`. | Arabic main menu |
+| 7 | `main-menu-fr.png` | French main menu. The line above the box says `La langue du menu est le français`. The path label is `Chemin`. **6** is `autogestion`, **7** is `langue`, and **9** is `Quitter`. The status line says `menu principal`. | French main menu |
+| 8 | `main-menu-pt.png` | Portuguese main menu. The line above the box says `O idioma do menu é português`. The path label is `Caminho`. **6** is `autogestão`, **7** is `idioma`, and **9** is `Sair`. The status line says `menu principal`. | Portuguese main menu |
+| 9 | `main-menu-ru.png` | Russian main menu. The line above the box says `Язык меню — русский`. The path label is `Путь`. **6** is `самоуправление`, **7** is `язык`, and **9** is `Выход`. The status line says `главное меню`. | Russian main menu |
+| 10 | `main-menu-de.png` | German main menu. The line above the box says `Die Menüsprache ist Deutsch`. The path label is `Pfad`. **6** is `Selbstverwaltung`, **7** is `Sprache`, and **9** is `Beenden`. The status line says `Hauptmenü`. | German main menu |
+| 11 | `main-menu-ja.png` | Japanese main menu. The line above the box says `メニューの言語は日本語`. The path label is `パス`. **6** is `自己管理`, **7** is `言語`, and **9** is `終了`. The status line says `メインメニュー`. | Japanese main menu |
+| 12 | `main-menu-ko.png` | Korean main menu. The line above the box says `메뉴 언어는 한국어`. The path label is `경로`. **6** is `자기관리`, **7** is `언어`, and **9** is `종료`. The status line says `주 메뉴`. | Korean main menu |
+| 13 | `main-menu-nl.png` | Dutch main menu. The line above the box says `De menutaal is Nederlands`. The path label is `Pad`. **6** is `zelfbeheer`, **7** is `taal`, and **9** is `Afsluiten`. The status line says `hoofdmenu`. | Dutch main menu |
+| 14 | `main-menu-el.png` | Greek main menu. The line above the box says `Η γλώσσα του μενού είναι ελληνικά`. The path label is `Διαδρομή`. **6** is `αυτοδιαχείριση`, **7** is `γλώσσα`, and **9** is `Έξοδος`. The status line says `κύριο μενού`. | Greek main menu |
+| 15 | `system-log.png` | Typing `system-log` has opened that board. **31 view-log** is highlighted: "list a log file and show it." Then **32 clear-log**, **33 log-folder**, and **0 Back**. The path label is `Path`. The status line says `system-log`. **3** is not a front row. | System log, 31 view-log |
+| 16 | `self-management.png` | Row **6** has opened self-management. **64 version-check** is highlighted: "compare this install with pip." Then **65 self-update**, **66 self-uninstall**, **68 where-is-me**, and **0 Back**. The path label is `Path`. The status line says `self-management`. | Self-management, 64 version-check |
+| 17 | `grok-auth.png` | **1 grok-auth** on a multi-user host while the session word is missing. The board shows **12 sync-auth-from-remote**, **13 sync-auth**, **14 add-crontab**, **15 setup**, **16 reinstall**, and **0 Back**. A signed-in session shows **11 backup** instead of the sync rows. The status line says `grok-auth`. | Logged-out grok-auth board |
+| 18 | `sudoers.png` | Row **5** has opened sudoers. The rows are **51 generate-sudoer-request**, **52 submit-sudoer-request**, **53 print-sudoers**, **54 print-sudoers-install-script**, **55 remove-project-sudoers**, and **0 Back**. The grant argument is `backup` only. The status line says `sudoers`. | Sudoers board, backup grant only |
+| 19 | `tui-about.png` | **about** on the result page. The title is `AgentCli (1.1.0) — result`. The page prints `AgentCli 1.1.0`, `Domain: Install and run xAI grok, and back up its auth files.`, `Runtime tools: curl, grok`, and `Entry points: agent-cli, python -m AgentCli`. The host check is headed `[CHECK SYSTEM]:` and includes the cache lines. The footer says `Up/Down scrolls this page.` and `Press a key to return to the main menu.` There is no input box and no clock. The page stays in English. | About page with cache lines |
 
 `TP-DOC-01` asserts the Version badge token, that every PNG is linked with the absolute `https` URL above, that no markdown image uses a relative `screenshots/` destination, that the section headings are present, that the document does not name `setup.sh` or `curl | sh` or `sudo pip`, that the related-project URLs are in order, and that the path row names the local clock (`HH:MM:SS`). There is no `video.png`. `TP-DOC-03` stays **todo**. Map: `docs/reviews/test-plan.md`.
 
@@ -227,7 +224,7 @@ The documented install is for this login. **This requirement:** the user documen
 
 1. `README.md` has the sections in §2.5, in that order, including Advantages after Features and Screenshots after Usage.
 2. The Version badge token matches the package string.
-3. The Screenshots section links every PNG in `screenshots/`, in catalog order, including `video.png`. Each image destination is an absolute `https` URL. Each heading is the basename. Each paragraph and each image alt are the catalog cells for that file.
+3. The Screenshots section links every PNG in `screenshots/`, in catalog order. Each image destination is an absolute `https` URL. Each heading is the basename. Each paragraph and each image alt are the catalog cells for that file. `video.png` is not in this catalog.
 4. The path-row sentence names the local clock.
 5. The document does not name `setup.sh`, `sudo pip`, or a shell online install.
 6. Related Projects lists the eight URLs in §2.5, in that order.
@@ -252,7 +249,7 @@ The documented install is for this login. **This requirement:** the user documen
 | `requirement-python-packaging` | Package name, console script, pip install, `ChronicleLogger>=1.3.1` |
 | `requirement-python-tui` | Menu picture and the clock |
 | `requirement-python-about` | The about picture. This file does not own the page |
-| `requirement-python-cli-language` | Row **4** and the thirteen codes. About stays English |
+| `requirement-python-cli-language` | Front row **7** and codes **80–92**. About stays English |
 | `requirement-python-cli-interface` | Product verbs the document lists. `hello` is one of them |
 | `requirement-python-coding-style` | `shutil.move` for the published file |
 | `requirement-class-software-dev` | Class residual |
@@ -266,9 +263,10 @@ The documented install is for this login. **This requirement:** the user documen
 |------|--------|------|
 | 2026-10-04 | Active 1.0.0 | User-document sections, Advantages, eight related projects, and twenty-two pictures. Image destinations are absolute `https`. `TP-DOC-01` have. `TP-DOC-03` todo |
 | 2026-10-04 | Active 1.0.1 | About and self-management pictures match the new page. Other menu pictures still show **1.0.4**. Package string is **1.0.5** |
+| 2026-10-12 | Active 1.1.0 | Package **1.1.0**. Catalog is language, thirteen main menus, system-log, self-management, grok-auth, sudoers, and about. Language is front **7**, codes **80–92** |
 
 ---
 
-**Last Updated**: 2026-10-04
+**Last Updated**: 2026-10-12
 **Owner**: project maintainers
 **Alignment**: Registry `docs/requirements/index.md`; **CIAO** (https://github.com/cloudgen/ciao); CIAO-Lite (https://github.com/cloudgen/ciao-lite).

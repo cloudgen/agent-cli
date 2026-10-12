@@ -2,12 +2,12 @@
 
 **Product:** AgentCli (Python CLI and text menu). It installs and runs the peer binary `grok`, and it backs up `~/.grok` auth files.
 **Workspace state:** Specialized product law. **software-development** class. Bootstrap is HelloTui (Python TUI) plus grok-cli (domain and shell law). Direction is those two into AgentCli only.
-**Product version:** **1.0.0**
-**Updated:** 2026-10-11
+**Product version:** **1.1.0**
+**Updated:** 2026-10-12
 
 | ID / key | Title | Area | Status | Path | Updated |
 |----------|-------|------|--------|------|---------|
-| requirement-class-software-dev | Software-development class law. Python, setuptools, ChronicleLogger. No dest approver | class | Active | `requirement-class-software-dev.md` | 2026-10-11 |
+| requirement-class-software-dev | Software-development class law. Python, setuptools, ChronicleLogger. No dest approver | class | Active | `requirement-class-software-dev.md` | 2026-10-12 |
 | requirement-domain-agent-cli | Domain SSOT: grok install, session, auth backup, help, about | domain | Active | `requirement-domain-agent-cli.md` | 2026-10-11 |
 | requirement-domain-videojoin | Retired welcome and join domain | domain | Retired | `requirement-domain-videojoin.md` | 2026-10-11 |
 | requirement-domain-folder-backup | Retired folder-archive domain | domain | superseded | `requirement-domain-folder-backup.md` | 2026-10-11 |
@@ -18,23 +18,23 @@
 | requirement-grok-auth-backup | Session gate, deposit, sync-auth | backup | Active | `requirement-grok-auth-backup.md` | 2026-10-11 |
 | requirement-grok-setup | setup, update-grok, reinstall, run | domain | Active | `requirement-grok-setup.md` | 2026-10-11 |
 | requirement-grok-crontab | add-crontab after the backup grant | domain | Active | `requirement-grok-crontab.md` | 2026-10-11 |
-| requirement-python-about | About page, host check, cache lines, star box | python | Active | `requirement-python-about.md` | 2026-10-11 |
-| requirement-python-cli-interface | Typed verbs. Empty argv is the menu on a terminal and help off a terminal | python | Active | `requirement-python-cli-interface.md` | 2026-10-11 |
-| requirement-python-cli-language | Menu language. Front row 5. Codes 51–63. Leaf `~/.local/agent-cli/language` | python | Active | `requirement-python-cli-language.md` | 2026-10-11 |
+| requirement-python-about | About page, host check, cache lines, star box | python | Active | `requirement-python-about.md` | 2026-10-12 |
+| requirement-python-cli-interface | Typed verbs. Empty argv is the menu on a terminal and help off a terminal | python | Active | `requirement-python-cli-interface.md` | 2026-10-12 |
+| requirement-python-cli-language | Menu language. Front row 7. Codes 80–92. Reserved 70–79 and 93–98. Leaf `~/.local/agent-cli/language` | python | Active | `requirement-python-cli-language.md` | 2026-10-12 |
 | requirement-python-cli-logging | ChronicleLogger construct in `def main` | python | Active | `requirement-python-cli-logging.md` | 2026-10-11 |
-| requirement-python-tui | Text menu. Path line, local clock, three-row input box, status line, display columns | python | Active | `requirement-python-tui.md` | 2026-10-11 |
+| requirement-python-tui | Text menu. Front 1, 5, 6, 7, 9. Language 7 / 80–92. Path line, local clock, three-row input box, three-row unavailable-feature lines, redraw on resize | python | Active | `requirement-python-tui.md` | 2026-10-12 |
 | requirement-python-oop | Class map. One class in each module | python | Active | `requirement-python-oop.md` | 2026-10-11 |
 | requirement-python-coding-style | Python style | python | Active | `requirement-python-coding-style.md` | 2026-10-11 |
-| requirement-python-packaging | pyproject, version 1.0.0, console script `agent-cli` | python | Active | `requirement-python-packaging.md` | 2026-10-11 |
+| requirement-python-packaging | pyproject, version 1.1.0, console script `agent-cli` | python | Active | `requirement-python-packaging.md` | 2026-10-12 |
 | requirement-python-project-structure | `src/AgentCli` layout | python | Active | `requirement-python-project-structure.md` | 2026-10-11 |
-| requirement-python-readme | Root README sections and absolute screenshot URLs | python | Active | `requirement-python-readme.md` | 2026-10-11 |
+| requirement-python-readme | Root README sections and absolute screenshot URLs | python | Active | `requirement-python-readme.md` | 2026-10-12 |
 | requirement-python-error-handling | Fail-closed errors | python | Active | `requirement-python-error-handling.md` | 2026-10-11 |
 | requirement-runtime-prerequisites | ChronicleLogger floor. curl when setup downloads. No root auto-install | runtime | Active | `requirement-runtime-prerequisites.md` | 2026-10-11 |
 | requirement-video-ffmpeg-pipeline | Retired. No encoder | runtime | Retired | `requirement-video-ffmpeg-pipeline.md` | 2026-10-11 |
 | requirement-shell-cli-interface | Verb catalog carried from the shell law | shell | Active | `requirement-shell-cli-interface.md` | 2026-10-11 |
 | requirement-shell-cli-zero-arguments | Empty argv. TTY menu. Off-TTY help. `--json` is JSON help | shell | Active | `requirement-shell-cli-zero-arguments.md` | 2026-10-11 |
-| requirement-shell-cli-default-interaction | Front rows 1, 3, 5, 7, 8, 9. This-login-only shows 2 and hides 7 | shell | Active | `requirement-shell-cli-default-interaction.md` | 2026-10-11 |
-| requirement-shell-cli-language | Menu language block 50–69, assigned 51–63 | shell | Active | `requirement-shell-cli-language.md` | 2026-10-11 |
+| requirement-shell-cli-default-interaction | Front rows 1, 5, 6, 7, 9. This-login-only shows 2 and hides 5. Front 8 is not a row | shell | Active | `requirement-shell-cli-default-interaction.md` | 2026-10-12 |
+| requirement-shell-cli-language | Menu language front 7, assigned 80–92, reserved 70–79 and 93–98 | shell | Active | `requirement-shell-cli-language.md` | 2026-10-12 |
 | requirement-shell-cli-storage | Cache tiers and persistence. Silent tier miss | shell | Active | `requirement-shell-cli-storage.md` | 2026-10-11 |
 | requirement-shell-path-and-shell-support | Shell rc PATH behavior names | shell | Active | `requirement-shell-path-and-shell-support.md` | 2026-10-11 |
 | requirement-shell-zshenv | zsh PATH behavior name | shell | Active | `requirement-shell-zshenv.md` | 2026-10-11 |
@@ -68,7 +68,7 @@
 
 **Cache:** Linux preferred `/dev/shm/cache/cache-agent-cli-${login}-$$`, then `/tmp/cache/...`, then `${HOME}/.cache/cache-agent-cli-$$`. Git Bash and mac preferred leaves start at `/tmp/cache`. A missed tier is silent. Persistence is `${HOME}/.local/agent-cli`.
 
-**Menu:** Multi-user front rows are 1 grok-auth, 3 system-log, 5 language, 7 sudoers, 8 self-management, 9 Exit. This-login-only shows 2 run and hides 7. Language codes are 51–63. Exit is menu-only. `language` is not an argv verb. Typed `hello` prints a welcome line and does not draw the menu.
+**Menu:** Multi-user front rows are 1 grok-auth, 5 sudoers, 6 self-management, 7 language, 9 Exit. This-login-only shows 2 run and hides 5. Front 3, 4, and 8 are not rows. Language codes are 80–92. Reserved 70–79 and 93–98 stay unprinted. `system-log` is a typed token. Exit is menu-only. `language` is not an argv verb. Typed `hello` prints a welcome line and does not draw the menu.
 
 **Logger:** required (`ChronicleLogger>=1.3.1`). `def main` writes `ChronicleLogger(...)`.
 

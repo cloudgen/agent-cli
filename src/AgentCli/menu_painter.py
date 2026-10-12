@@ -1,7 +1,7 @@
 # =============================================================================
 # Text-menu frame.
 # requirement-python-tui — menu region and the bottom input box.
-# requirement-python-cli-language — row 4 and the path word.
+# requirement-python-cli-language — row 7 and the path word.
 # requirement-python-oop — class MenuPainter owns the frame and MENU_ROWS.
 # =============================================================================
 from __future__ import annotations
@@ -78,6 +78,7 @@ class MenuPainter:
     # CIAO-Lite Protection Zone
     # Do NOT simplify, refactor, or remove without explicit user instruction.
     # The frame glyphs are the bottom input box. requirement-python-tui.md
+    # Unavailable-feature lines sit under that box. The status line stays last.
     # =============================================================================
     INPUT_MARK = "> "
     INPUT_HINT = "Up/Down  •  Enter"
@@ -93,38 +94,43 @@ class MenuPainter:
     CARET_BLOCK = "█"
     FRAME_ROWS = 3
     FOOTER_ROWS = 1
-    CHROME_ROWS = FRAME_ROWS + FOOTER_ROWS
+    NOTICE_ROWS = 3
     MIN_MENU_ABOVE = 3
-    MIN_HEIGHT = MIN_MENU_ABOVE + CHROME_ROWS
     MIN_PLACEABLE = 2 + len(" " + INPUT_MARK) + 1
+    # requirement-shell-cli-default-interaction rules 12, 13, and 13c.
+    # requirement-python-tui places each sentence under the input box.
+    HOST_UNAVAILABLE = (
+        "backup, sync-auth and sudoers features are not available in {label}."
+    )
+    LOGGED_IN_UNAVAILABLE = (
+        "sync-auth and sync-auth-from-remote features are not available "
+        "for logged-in environment."
+    )
+    LOGGED_OUT_UNAVAILABLE = (
+        "backup features are not available for logged-out environment."
+    )
+    NOTICE_PAIR = 7
     MENU_ROWS = (
-        (1, "grok-auth", "session, backup, and setup", "grok-auth"),
-        (2, "run", "start grok without updating it", "run"),
-        (3, "system-log", "view, clear, and the log folder", "system-log"),
-        (5, "language", "display language for this menu", "language"),
-        (7, "sudoers", "grant backup as root", "sudoers"),
-        (8, "self-management", "version, about, and pip lifecycle", "self-management"),
+        (1, "grok-auth", "backup, sync, crontab, setup, and reinstall", "grok-auth"),
+        (2, "run", "start grok without auto-update", "run"),
+        (5, "sudoers", "grant and drafts", "sudoers"),
+        (6, "self-management", "check, update, or remove this package", "self-management"),
+        (7, "language", "display language for this menu", "language"),
         (9, "Exit", "leave", "exit"),
     )
     SELF_ROWS = (
-        (82, "version", "show the installed version", "version"),
-        (83, "about", "version and this computer", "about"),
-        (84, "version-check", "compare this install with pip", "version-check"),
-        (85, "self-update", "upgrade this package with pip", "self-update"),
-        (86, "self-uninstall", "remove this package with pip", "self-uninstall"),
-        (87, "self-install", "install this package with pip", "self-install"),
-        (91, "version-check", "compare this install with pip", "version-check"),
-        (92, "self-update", "upgrade this package with pip", "self-update"),
-        (93, "self-uninstall", "remove this package with pip", "self-uninstall"),
-        (94, "where-is-me", "show agent-cli and grok", "where-is-me"),
+        (64, "version-check", "compare this install with pip", "version-check"),
+        (65, "self-update", "upgrade this package with pip", "self-update"),
+        (66, "self-uninstall", "remove this package with pip", "self-uninstall"),
+        (68, "where-is-me", "show running and install paths", "where-is-me"),
         (0, "Back", "return to the main menu", "back"),
     )
     SUDO_ROWS = (
-        (1, "generate-sudoer-request", "write the backup grant JSON", "generate-sudoer-request"),
-        (2, "submit-sudoer-request", "hand the JSON to the submitter", "submit-sudoer-request"),
-        (3, "print-sudoers", "print the backup grant", "print-sudoers"),
-        (4, "print-sudoers-install-script", "print the install commands", "print-sudoers-install-script"),
-        (5, "remove-project-sudoers", "print how to remove the grant", "remove-project-sudoers"),
+        (51, "generate-sudoer-request", "write the backup grant JSON", "generate-sudoer-request"),
+        (52, "submit-sudoer-request", "hand the JSON to the submitter", "submit-sudoer-request"),
+        (53, "print-sudoers", "print the backup grant", "print-sudoers"),
+        (54, "print-sudoers-install-script", "print the install commands", "print-sudoers-install-script"),
+        (55, "remove-project-sudoers", "print how to remove the grant", "remove-project-sudoers"),
         (0, "Back", "return to the main menu", "back"),
     )
     LOG_ROWS = (
@@ -168,7 +174,10 @@ class MenuPainter:
     }
 
     def front_rows(self) -> tuple:
-        """Multi-user hides run. This-login-only hides sudoers and shows run."""
+        """Multi-user hides run. This-login-only hides sudoers and shows run.
+
+        Front 3, 4, and 8 are not rows. system-log is a typed token, not a number.
+        """
         hide_privileged = self.host.normal_user_only()
         rows = []
         for number, short, explain, kind in self.MENU_ROWS:
@@ -349,9 +358,128 @@ class MenuPainter:
             return max(1, height - 4)
         return max(1, height - 3)
 
+    def unavailable_lines(self) -> tuple:
+        """One sentence per feature that is not available on this host and session.
+
+        requirement-python-tui. Wording stays on requirement-shell-cli-default-interaction.
+        A valid session uses the logged-in sentence. Every other word uses the logged-out sentence.
+        """
+        lines = []
+        if self.host.normal_user_only():
+            label = self.host.label()
+            if label:
+                lines.append(self.HOST_UNAVAILABLE.format(label=label))
+        word = getattr(self, "session_word", "missing") or "missing"
+        if word == "valid":
+            lines.append(self.LOGGED_IN_UNAVAILABLE)
+        else:
+            lines.append(self.LOGGED_OUT_UNAVAILABLE)
+        return tuple(lines)
+
+    def chrome_rows(self) -> int:
+        """Frame rows, the three-line unavailable box, and the status line."""
+        return self.FRAME_ROWS + self.NOTICE_ROWS + self.FOOTER_ROWS
+
+    @staticmethod
+    def is_resize(key) -> bool:
+        """True when the terminal window changed size. That key is not a menu choice."""
+        resize = getattr(curses, "KEY_RESIZE", None)
+        return resize is not None and key == resize
+
+    @staticmethod
+    def note_resize() -> None:
+        """Ask curses to adopt the new window size before the next paint."""
+        update = getattr(curses, "update_lines_cols", None)
+        if update is None:
+            return
+        try:
+            update()
+        except curses.error:
+            return
+
+    def wrap_columns(self, text: str, columns: int) -> list[str]:
+        """Break text on display columns. A leftover continues on the next line.
+
+        Words stay whole when they fit. A word wider than the row is split.
+        requirement-python-tui.
+        """
+        if columns <= 0 or not text:
+            return []
+        lines = []
+        current = ""
+        for word in text.split(" "):
+            candidate = word if not current else current + " " + word
+            if self.display_width(candidate) <= columns:
+                current = candidate
+                continue
+            if current:
+                lines.append(current)
+                current = ""
+            rest = word
+            while self.display_width(rest) > columns:
+                piece = self.clip_columns(rest, columns)
+                if not piece:
+                    rest = rest[1:]
+                    if not rest:
+                        break
+                    continue
+                lines.append(piece)
+                rest = rest[len(piece):]
+            current = rest
+        if current:
+            lines.append(current)
+        return lines
+
+    def notice_display_lines(self, columns: int) -> tuple:
+        """The three-row message box. A sentence that does not fit continues below.
+
+        requirement-python-tui. The box stays three rows. A later sentence starts
+        on the next free row. Text past the third row is not drawn.
+        """
+        rows = []
+        for sentence in self.unavailable_lines():
+            parts = self.wrap_columns(sentence, columns)
+            for part in parts:
+                if len(rows) >= self.NOTICE_ROWS:
+                    break
+                rows.append(part)
+            if len(rows) >= self.NOTICE_ROWS:
+                break
+        while len(rows) < self.NOTICE_ROWS:
+            rows.append("")
+        return tuple(rows)
+
     def screen_can_hold(self, height: int, width: int) -> bool:
-        """True when the path line, one menu row, the three-row frame, and the status line fit."""
-        return height >= self.MIN_HEIGHT and width - 1 >= self.MIN_PLACEABLE
+        """True when the path line, one menu row, the frame, the unavailable lines, and the status line fit."""
+        return height >= self.MIN_MENU_ABOVE + self.chrome_rows() and width - 1 >= self.MIN_PLACEABLE
+
+    def _notice_attr(self) -> int:
+        """Dark text on a light background. Reverse video when the terminal has no color."""
+        try:
+            if curses.has_colors():
+                curses.start_color()
+                curses.init_pair(
+                    self.NOTICE_PAIR, curses.COLOR_BLACK, curses.COLOR_WHITE,
+                )
+                return curses.color_pair(self.NOTICE_PAIR)
+        except curses.error:
+            pass
+        return curses.A_REVERSE
+
+    def _paint_band(self, screen, y: int, text: str) -> None:
+        """One full-width light line. The caller already wrapped the sentence."""
+        height, width = screen.getmaxyx()
+        if y < 0 or y >= height or width <= 1:
+            return
+        placeable = width - 1
+        shown = self.clip_columns(text, placeable)
+        padded = shown + (" " * (placeable - self.display_width(shown)))
+        if not padded:
+            return
+        try:
+            screen.addstr(y, 0, padded, self._notice_attr())
+        except curses.error:
+            return
 
     def _input_field(self, model, inner: int) -> tuple[str, int | None]:
         """Cells between the side bars, and the caret index in those cells when focused."""
@@ -379,14 +507,14 @@ class MenuPainter:
         return field, caret_at
 
     def _status_line(self, app_name: str, version: str, title: str) -> str:
-        """The row under the frame: name, version, board, and the key hint."""
+        """The last row: name, version, board, and the key hint."""
         return (
             f"  {app_name} {version}  {self.FRAME_VERT}  {title}  "
             f"{self.FRAME_VERT}  {self.INPUT_HINT}"
         )
 
     def _paint_box(self, screen, model, top: int, app_name: str, version: str, title: str) -> None:
-        """Draw the rounded frame and the status line under it."""
+        """Draw the rounded frame, the unavailable-feature lines, and the status line."""
         _height, width = screen.getmaxyx()
         placeable = width - 1
         if top < 0 or placeable < 2:
@@ -401,7 +529,15 @@ class MenuPainter:
         )
         for offset, line in enumerate(lines):
             self._put(screen, top + offset, 0, line)
-        self._put(screen, top + self.FRAME_ROWS, 0, self._status_line(app_name, version, title))
+        notices = self.notice_display_lines(placeable)
+        for offset, sentence in enumerate(notices):
+            self._paint_band(screen, top + self.FRAME_ROWS + offset, sentence)
+        self._put(
+            screen,
+            top + self.FRAME_ROWS + self.NOTICE_ROWS,
+            0,
+            self._status_line(app_name, version, title),
+        )
         if caret_at is None or not hasattr(screen, "move"):
             return
         try:
@@ -455,7 +591,7 @@ class MenuPainter:
             screen.refresh()
             return
         height, _width = screen.getmaxyx()
-        box_top = height - self.CHROME_ROWS
+        box_top = height - self.chrome_rows()
         banner = self._banner(model)
         stop = box_top
         if banner and box_top >= 4:
@@ -506,7 +642,7 @@ class MenuPainter:
         cursor += len(version)
         self._put(screen, 0, cursor, ") — {}".format(title))
         height, _width = screen.getmaxyx()
-        box_top = height - self.CHROME_ROWS
+        box_top = height - self.chrome_rows()
         banner = self._banner(model)
         stop = box_top
         if banner and box_top >= 4:

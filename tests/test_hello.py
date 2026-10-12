@@ -70,7 +70,10 @@ class TestHello(unittest.TestCase):
                 os.environ.pop("AGENT_CLI_LANG", None)
             else:
                 os.environ["AGENT_CLI_LANG"] = saved
-        self.assertEqual(rows[0], (1, "grok-auth", "session, backup, and setup", "grok-auth"))
+        self.assertEqual(
+            rows[0],
+            (1, "grok-auth", "backup, sync, crontab, setup, and reinstall", "grok-auth"),
+        )
         tui = Tui()
         session = MenuSession(
             Cli.APP_NAME,

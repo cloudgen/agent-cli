@@ -1,5 +1,5 @@
 # TP-LANG-01 — menu language. Primary law: requirement-python-cli-language.
-# Front row 5 is language. system-log is front row 3. LANG does not select a code.
+# Front row 7 is language. Codes 80–92. Reserved 70–79 and 93–98. LANG does not select a code.
 import os
 import stat
 import tempfile
@@ -43,47 +43,59 @@ class TestMenuLanguage(unittest.TestCase):
                 os.environ[name] = value
 
     def test_tp_lang_01_front_row_and_blocks(self):
-        """TP-LANG-01: row 5 is language. Row 3 is system-log. 50 and 64 are not printed."""
+        """TP-LANG-01: row 7 is language. 80–92 print. 70–79 and 93–98 do not."""
         front = self.painter.display_rows("front")
         numbers = [row[0] for row in front]
-        self.assertEqual(numbers, [1, 3, 5, 7, 8, 9])
-        self.assertEqual(front[1][3], "system-log")
-        self.assertEqual(front[2][1], "language")
-        self.assertEqual(front[2][3], "language")
+        self.assertEqual(numbers, [1, 5, 6, 7, 9])
+        self.assertEqual(front[0][3], "grok-auth")
+        self.assertEqual(front[1][3], "sudoers")
+        self.assertEqual(front[2][3], "self-management")
+        self.assertEqual(front[3][1], "language")
+        self.assertEqual(front[3][3], "language")
         self.assertNotIn(2, numbers)
+        self.assertNotIn(3, numbers)
+        self.assertNotIn(4, numbers)
+        self.assertNotIn(8, numbers)
+        self.assertEqual([row[0] for row in self.painter.display_rows("self")], [64, 65, 66, 68, 0])
+        self.assertEqual([row[0] for row in self.painter.display_rows("sudo")], [51, 52, 53, 54, 55, 0])
         log_rows = self.painter.display_rows("log")
         self.assertEqual([row[0] for row in log_rows], [31, 32, 33, 0])
         self.assertEqual([row[1] for row in log_rows[:3]], ["view-log", "clear-log", "log-folder"])
+        self.assertIsNone(_commit(self.model, "system-log"))
+        self.assertEqual(self.model.layer, "log")
+        self.model.layer = "front"
+        for unused in ("3", "4", "8"):
+            self.assertIsNone(_commit(self.model, unused))
+            self.assertEqual(self.model.layer, "front")
+            self.assertIn("not on this list", self.model.error)
         lang_rows = self.painter.display_rows("lang")
         printed = [row[0] for row in lang_rows]
-        self.assertEqual(printed[:13], list(range(51, 64)))
+        self.assertEqual(printed[:13], list(range(80, 93)))
         self.assertEqual(printed[-1], 0)
-        self.assertNotIn(50, printed)
-        self.assertNotIn(64, printed)
-        self.assertNotIn(69, printed)
+        for reserved in (70, 79, 93, 98):
+            self.assertNotIn(reserved, printed)
         endonyms = [row[1] for row in lang_rows[:-1]]
         self.assertEqual(endonyms[0], "English")
         self.assertEqual(endonyms[2], "繁體中文")
         self.assertEqual(endonyms[-1], "Ελληνικά")
-        self.assertIsNone(_commit(self.model, "5"))
+        self.assertIsNone(_commit(self.model, "7"))
         self.assertEqual(self.model.layer, "lang")
 
     def test_tp_lang_01_save_back_reserved_and_env(self):
         """TP-LANG-01: save writes mode 0600. Back and reserved numbers do not write."""
         leaf = self.painter.language.leaf_path()
         self.assertFalse(os.path.exists(os.path.join(self.home, ".local")))
-        self.assertIsNone(_commit(self.model, "5"))
+        self.assertIsNone(_commit(self.model, "7"))
         self.assertIsNone(_commit(self.model, "0"))
         self.assertEqual(self.model.layer, "front")
         self.assertFalse(os.path.exists(leaf))
-        self.assertIsNone(_commit(self.model, "5"))
-        self.assertIsNone(_commit(self.model, "50"))
-        self.assertEqual(self.model.layer, "lang")
-        self.assertIn("not on this list", self.model.error)
-        self.assertFalse(os.path.exists(leaf))
-        self.assertIsNone(_commit(self.model, "64"))
-        self.assertFalse(os.path.exists(leaf))
-        action = _commit(self.model, "53")
+        self.assertIsNone(_commit(self.model, "7"))
+        for reserved in ("70", "79", "93", "98"):
+            self.assertIsNone(_commit(self.model, reserved))
+            self.assertEqual(self.model.layer, "lang")
+            self.assertIn("not on this list", self.model.error)
+            self.assertFalse(os.path.exists(leaf))
+        action = _commit(self.model, "82")
         self.assertEqual(action, "set-zh-Hant")
         session = MenuSession(
             "AgentCli",
@@ -105,12 +117,30 @@ class TestMenuLanguage(unittest.TestCase):
         folder = os.path.dirname(leaf)
         self.assertEqual(stat.S_IMODE(os.stat(folder).st_mode), 0o700)
         front = self.painter.display_rows("front")
-        self.assertEqual(front[2][1], "語言")
+        self.assertEqual(front[3][1], "語言")
         self.assertEqual(front[0][1], "grok-auth")
         self.assertEqual(front[0][3], "grok-auth")
         self.assertEqual(self.painter.display_rows("log")[0][1], "view-log")
         self.assertEqual(self.painter.display_rows("lang")[0][1], "English")
         self.assertNotIn("language", Cli.PRODUCT_VERBS)
+
+    def test_tp_lang_01_this_login_only_hides_sudoers(self):
+        """TP-LANG-01: this-login-only lists 2 run and omits 5. Choosing 5 stays on the front."""
+        os.environ["AGENT_CLI_HOST_OVERRIDE"] = "termux"
+        try:
+            painter = MenuPainter(home=self.home)
+            model = MenuModel(painter=painter)
+            numbers = [row[0] for row in painter.display_rows("front")]
+            self.assertEqual(numbers, [1, 2, 6, 7, 9])
+            self.assertIsNone(_commit(model, "5"))
+            self.assertEqual(model.layer, "front")
+            self.assertIn("not on this list", model.error)
+            self.assertIsNone(_commit(model, "7"))
+            self.assertEqual(model.layer, "lang")
+            self.assertIsNone(_commit(model, "8"))
+            self.assertEqual(model.layer, "lang")
+        finally:
+            os.environ.pop("AGENT_CLI_HOST_OVERRIDE", None)
 
     def test_tp_lang_01_invalid_leaf_and_env_override(self):
         """TP-LANG-01: a bad first line stays English. AGENT_CLI_LANG wins and does not write."""

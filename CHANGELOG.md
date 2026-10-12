@@ -3,6 +3,17 @@
 All notable changes to **AgentCli** are documented here.  
 Version SSOT: `pyproject.toml` + `src/AgentCli/__init__.py` `__version__`.
 
+## [1.1.0] - 2026-10-12
+
+### Changed
+
+- Multi-user front rows are grok-auth (1), sudoers (5), self-management (6), language (7), and Exit (9). A this-login-only host shows run (2) and hides sudoers. Front 3, 4, and 8 are not rows.
+- Language codes are 80–92. Reserved 70–79 and 93–98 stay unprinted so a later language can be added. Choosing a reserved number stays on the language board and does not write the leaf.
+- Self-management prints version-check (64), self-update (65), self-uninstall (66), and where-is-me (68). Version, about, and self-install stay typed verbs and are not numbered rows.
+- Typing `system-log` opens view-log (31), clear-log (32), and log-folder (33). It is not a front number.
+- Under the input box, three light rows name features that are not available. A window resize wraps that band and redraws the menu.
+- `hello` prints `Welcome to AgentCli 1.1.0.`
+
 ## [1.0.0] - 2026-10-11
 
 ### Added
